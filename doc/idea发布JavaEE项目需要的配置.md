@@ -1,3 +1,4 @@
+#idea发布JavaEE项目到Tomcat需要的配置
 本文不涉及idea的使用，和idea中的各种概念，只讲如何在idea中配置和发布JavaWeb项目。
 
 **环境说明:**
