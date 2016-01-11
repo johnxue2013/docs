@@ -92,7 +92,7 @@ Available Elements标签下列出可使用的文件，
 ![image](https://github.com/johnxue2013/tools/blob/master/images/23.png)
 
 点击OK。项目配置完毕。
-5) 配置tomcat  
+##配置tomcat  
 	1 打开tomcat配置面板  
      
      方法1:点击Edit Configurations
