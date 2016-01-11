@@ -5,8 +5,11 @@
 `环境说明:`
 
 * 编辑工具：idea version 14.1.1 或idea version 15.0.1  
-* 编译工具:jdk1.7 或者更高
-* 服务器:tomcat7或更高
+  
+* 编译工具:jdk1.7 或者更高  
+
+* 服务器:tomcat7或更高  
+
 
 
 ##从git仓库clone代码
