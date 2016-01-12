@@ -10,16 +10,8 @@
 
 
 [1]:https://github.com/johnxue2013/tools/blob/master/doc/idea%E5%8F%91%E5%B8%83JavaEE%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E7%9A%84%E9%85%8D%E7%BD%AE.md "idea发布JavaEE项目到tomcat需要的配置"
-<<<<<<< HEAD
 [2]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template.md "markdown语法模板"
 [3]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template2.md "markdown语法模板"
 [4]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template.md "markdown语法模板"
 [5]::https://github.com/johnxue2013/tools/blob/master/doc/emoji.md "emoji"
 
-
-=======
-[2]:https://github.com/johnxue2013/tools/blob/master/markdown_template.md "markdown语法模板"
-[3]:https://github.com/johnxue2013/tools/blob/master/markdown_template2.md "markdown语法模板"
-[4]:https://github.com/johnxue2013/tools/blob/master/markdown_template.md "markdown语法模板"
-[5]:https://github.com/johnxue2013/tools/blob/master/emoji.md "emoji"
->>>>>>> d1efef08f19f9dd621aea22f6581bc50f7ba7769
