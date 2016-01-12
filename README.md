@@ -5,7 +5,7 @@
 * [MarkDown语法模板1][2]
 * [MarkDown语法模板1][3]
 * [MarkDown语法模板1][4]
-* [emoji表情对应的编码] [5]
+* [emoji表情对应的编码][5]
 
 
 
@@ -13,5 +13,5 @@
 [2]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template.md "markdown语法模板"
 [3]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template2.md "markdown语法模板"
 [4]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template.md "markdown语法模板"
-[5]::https://github.com/johnxue2013/tools/blob/master/doc/emoji.md "emoji"
+[5]:https://github.com/johnxue2013/tools/blob/master/doc/emoji.md "emoji"
 
