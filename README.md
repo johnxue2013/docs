@@ -13,4 +13,4 @@
 [2]:https://github.com/johnxue2013/tools/blob/master/markdown_template.md "markdown语法模板"
 [3]:https://github.com/johnxue2013/tools/blob/master/markdown_template2.md "markdown语法模板"
 [4]:https://github.com/johnxue2013/tools/blob/master/markdown_template.md "markdown语法模板"
-[5]::https://github.com/johnxue2013/tools/blob/master/emoji.md "emoji"
+[5]:https://github.com/johnxue2013/tools/blob/master/emoji.md "emoji"
