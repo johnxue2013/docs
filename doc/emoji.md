@@ -1,9 +1,9 @@
-Emoji±íÇé
+Emojiè¡¨æƒ…
 =========
-½«¶ÔÓ¦emoji±íÇéµÄ·ûºÅÂë¸´ÖÆºóÊäÈëmarkdownÎÄ±¾¼´¿ÉÏÔÊ¾emoji±íÇé¡£
-Èç`:blush:`£¬ÏÔÊ¾Îª:blush:
+å°†å¯¹åº”emojiè¡¨æƒ…çš„ç¬¦å·ç å¤åˆ¶åè¾“å…¥markdownæ–‡æœ¬å³å¯æ˜¾ç¤ºemojiè¡¨æƒ…ã€‚
+>å¦‚`:blush:`ï¼Œæ˜¾ç¤ºä¸º:blush:ï¼Œåœ¨githubä¸Šçš„é¡¹ç›®æè¿°ä¸€æ ä¹Ÿå¯ç”¨
 
-## ÈËÎï
+## äººç‰©
 
 |syntax|preview|syntax|preview|syntax|preview|
 |:-------:|:---:|:------:|:-----:|:------:|:---:|
@@ -73,7 +73,7 @@ Emoji±íÇé
 |`:rage2:`|:rage2:|`:rage3:`|:rage3:|`:rage4:`|:rage4:|
 |`:suspect:`|:suspect:|`:trollface:`|:trollface:||||
 
-## ×ÔÈ»
+## è‡ªç„¶
 
 |syntax|preview|syntax|preview|syntax|preview|
 |:-------:|:---:|:------:|:-----:|:------:|:---:|
@@ -117,7 +117,7 @@ Emoji±íÇé
 |`:partly_sunny:`|:partly_sunny:|`:octocat:`|:octocat:|`:squirrel:`|:squirrel:|
 |`:waxing_gibbous_moon:`|:waxing_gibbous_moon:||||||
 
-## ÎïÌå
+## ç‰©ä½“
 
 |syntax|preview|syntax|preview|syntax|preview|
 |:-------:|:---:|:------:|:-----:|:------:|:-----:|
@@ -209,7 +209,7 @@ Emoji±íÇé
 |`:sweet_potato:`|:sweet_potato:|`:eggplant:`|:eggplant:|`:tomato:`|:tomato:|
 |`:corn:`|:corn:||||||
 
-## µØµã
+## åœ°ç‚¹
 
 |syntax|preview|syntax|preview|syntax|preview|
 |:-------:|:---:|:------:|:-----:|:------:|:-----:|
@@ -250,7 +250,7 @@ Emoji±íÇé
 |`:ru:`|:ru:|` :gb:`| :gb:|` :uk:`| :uk:|
 |`:de:`|:de:||||||
 
-## ·ûºÅ
+## ç¬¦å·
 
 |syntax|preview|syntax|preview|syntax|preview|
 |:-------:|:---:|:------:|:-----:|:------:|:-----:|
