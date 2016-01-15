@@ -103,7 +103,7 @@ Available Elements标签下列出可使用的文件，
  ![image](https://github.com/johnxue2013/tools/blob/master/images/25.png)
 
 	2）点击左上角+,选择Tomcat Server —> Local。如果看不到Tomcat Server，则请先配置idea中的server
-	![image](https://github.com/johnxue2013/tools/blob/master/images/26.png)
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/26.png)
  
 输入服务器名，一般和项目同名。在Server标签下可以配置服务器监听的端口等设置。
  
