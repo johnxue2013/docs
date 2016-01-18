@@ -108,15 +108,19 @@ git push命令用于将本地分支的更新，推送到远程主机。他的格
 
 
 比如，你运行git status命令,出现如下结果
+![image](https://github.com/johnxue2013/tools/blob/master/images/git1.png)
 现在你想切换分支,git会报错，无法完成分支切换。若想完成切换，需要使用git stash命令。
-
+![image](https://github.com/johnxue2013/tools/blob/master/images/git2.png)
 
 此时再运行git status 命令，将显示你的分支是干净的
+![image](https://github.com/johnxue2013/tools/blob/master/images/git3.png)
 此时你就可以切换到其他分支进行工作了，如果想要恢复stash时的场景，使用git stash apply, 可以使用git stash list命令列出所有的
 stash记录。
+![image](https://github.com/johnxue2013/tools/blob/master/images/git4.png)
 你也可以使用git stash apply stash@{2}，去指定恢复哪一个stash。默认情况下git stash apply使用最近一次的stash。
 
 apply选项只是尝试应用存储的工作---stash的内容仍然在栈上。要移除它，你可以运行git stash drop <stash-name>，
+![image](https://github.com/johnxue2013/tools/blob/master/images/git5.png)
 你也可以运行git stash pop <stash-name>来重新应用存储，同时立刻将其从堆栈中移走。
 
 PS: 若想要stash时携带注释，可使用git stash save <注释>。如: git stash save "暂存bug123"
@@ -171,7 +175,7 @@ git help branch中的一个例子：
 
 * 将服务器端的版本强制恢复(回退)到某一次提交
      1、首先使用git log命令，找到你想恢复到哪一次的提交的commit id
-     
+     ![image](https://github.com/johnxue2013/tools/blob/master/images/git6.png)
      2、使用 git reset --hard <commit_id>重置
 
      3、使用git push <clone下来的服务器别名> HEAD --force，如 git push origin HEAD --force
@@ -189,6 +193,7 @@ git push -u origin master
 * 一个项目同时与多个远程服务器保持同步
       开发项目的时候，一般公司会搭建自己git服务器，我们上班时都用这个服务器进行同步。一般这个服务器都是局域网内可访问，并不会有域名。
 这样就存在一个问题，如果下班之后想要继续编写代码，而且想在第二天上班时，同步到自己下班之后写的代码该怎么办？此时可以在公司的电脑上将公司的项目同时与两个远程服务器进行同步。一般第一次从git上拉取项目时(准确的说是clone)，git默认会将拉取下来的项目服务器名命名为origin，具体可以在git clone <项目url> 之后运行git remote show，或者git remote -v 进行查看。
+![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png)
 如上图，此时我的medicinerecommendation项目保持与两个远程服务器进行同步，一个是10.1.64.87，这个是公司的git服务器，另一个是github服务器。
 
      默认情况下，clone下来的项目只会一个git服务器保持同步(即可以与该服务器进行push和fetch)，运行git remote add <远程服务器别名> <远程仓库所在URL>命令，添加一个远程服务器。若无错误(服务器别名不可以重名，即如果有一个叫做origin的服务器别名，此时添加第二个远程服务器时，不可以再叫做origin)，再运行git remote show,将出现多个远程分支.
