@@ -47,27 +47,24 @@ Git 作了合并，但没有提交，它会停下来等你解决冲突。要看�
 
 * 远程分支的内容合并到当前分支(git pull)    
 
-     如果要把该远程分支serverfix的内容合并到当前分支，可以运行
-     ```git merge origin/serverfix```
-如果想要一份自己的 serverfix 来开发，可以在远程分支的基础上分化出一个新的分支来:运行  
-```git checkout -b serverfix origin/serverfix```
+     如果要把该远程分支serverfix的内容合并到当前分支，可以运行`git merge origin/serverfix` 如果想要一份自己的serverfix来开发，可以在远程分支的基础上分化出一个新的分支来:运行  
+`git checkout -b serverfix origin/serverfix`
 
 git pull 命令的作用是，取回远程主机某个分支的更新，再与本地执行的分支合并，它的完整格式稍稍有点复杂。  
 
-     ```$ git pull <远程主机名> <远程分支名>:<本地分支名>```  
+`$ git pull <远程主机名> <远程分支名>:<本地分支名>`
      
 比如取回origin主机的next分支，与本地的master分支合并，需要写成  
 
-    ```$ git pull origin next:master```  
+`$ git pull origin next:master`
     
 如果远程分支是与当前分支合并，则冒号和后面的分支名可以省略  
 
-    ```$ git pull origin next```  
+`$ git pull origin next`  
     
 上面命令表示取回origin上的next分支，再与当前分支合并。实质上，这等同于先做git fetch，再做 git merge。  
-
-    ```$ git fetch origin```
-    ```$ git merge origin/next```
+`$ git fetch origin`
+`$ git merge origin/next`
 
 
 在某些场合，git会自动在本地分支与远程分支之间，建立一种追踪关系(tracking)。比如，在git clone的时候，所有本地分支默认与远程主机的同名分支，建立追踪关系，也就是说，本地的master分支自动追踪"origin/master分支
@@ -82,7 +79,7 @@ git允许手动建立追踪追踪关系，
      $ git pull
 上面命令表示，当前分支自动与唯一追踪分支进行合并。
 
-本地内容提交到远程(git push)
+* 本地内容提交到远程(git push)
 git push命令用于将本地分支的更新，推送到远程主机。他的格式与git pull命令相仿。
      $ git push <远程主机名> <本地分支名称>:<远程分支名>
      注意：分支推送的顺序是<本地分支名称>:<远程分支名>，而git pull是<远程分支名>:<本地分支名>，两者相反。
@@ -105,7 +102,7 @@ git push命令用于将本地分支的更新，推送到远程主机。他的格
 上面的命令将本地的master分支推送到origin主机被追踪的分支。同时指定origin为默认主机，这样后面就可以不加任何参数使用git push了。
 
 
-储藏(Stash)
+* 储藏(Stash)
 经常有这样的事情发生，当你正在进行项目中某一部分的工作，里面的东西处于一个比较杂乱的状态，而你想转到其他分支上进行一些工作。问题是，你不想提交进行了一半的工作，否则以后你无法回到这个工作点。解决这个问题的办法就是git stash命令。
 “‘储藏”“可以获取你工作目录的中间状态——也就是你修改过的被追踪的文件和暂存的变更——并将它保存到一个未完结变更的堆栈中，随时可以重新应用。
 
@@ -124,7 +121,7 @@ apply选项只是尝试应用存储的工作---stash的内容仍然在栈上。�
 
 PS: 若想要stash时携带注释，可使用git stash save <注释>。如: git stash save "暂存bug123"
 
-git branch命令的使用
+* git branch命令的使用
 
  git branch 不带参数：列出本地已经存在的分支，并且在当前分支的前面加“*”号标记，例如：
    #git branch
@@ -172,8 +169,7 @@ git help branch中的一个例子：
    $ git checkout my2.6.14      
    第三行符合git branch <branchname> [<start-point>]的格式，即以v2.6.14为start-point，创建新的本地分支branchname。
 
-
-   将服务器端的版本强制恢复(回退)到某一次提交
+* 将服务器端的版本强制恢复(回退)到某一次提交
      1、首先使用git log命令，找到你想恢复到哪一次的提交的commit id
      
      2、使用 git reset --hard <commit_id>重置
@@ -181,16 +177,16 @@ git help branch中的一个例子：
      3、使用git push <clone下来的服务器别名> HEAD --force，如 git push origin HEAD --force
 
 
-将本地项目纳入git管理，并使用命令行将本地项目导入github
+* 将本地项目纳入git管理，并使用命令行将本地项目导入github
 git initgit add README.mdgit commit -m "first commit"
 git remote add origin https://github.com/johnxue2013/medicinerecommendation.git
 git push -u origin master
 
-将已经纳入git管理的项目导入github
+* 将已经纳入git管理的项目导入github
 git remote add origin https://github.com/johnxue2013/medicinerecommendation.git
 git push -u origin master
 
-一个项目同时与多个远程服务器保持同步
+* 一个项目同时与多个远程服务器保持同步
       开发项目的时候，一般公司会搭建自己git服务器，我们上班时都用这个服务器进行同步。一般这个服务器都是局域网内可访问，并不会有域名。
 这样就存在一个问题，如果下班之后想要继续编写代码，而且想在第二天上班时，同步到自己下班之后写的代码该怎么办？此时可以在公司的电脑上将公司的项目同时与两个远程服务器进行同步。一般第一次从git上拉取项目时(准确的说是clone)，git默认会将拉取下来的项目服务器名命名为origin，具体可以在git clone <项目url> 之后运行git remote show，或者git remote -v 进行查看。
 如上图，此时我的medicinerecommendation项目保持与两个远程服务器进行同步，一个是10.1.64.87，这个是公司的git服务器，另一个是github服务器。
@@ -198,11 +194,11 @@ git push -u origin master
      默认情况下，clone下来的项目只会一个git服务器保持同步(即可以与该服务器进行push和fetch)，运行git remote add <远程服务器别名> <远程仓库所在URL>命令，添加一个远程服务器。若无错误(服务器别名不可以重名，即如果有一个叫做origin的服务器别名，此时添加第二个远程服务器时，不可以再叫做origin)，再运行git remote show,将出现多个远程分支.
      在一个项目有多个远程服务器的情况下，push和fetch都是和一个项目有一个远程服务器一样的。如想要提交代码到mr，则运行git push mr <本地分支名>:<服务器分支名>,你也可以指定一个默认的远程分支，通过git push -u mr dev:dev 命令提交本地分支dev到远程服务器同名分支dev，并指定mr为默认服务器。 此时mr服务器将作为本项目的默认服务器，当push不指明服务器时，mr将作为缺省值。
 
-git强制覆盖服务器
+* git强制覆盖服务器
      当服务器上的代码变的很乱或有错误时，但本地的代码确实完整且正确的，此时可以使用本地代码强制覆盖服务器代码，
      使用 git push <服务器别名> <本地分支名>:<服务器分支名> --force
      
-git如何忽略已经提交的文件
+* git如何忽略已经提交的文件
      如果想忽略某些文件或文件夹且该文件或文件夹从未被提交过，可以直接在项目根目录下在git命令行窗口中使用touch .gitignore命令新建一个文件，在该文件中添加想要忽略的文件或文件夹，
 如忽略项目根目录下的.idea文件夹，则.gitignore文件的内容应该是下面这个样子。
 
@@ -223,9 +219,9 @@ git如何忽略已经提交的文件
 说明: git rm --cached <文件名>  删除的是追踪状态，而不是物理文件；如果你真不想要了，你可以使用直接使用rm 命令删除该文件或文件夹
 
 
-tag打标签
+* tag打标签
       同大多数 VCS 一样，Git 也可以对某一时间点上的版本打上标签。人们在发布某个软件版本（比如 v1.0 等等）的时候，经常这么做。本节我们一起来学习如何列出所有可用的标签，如何新建标签，以及各种不同类型标签之间的差别。
-     列出已有的标签列出现有标签的命令非常简单，直接运行 git tag 即可：
+    * 列出已有的标签列出现有标签的命令非常简单，直接运行 git tag 即可：
 $ git tag
 v0.1
 v1.3
@@ -236,8 +232,8 @@ v1.4.2.1
 v1.4.2.2
 v1.4.2.3
 v1.4.2.4
-新建标签Git 使用的标签有两种类型：轻量级的（lightweight）和含附注的（annotated）。轻量级标签就像是个不会变化的分支，实际上它就是个指向特定提交对象的引用。而含附注标签，实际上是存储在仓库中的一个独立对象，它有自身的校验和信息，包含着标签的名字，电子邮件地址和日期，以及标签说明，标签本身也允许使用 GNU Privacy Guard (GPG) 来签署或验证。一般我们都建议使用含附注型的标签，以便保留相关信息；当然，如果只是临时性加注标签，或者不需要旁注额外信息，用轻量级标签也没问题。
-含附注的标签创建一个含附注类型的标签非常简单，用 -a （译注：取 annotated 的首字母）指定标签名字即可：
+    * 新建标签Git 使用的标签有两种类型：轻量级的（lightweight）和含附注的（annotated）。轻量级标签就像是个不会变化的分支，实际上它就是个指向特定提交对象的引用。而含附注标签，实际上是存储在仓库中的一个独立对象，它有自身的校验和信息，包含着标签的名字，电子邮件地址和日期，以及标签说明，标签本身也允许使用 GNU Privacy Guard (GPG) 来签署或验证。一般我们都建议使用含附注型的标签，以便保留相关信息；当然，如果只是临时性加注标签，或者不需要旁注额外信息，用轻量级标签也没问题。
+    * 含附注的标签创建一个含附注类型的标签非常简单，用 -a （译注：取 annotated 的首字母）指定标签名字即可：
 $ git tag -a v1.4 -m 'my version 1.4'
 $ git tag
 v0.1
@@ -258,7 +254,7 @@ Date:   Sun Feb 8 19:02:46 2009 -0800
 
     Merge branch 'experiment'
 我们可以看到在提交对象信息上面，列出了此标签的提交者和提交时间，以及相应的标签说明。
-签署标签如果你有自己的私钥，还可以用 GPG 来签署标签，只需要把之前的 -a 改为 -s （译注： 取 signed 的首字母）即可：
+    * 签署标签如果你有自己的私钥，还可以用 GPG 来签署标签，只需要把之前的 -a 改为 -s （译注： 取 signed 的首字母）即可：
 $ git tag -s v1.5 -m 'my signed 1.5 tag'
 You need a passphrase to unlock the secret key for
 user: "Scott Chacon <schacon@gee-mail.com>"
@@ -284,7 +280,7 @@ Date:   Sun Feb 8 19:02:46 2009 -0800
 
     Merge branch 'experiment'
 稍后我们再学习如何验证已经签署的标签。
-轻量级标签轻量级标签实际上就是一个保存着对应提交对象的校验和信息的文件。要创建这样的标签，一个 -a，-s 或 -m 选项都不用，直接给出标签名字即可：
+    * 轻量级标签轻量级标签实际上就是一个保存着对应提交对象的校验和信息的文件。要创建这样的标签，一个 -a，-s 或 -m 选项都不用，直接给出标签名字即可：
 $ git tag v1.4-lw
 $ git tag
 v0.1
@@ -300,7 +296,7 @@ Author: Scott Chacon <schacon@gee-mail.com>
 Date:   Sun Feb 8 19:02:46 2009 -0800
 
     Merge branch 'experiment'
-验证标签可以使用 git tag -v [tag-name] （译注：取 verify 的首字母）的方式验证已经签署的标签。此命令会调用 GPG 来验证签名，所以你需要有签署者的公钥，存放在 keyring 中，才能验证：
+    * 验证标签可以使用 git tag -v [tag-name] （译注：取 verify 的首字母）的方式验证已经签署的标签。此命令会调用 GPG 来验证签名，所以你需要有签署者的公钥，存放在 keyring 中，才能验证：
 $ git tag -v v1.4.2.1
 object 883653babd8ee7ea23e6a5c392bb739348b1eb61
 type commit
@@ -318,7 +314,7 @@ Primary key fingerprint: 3565 2A26 2040 E066 C9A7  4A7D C0C6 D9A4 F311 9B9A
 gpg: Signature made Wed Sep 13 02:08:25 2006 PDT using DSA key ID F3119B9A
 gpg: Can't check signature: public key not found
 error: could not verify the tag 'v1.4.2.1'
-后期加注标签你甚至可以在后期对早先的某次提交加注标签。比如在下面展示的提交历史中：
+    * 后期加注标签你甚至可以在后期对早先的某次提交加注标签。比如在下面展示的提交历史中：
 $ git log --pretty=oneline
 15027957951b64cf874c3557a0f3547bd83b3ff6 Merge branch 'experiment'
 a6b4c97498bd301d84096da251c98a07c7723e65 beginning write support
@@ -353,7 +349,7 @@ Date:   Sun Apr 27 20:43:35 2008 -0700
 
     updated rakefile
 ...
-分享标签默认情况下，git push 并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。其命令格式如同推送分支，运行git push origin [tagname] 即可：
+    * 分享标签默认情况下，git push 并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。其命令格式如同推送分支，运行git push origin [tagname] 即可：
 $ git push origin v1.5
 Counting objects: 50, done.
 Compressing objects: 100% (38/38), done.
@@ -378,7 +374,7 @@ To git@github.com:schacon/simplegit.git
 
 
 
-git使用https方式连接，在命令行模式下记住密码设置方式：
+* git使用https方式连接，在命令行模式下记住密码设置方式：
 
 1、在命令行中输入
    git config credential.helper store
@@ -390,7 +386,7 @@ git使用https方式连接，在命令行模式下记住密码设置方式：
 
 
 
-附录：
+## 附录：
 0、git status      获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
 1、git add ...     把你修改的东西加到git中 //可以使用批量提交，如 提交src下所有未track的文件使用命令 git add src/
 2、git commit -m "这是注释"      把你的修改提交到本地
