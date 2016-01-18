@@ -220,12 +220,13 @@ git push -u origin master
       开发项目的时候，一般公司会搭建自己git服务器，我们上班时都用这个服务器进行同步。一般这个服务器都是局域网内可访问，并不会有域名。
 这样就存在一个问题，如果下班之后想要继续编写代码，而且想在第二天上班时，同步到自己下班之后写的代码该怎么办？此时可以在公司的电脑上将公司的项目同时与两个远程服务器进行同步。一般第一次从git上拉取项目时(准确的说是clone)，git默认会将拉取下来的项目服务器名命名为origin，具体可以在git clone <项目url> 之后运行git remote show，或者git remote -v 进行查看。  
 
-![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png)  
+![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png) 
 
 如上图，此时我的medicinerecommendation项目保持与两个远程服务器进行同步，一个是10.1.64.87，这个是公司的git服务器，另一个是github服务器。
 
-     > 默认情况下，clone下来的项目只会一个git服务器保持同步(即可以与该服务器进行push和fetch)，运行git remote add <远程服务器别名> <远程仓库所在URL>命令，添加一个远程服务器。若无错误(服务器别名不可以重名，即如果有一个叫做origin的服务器别名，此时添加第二个远程服务器时，不可以再叫做origin)，再运行git remote show,将出现多个远程分支.
-     在一个项目有多个远程服务器的情况下，push和fetch都是和一个项目有一个远程服务器一样的。如想要提交代码到mr，则运行git push mr <本地分支名>:<服务器分支名>,你也可以指定一个默认的远程分支，通过git push -u mr dev:dev 命令提交本地分支dev到远程服务器同名分支dev，并指定mr为默认服务器。 此时mr服务器将作为本项目的默认服务器，当push不指明服务器时，mr将作为缺省值。
+> 默认情况下，clone下来的项目只会一个git服务器保持同步(即可以与该服务器进行push和fetch)，运行git remote add <远程服务器别名> <远程仓库所在URL>命令，添加一个远程服务器。若无错误(服务器别名不可以重名，即如果有一个叫做origin的服务器别名，此时添加第二个远程服务器时，不可以再叫做origin)，再运行git remote show,将出现多个远程分支.  
+
+在一个项目有多个远程服务器的情况下，push和fetch都是和一个项目有一个远程服务器一样的。如想要提交代码到mr，则运行git push mr <本地分支名>:<服务器分支名>,你也可以指定一个默认的远程分支，通过git push -u mr dev:dev 命令提交本地分支dev到远程服务器同名分支dev，并指定mr为默认服务器。 此时mr服务器将作为本项目的默认服务器，当push不指明服务器时，mr将作为缺省值。
 
 * git强制覆盖服务器
      当服务器上的代码变的很乱或有错误时，但本地的代码确实完整且正确的，此时可以使用本地代码强制覆盖服务器代码，
