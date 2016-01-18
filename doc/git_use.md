@@ -387,15 +387,15 @@ To git@github.com:schacon/simplegit.git
 
 
 ## 附录：
-0. git status      获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
-1. git add ...     把你修改的东西加到git中 //可以使用批量提交，如 提交src下所有未track的文件使用命令 git add src/
-2. git commit -m "这是注释"      把你的修改提交到本地
-3. git fetch origin [分支名称]      把服务器上的文件拉到本地
-4. git merge origin/[分支名称]      把你拉来的文件和你本地的分支合并，/两边没有空格， 如果有冲突解决冲突，重复步骤1,2
-5. git checkout [本地分支如dev、security]
-6. git merge [你本地的分支如 *_xh]
-7. git push -u origin [分支名称]
-8. git checkout [自己的分支]
+1. `git status`    //获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
+2.  git add  ...     //把你修改的东西加到git中 //可以使用批量提交，如 提交src下所有未track的文件使用命令 git add src/
+3. `git commit -m "这是注释"`      //把你的修改提交到本地
+4. `git fetch origin [分支名称]`      //把服务器上的文件拉到本地
+5. `git merge origin/[分支名称]`      //把你拉来的文件和你本地的分支合并，/两边没有空格， 如果有冲突解决冲突，重复步骤1,2
+6. `git push -u origin [分支名称]`
+
+> 如果设置了本地与远程的追踪关系，以上步骤4、5可以合并为`git pull`语句。
+> 步骤6中的 -u 参数为将origin 远程仓库设置为默认推送仓库(当本地项目追踪多个远程仓库时可以通过此参数指定默认远程仓库后，可以直接执行git push)
 
 
 
