@@ -336,9 +336,14 @@ To git@github.com:schacon/simplegit.git
    `git config credential.helper store`  
    
    回车
-2. 设置后，只要在推送一次，以后就不需要用户名和密码了 只要运行后，下次push的时候再输入一次密码，git就会记住
+2. 设置后，只要在推送一次，以后就不需要用户名和密码了 只要运行后，下次push的时候再输入一次密码，git就会记住  
 
-
+* 忽略已经跟踪的文件
+有时想要忽略一些已经追踪的文件，你会发现将已经追踪的文件放入.gitignore是没有效果的，当你修改想要忽略的文件后，`git status` 还是可以看到提示该文件已被修改。此时可以使用如下命令解决  
+`git rm --cached <filename>`  
+命令行中的<filename> 是想要忽略的文件名如:  
+`git rm --cached web/test.html`  
+将忽略已经追踪的web下的test.html文件。此时修改test.html后再使用`git status` 将不提示该文件被修改
 
 
 
