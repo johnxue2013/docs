@@ -10,49 +10,48 @@ Git基础
 
 由此可以看到 Git 管理项目时，文件流转的三个工作区域：Git 的工作目录，暂存区域，以及本地仓库。
  
-基本的 Git 工作流程如下：
+基本的 Git 工作流程如下：  
 
-1、在工作目录中修改某些文件。
-2、对修改后的文件进行快照，然后保存到暂存区域。
-3、提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。
+1. 在工作目录中修改某些文件。
+2. 对修改后的文件进行快照，然后保存到暂存区域。
+3. 提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。
 
-所以，可以从文件所处的位置来判断状态：如果是 Git 目录中保存着的特定版本文件，就属于已提交状态；如果作了修改并已放入暂存区域，就属于已暂存状态；如果自上次取出后，作了修改但还没有放到暂存区域，就是已修改状态。
+所以，可以从文件所处的位置来判断状态：如果是Git目录中保存着的特定版本文件，就属于已提交状态；如果作了修改并已放入暂存区域，就属于已暂存状态；如果自上次取出后，作了修改但还没有放到暂存区域，就是已修改状态。  
 
-分支
+**分支**
 在 Git 中提交时，会保存一个提交（commit）对象，该对象包含一个指向暂存内容快照的指针，包含本次提交的作者等相关附属信息，包含零个或多个指向该提交对象的父对象指针：首次提交是没有直接祖先的，普通提交有一个祖先，由两个或多个分支合并产生的提交则有多个祖先。
  
-Git 中的分支，其实本质上仅仅是个指向 commit 对象的可变指针。Git 会使用 master 作为分支的默认名字。在若干次提交后，你其实已经有了一个指向最后一次提交对象的 master 分支，它在每次提交的时候都会自动向前移动。
+Git中的分支，其实本质上仅仅是个指向 commit 对象的可变指针。Git 会使用 master 作为分支的默认名字。在若干次提交后，你其实已经有了一个指向最后一次提交对象的 master 分支，它在每次提交的时候都会自动向前移动。
  
 
-安装Git
-windows
-到https://git-for-windows.github.io/下载最新版
- 
-下载完毕双击安装即可。
-安装后，可在需要使用Git的地方右击鼠标，选择Git Bash Here（或Git Bash）即可调出Git命令行。
- 
+**安装Git**
+windows到<https://git-for-windows.github.io/>下载最新版下载完毕双击安装即可。
+> 安装后，可在需要使用Git的地方右击鼠标，选择Git Bash Here（或Git Bash）即可调出Git命令行。其他平台请自行Google
 
-PS：其他平台请自行Google
-配置
-用户信息
+## 配置
+**用户信息**
 第一个要配置的是你个人的用户名称和电子邮件地址。这两条配置很重要，每次 Git 提交时都会引用这两条信息，说明是谁提交了更新，所以会随更新内容一起被永久纳入历史记录：
-
+```Bash
 $ git config --global user.name "John Doe"
 $ git config --global user.email johndoe@example.com
+```
+> 如果用了 --global 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 --global选项重新配置即可，新的设定保存在当前项目的 .git/config 文件里。
+> 要检查已有的配置信息，可以使用 git config --list 命令：
 
-PS: 
-1、	如果用了 --global 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 --global选项重新配置即可，新的设定保存在当前项目的 .git/config 文件里。
-2、	要检查已有的配置信息，可以使用 git config --list 命令：
-
-生成 SSH 公钥
+**生成 SSH 公钥**
 大多数 Git 服务器都会选择使用 SSH 公钥来进行授权。系统中的每个用户都必须提供一个公钥用于授权，没有的话就要生成一个。生成公钥的过程在所有操作系统上都差不多。 首先先确认一下是否已经有一个公钥了。SSH 公钥默认储存在账户的主目录下的 ~/.ssh 目录。进去看看：
+```Bash
 $ cd ~/.ssh
 $ ls
 authorized_keys2  id_dsa       known_hosts
 config            id_dsa.pub
-关键是看有没有用 something 和 something.pub 来命名的一对文件，这个 something 通常就是id_dsa 或 id_rsa。有 .pub 后缀的文件就是公钥，另一个文件则是密钥。假如没有这些文件，或者干脆连 .ssh 目录都没有，可以用 ssh-keygen 来创建。该程序在 Linux/Mac 系统上由 SSH 包提供，而在 Windows 上则包含在 MSysGit 包里：
+```
+关键是看有没有用 something 和 something.pub 来命名的一对文件，这个 something 通常就是id_dsa 或 id_rsa。有 .pub 后缀的文件就是公钥，另一个文件则是密钥。假如没有这些文件，或者干脆连 .ssh 目录都没有，可以用 ssh-keygen 来创建。该程序在 Linux/Mac 系统上由 SSH 包提供，而在 Windows 上则包含在 MSysGit 包里：  
+
 使用ssh-keygen可以生成sshkey。
+```Bash
 $ ssh-keygen
+```
 Generating public/private rsa key pair.
 Enter file in which to save the key (/Users/schacon/.ssh/id_rsa):
 Enter passphrase (empty for no passphrase):
@@ -60,9 +59,11 @@ Enter same passphrase again:
 Your identification has been saved in /Users/schacon/.ssh/id_rsa.
 Your public key has been saved in /Users/schacon/.ssh/id_rsa.pub.
 The key fingerprint is:
-43:c5:5b:5f:b1:f1:50:43:ad:20:a6:92:6a:1f:9a:3a schacon@agadorlaptop.local
+43:c5:5b:5f:b1:f1:50:43:ad:20:a6:92:6a:1f:9a:3a schacon@agadorlaptop.local  
+
 它先要求你确认保存公钥的位置（.ssh/id_rsa），然后它会让你重复一个密码两次，如果不想在使用公钥的时候输入密码，可以留空。
-现在，所有做过这一步的用户都得把它们的公钥给你或者 Git 服务器的管理员（假设 SSH 服务被设定为使用公钥机制）。他们只需要复制 .pub 文件的内容然后发邮件给管理员。公钥的样子大致如下：
+现在，所有做过这一步的用户都得把它们的公钥给你或者 Git 服务器的管理员（假设 SSH 服务被设定为使用公钥机制）。他们只需要复制 .pub 文件的内容然后发邮件给管理员。公钥的样子大致如下：  
+```Bash
 $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
 GPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3
@@ -70,36 +71,41 @@ Pbv7kOdJ/MTyBlWXFCR+HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6RjsNAQwdsdMFvSlVK/7XA
 t3FaoJoAsncM1Q9x5+3V0Ww68/eIFmb1zuUFljQJKprrX88XypNDvjYNby6vw/Pb0rwert/En
 mZ+AW4OZPnTPI89ZPmVMLuayrD2cE86Z/il8b+gw3r3+1nKatmIkjn2so1d01QraTlMqVSsbx
 NrRFi9wrf+M7Q== schacon@agadorlaptop.local
-常用操作
+```
+### 常用操作
 
-分支
-新建分支
-语法：git branch <branchname>
+#### 分支
+##### 新建分支
+语法：`git branch <branchname>`
 
-如 新建testing分支：git branch testing这会在当前commit对象上新建要给分支
- 
-当存在多个分支时Git通过保存一个名为HEAD的特别指针，来标示你当前工作在哪一个分支。
+如 新建testing分支：git branch testing这会在当前commit对象上新建要给分支  
 
- 
-运行 git branch 命令，仅仅是建立了一个新的分支，但不会自动切换到这个分支中去，所以当前依然还在 master 分支里工作。
-切换分支
-语法:  git checkout <branchname>
+当存在多个分支时Git通过保存一个名为HEAD的特别指针，来标示你当前工作在哪一个分支。  
+
+运行 `git branch` 命令，仅仅是建立了一个新的分支，但不会自动切换到这个分支中去，所以当前依然还在 master 分支里工作。
+##### 切换分支
+语法:  `git checkout <branchname>`
 如切换到testing分支
+```Bash
 $ git checkout testing
+```
 这样HEAD就指向了testing分支
  
 随着每一次的提交，HEAD也会一直向前移动。
 
-PS：可以通过git checkout –b <branchname>新建并切换到该分支
-删除分支
-语法: git branch –d <branchname>
+> 可以通过git checkout –b <branchname>新建并切换到该分支
+##### 删除分支
+语法: `git branch –d <branchname>`  
 
 如删除testing分支
+```Bash
 $ git branch –d testing
-合并分支
+```
+##### 合并分支
 在开发过程中，你可能正工作在dev分支上，这时boss找到你，让你去修复一个bug。此时你就可以新建一个分支去修复这个bug，假设你新建bug01分支。在这个分支上，你很快修复了这个bug，并熟练使用git add、git commit 命令提交该代码，此时你需要将这个补丁添加到dev分支上。此时可以使用git merge 命令。此时你需要先切换到dev分支:git checkout dev，将bug01分支上的代码合并到dev分支上:git merge bug01。
 解决冲突
-有时候，合并分支并不是那么容易的，在一个团队中，如果其他人和你正在修改同一个文件的内容，后提交的那个人将出现冲突。此时Git将产生冲突的文件列出来，等待你手动的解决冲突。以下是Git显示冲突文件的样式
+有时候，合并分支并不是那么容易的，在一个团队中，如果其他人和你正在修改同一个文件的内容，后提交的那个人将出现冲突。此时Git将产生冲突的文件列出来，等待你手动的解决冲突。以下是Git显示冲突文件的样式  
+```
 <<<<<<< HEAD
 <div id="footer">contact : email.support@github.com</div>
 =======
@@ -107,7 +113,7 @@ $ git branch –d testing
   please contact us at support@github.com
 </div>
 >>>>>>> testing
-
+```
 可以看到=======隔开的上半部分，是HEAD中的内容，下半部分是testing上的内容。
 解决冲突的办法无非是二者选其一或者由你亲自整合到一起。比如你可以通过把这段内容替换为下面这样来解决：
 
