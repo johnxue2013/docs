@@ -250,29 +250,40 @@ git stash save “coments”
 每一次的提交都会产生一个commit ID，只要找到你想回退的版本的commit ID，就可以查看当时的版本。你可以使用git log，查看每一次提交。
  ![image](https://github.com/johnxue2013/tools/blob/master/images/git11.png)
 图中黄色部分就是commit ID，获取commit ID后，使用
+```Bash
 git reset --hard <commit_id>
+```
 进行回退，此时的回退只是本地仓库的回退，若要同时回退服务器版本使用
+```Bash
 git push <remote name> HEAD –force
-如 git push origin HEAD –force
+```
+如 
+```Bash
+git push origin HEAD –force
+```
 
-忽略文件
+* 忽略文件  
+
 在日常开发中，有一些文件可能不需要追踪该文件内容，此时可以忽略该文件。
 如果想忽略某些文件或文件夹且该文件或文件夹从未被提交过，可以直接在项目根目录下在git命令行窗口中使用touch .gitignore命令新建一个文件，在该文件中添加想要忽略的文件或文件夹， 如忽略项目根目录下的.idea文件夹，则.gitignore文件的内容应该是下面这个样子。
+```
 /.idea
-
-PS：有时候不小心提交了不想提交的文件，如某些配置文件。当提交之后，再在.gitignore配置忽略将不起作用，因为该文件只能用作与Untrack Files， 也就是从来没有被git记录过的文件(自添加以后，从未add以及commit过的文件)。也就是说一旦add或者commit之后，该文件或者文件夹就处于track file， 此时再修改.gitignore当然就不起作用了。此时正确的做法是使用 git rm --cached <文件名> 然后修改.gitignore配置忽略，最后 git add .gitignore 再 git commit –m "注释" 再 git push <服务器别名> <本地分支名>:<服务器分支名> 至此服务器将不包含被忽略的文件或者文件夹。
+```
+> 有时候不小心提交了不想提交的文件，如某些配置文件。当提交之后，再在.gitignore配置忽略将不起作用，因为该文件只能用作与Untrack Files， 也就是从来没有被git记录过的文件(自添加以后，从未add以及commit过的文件)。也就是说一旦add或者commit之后，该文件或者文件夹就处于track file， 此时再修改.gitignore当然就不起作用了。此时正确的做法是使用 git rm --cached <文件名> 然后修改.gitignore配置忽略，最后 git add .gitignore 再 git commit –m "注释" 再 git push <服务器别名> <本地分支名>:<服务器分支名> 至此服务器将不包含被忽略的文件或者文件夹。
 说明: git rm --cached <文件名> 删除的是追踪状态，而不是物理文件；如果你真不想要了，你可以使用直接使用rm 命令删除该文件或文件夹
 
-git使用https方式连接，在命令行模式下记住密码
+* git使用https方式连接，在命令行模式下记住密码
 使用https方式连接进行命令行操作，如git fetch、git push时，经常需要输入用户名和密码，这是一个很不方便的地方，此时可以通过设置让Git记住用户名和密码。
 
 在命令行中输入以下命名并回车
+```Bash
 git config credential.helper store
+```
 设置后，只要再推送一次，以后就不需要用户名和密码了 只要运行后，下次push的时候再输入一次密码，git就会记住。
 
-PS：如果你想要深入Git，请阅读Pro Git。
+> 如果你想要深入Git，请阅读Pro Git。
  
 
 以上就是全部内容，enjoy Git
-															2016-2-23 11:54:35
+													2016-2-23 11:54:35
 															by XH 
