@@ -31,7 +31,8 @@ Git中的分支，其实本质上仅仅是个指向 commit 对象的可变指针
 windows到<https://git-for-windows.github.io/>下载最新版下载完毕双击安装即可。
 ![image](https://github.com/johnxue2013/tools/blob/master/images/git4.png)
 
-> 安装后，可在需要使用Git的地方右击鼠标，选择Git Bash Here（或Git Bash）即可调出Git命令行。其他平台请自行Google
+> 安装后，可在需要使用Git的地方右击鼠标，选择Git Bash Here（或Git Bash）即可调出Git命令行。其他平台请自行Google  
+
 ![image](https://github.com/johnxue2013/tools/blob/master/images/git5.png)
 
 ## 配置
