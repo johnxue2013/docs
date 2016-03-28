@@ -21,13 +21,17 @@ Git基础
 
 **分支**
 在 Git 中提交时，会保存一个提交（commit）对象，该对象包含一个指向暂存内容快照的指针，包含本次提交的作者等相关附属信息，包含零个或多个指向该提交对象的父对象指针：首次提交是没有直接祖先的，普通提交有一个祖先，由两个或多个分支合并产生的提交则有多个祖先。
+![image](https://github.com/johnxue2013/tools/blob/master/images/git2.png)
  
 Git中的分支，其实本质上仅仅是个指向 commit 对象的可变指针。Git 会使用 master 作为分支的默认名字。在若干次提交后，你其实已经有了一个指向最后一次提交对象的 master 分支，它在每次提交的时候都会自动向前移动。
- 
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/git3.png)
 
 **安装Git**
 windows到<https://git-for-windows.github.io/>下载最新版下载完毕双击安装即可。
+![image](https://github.com/johnxue2013/tools/blob/master/images/git4.png)
+
 > 安装后，可在需要使用Git的地方右击鼠标，选择Git Bash Here（或Git Bash）即可调出Git命令行。其他平台请自行Google
+![image](https://github.com/johnxue2013/tools/blob/master/images/git5.png)
 
 ## 配置
 **用户信息**
@@ -80,9 +84,10 @@ NrRFi9wrf+M7Q== schacon@agadorlaptop.local
 语法：`git branch <branchname>`
 
 如 新建testing分支：git branch testing这会在当前commit对象上新建要给分支  
+![image](https://github.com/johnxue2013/tools/blob/master/images/git6.png)
 
 当存在多个分支时Git通过保存一个名为HEAD的特别指针，来标示你当前工作在哪一个分支。  
-
+![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png)
 运行 `git branch` 命令，仅仅是建立了一个新的分支，但不会自动切换到这个分支中去，所以当前依然还在 master 分支里工作。
 ##### 切换分支
 语法:  `git checkout <branchname>`
@@ -91,6 +96,7 @@ NrRFi9wrf+M7Q== schacon@agadorlaptop.local
 $ git checkout testing
 ```
 这样HEAD就指向了testing分支
+![image](https://github.com/johnxue2013/tools/blob/master/images/git8.png)
  
 随着每一次的提交，HEAD也会一直向前移动。
 
@@ -122,20 +128,22 @@ $ git branch –d testing
 please contact us at email.support@github.com
 </div>
 
-这个解决方案各采纳了两个分支中的一部分内容，而且我还删除了 <<<<<<<，======= 和 >>>>>>> 这些行。
+这个解决方案各采纳了两个分支中的一部分内容，而且我还删除了 `<<<<<<<`，`=======` 和 `>>>>>>>` 这些行。
 解决冲突后，你需要重新运行git add 和 git commit 命令将这些修改提交到本地Git仓库。
 
-PS：
-分支的其他操作
-git branch -r 列出远程分支，例如：
+> 分支的其他操作
+* git branch -r //列出远程分支，例如：
+```Bash
 #git branch -r
 m/master -> origin_apps/m1_2.3.4
 origin_apps/hardware/test
 origin_apps/m1
 origin_apps/m1_2.3.4
 origin_apps/master
+```
 
-git branch -a 列出本地分支和远程分支，例如：
+* git branch -a //列出本地分支和远程分支，例如：
+```Bash
 #git branch -a
 * master
 newbranch
@@ -144,74 +152,103 @@ remotes/origin_apps/hardware/test
 remotes/origin_apps/m1
 remotes/origin_apps/m1_2.3.4
 remotes/origin_apps/master
-
-git branch -d | -D <branchname> //删除branchname分支，例如
+```
+* git branch -d | -D <branchname> //删除branchname分支，例如
+```Bash
 git branch –d testing
-拉取远程代码到本地
-语法: git fetch <remote name> <branch name>
+```
+* 拉取远程代码到本地
+语法: 
+```Bash
+git fetch <remote name> <branch name>
+```
 
 拉取后，远程仓库中的代码存在<remote name>/<branchname>上，如拉取远程Git仓库origin上的dev分支上的代码:
+```Bash
 $ git fetch origin dev
+```
 拉取代码后常见的操作就是合并远程的代码到对应的本地分支上，此时使用
+```Bash
 $ git merge origin/dev
-
-PS：
-git允许设置本地分支追踪(track)远程分支，使用
+```
+> git允许设置本地分支追踪(track)远程分支，使用
+```Bash
 $ git branch --set-upstream <local branch name> <remote name>/<branch name>
-
+```
 如设置本地master分支追踪远程origin仓库中的dev分支
+```Bash
 $ git branch --set-upstream master origin/dev
+```
 
-设置追踪关系后，可以使用git pull命令达到git fetch加git merge的效果，即使用git pull后，Git会拉取（fetch）当前所在分支追踪的远程分支的代码，并自动merge到当前所在分支。当然，若此时发生冲突，你还是需要手动的去解决冲突。关于如何解决冲突，上文已经提及，此处不再赘述。
+> 设置追踪关系后，可以使用git pull命令达到git fetch加git merge的效果，即使用git pull后，Git会拉取（fetch）当前所在分支追踪的远程分支的代码，并自动merge到当前所在分支。当然，若此时发生冲突，你还是需要手动的去解决冲突。关于如何解决冲突，上文已经提及，此处不再赘述。
+**注意：此时你的本地分支名应和远程想要merge的分支名保持一致。否则git pull命令将无法达到效果(会在终端打印错误信息)**
 
-推送本地代码到远程服务器
+* 推送本地代码到远程服务器
 在拉取远程Git仓库的代码后，此时所有的文件都是已提交(committed)的状态，此时使用git status命令将显示如下
- 
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/git9.png)
 表示我们的工作目录时clean的。
 当我们修改了某个文件并保存(Ctrl+S)后，，此时使用git status，将显示你修改了哪些文件
- 
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/git10.png)
 
-可以看到此时的文件处于已修改（modified）状态，若想提交这次修改，你需要使用git add <file>命令将这些文件变为已暂存（staged）状态，再使用git commit命令将这些已暂存状态的文件变为已提交的状态。注意，commit之后，这些文件只是提交到了本地Git仓库，并没有推送（push）到远程Git仓库。若想推送到远程仓库，你需要使用
-git push <remote name> <local branch name>:<remote branch name>命令，但通常在一个团队中会有多个人在同时进行开发，所以在你push之前，你通常应该先拉取(fetch)远程Git上最新的代码，并合并(merge)到本地对应分支后再推送(push)到远程Git仓库。如果你忘记拉取了服务器上最新的代码并合并到本地，而直接推送(push)，git会拒绝(reject)你的推送，并提示你当前代码落后于Git仓库的版本(当然，如果你觉得远程的Git仓库代码有问题或有错误，此时你不想merge服务器上最新的代码而直接提交本地代码，你可以使用git命令强制本地代码覆盖服务器代码，后面会讲述)。根据上文的叙述，通常在开发过程中，提交代码的步骤通常分为以下几步
+可以看到此时的文件处于已修改（modified）状态，若想提交这次修改，你需要使用`git add <file>`命令将这些文件变为已暂存（staged）状态，
+再使用`git commit`命令将这些已暂存状态的文件变为已提交的状态。注意，commit之后，这些文件只是提交到了本地Git仓库，并没有推送（push）到远程Git仓库。若想推送到远程仓库，你需要使用`git push <remote name> <local branch name>:<remote branch name>`命令，但通常在一个团队中会有多个人在同时进行开发，所以在你push之前，你通常应该先拉取(fetch)远程Git上最新的代码，并合并(merge)到本地对应分支后再推送(push)到远程Git仓库。如果你忘记拉取了服务器上最新的代码并合并到本地，而直接推送(push)，git会拒绝(reject)你的推送，并提示你当前代码落后于Git仓库的版本(**当然，如果你觉得远程的Git仓库代码有问题或有错误，此时你不想merge服务器上最新的代码而直接提交本地代码，你可以使用git命令强制本地代码覆盖服务器代码，后面会讲述**)。根据上文的叙述，通常在开发过程中，提交代码的步骤通常分为以下几步
 
-git status	//查看哪些文件被修改
-git add <file>	//将修改的文件变为已暂存状态，可以使用git add //<directoy>/* 提交某目录下的所有修改的文件，或者使用git //add –A，提交所有修改
-git commit –m “comments”	//将已暂存状态的文件变为已提交状态，双引号中填//写本次提交说明
-git pull	//拉取远程代码并合并到本地，前提是设置了//track关系
-git push		//将本地代码推送到远程Git仓库，前提是设置了//track关系
+1. git status	//查看哪些文件被修改
+2. git add <file>	//将修改的文件变为已暂存状态，可以使用git add //<directoy>/* 提交某目录下的所有修改的文件，或者使用git //add –A，提交所有修改
+3. git commit –m “comments”	//将已暂存状态的文件变为已提交状态，双引号中填//写本次提交说明
+4. git pull	//拉取远程代码并合并到本地，前提是设置了//track关系
+5. git push		//将本地代码推送到远程Git仓库，前提是设置了//track关系
 
 
-新建本地项目并推送到远程Git仓库
+* 新建本地项目并推送到远程Git仓库  
+
 以上讲的都是在已使用Git管理的项目中操作，那若果有一个没有使用Git管理的项目，想要使用Git管理，该怎么做？，其实很简单。
 准备条件: 
-1、	新建一个文件夹作为项目的根目录，如demo
-2、	在远程服务器上新建一个仓库，并命名，假设新建好的仓库的地址是https://github.com/johnxue2013/ocdemo.git
-3、	进入步骤一中新建的文件夹demo，添加需要添加的文件，如README.md，右击选择git bash here（windows上是这样操作，如果在mac或者linux上，需要从终端进入）
+1. 新建一个文件夹作为项目的根目录，如demo
+2. 在远程服务器上新建一个仓库，并命名，假设新建好的仓库的地址是https://github.com/johnxue2013/ocdemo.git
+3. 进入步骤一中新建的文件夹demo，添加需要添加的文件，如README.md，右击选择git bash here（windows上是这样操作，如果在mac或者linux上，需要从终端进入）
 执行如下命令:
+```Bash
 $ git init
 $ git status
 $ git add README.md
 $ git commit -m "first commit"
 $ git remote add origin https://github.com/johnxue2013/ocdemo.git
 $ git push -u origin master
+```
 
-执行后，本地Git仓库的数据，将被推送到远程Git仓库。以上命令中git init会初始化一个git项目，并新建.git文件，该文件存储仓库的版本等信息。git status命令将显示所有未add或commit 的文件，git add README.md 将README.md 将文件保存到暂存区，git commit -m "first commit" 将文件保存到本地Git仓库，git remote add origin https://github.com/johnxue2013/ocdemo.git 添加远程Git仓库的地址，并将远程仓库命名为origin，git push -u origin master 将本地Git的内容推送到远程Git仓库。此处将推送到远程服务器的master分支。-u参数意为指定origin远程仓库为默认远程仓库（一个本地Git仓库可以同时和多个远程Git仓库保持同步）
+执行后，本地Git仓库的数据，将被推送到远程Git仓库。
+> 以上命令中git init会初始化一个git项目，并新建.git文件，该文件存储仓库的版本等信息。git status命令将显示所有未add或commit 的文件，git add README.md 将README.md 将文件保存到暂存区，git commit -m "first commit" 将文件保存到本地Git仓库，git remote add origin https://github.com/johnxue2013/ocdemo.git 添加远程Git仓库的地址，并将远程仓库命名为origin，git push -u origin master 将本地Git的内容推送到远程Git仓库。此处将推送到远程服务器的master分支。-u参数意为指定origin远程仓库为默认远程仓库（一个本地Git仓库可以同时和多个远程Git仓库保持同步）
 
-储藏(git stash)
-假设一个场景：当你在项目的dev分支上正在开发一个新功能时，突然接到boss说在holiday分支上有一个bug需要立即修复，但此时你工作在dev分支上，并且你正在开发的功能还没写完，无法使用，不想提交(commit)代码，此时你又需要切换到holiday分支上，你熟练的使用git checkout holiday命令切换到holiday分支，此时你会发现，你切换不过去，Git提示当前分支有未commit的内容，无法切换分支。此时就可以使用git stash。
-	“储藏”可以获取你工作目录的中间状态——也就是你修改过的被追踪的文件和暂存的变更——并将它保存到一个未完结变更的堆栈中，随时可以重新应用。
-	git stash 之后你就可以切换到其他分支去工作了，当你在其他分支的工作完成时，可以切换到之前使用git stash的分支，并使用git stash apply命令，恢复到你离开之前的样子。你也可以多次使用git stash，每一次stash都会存储起来。你可以使用git stash list命令查看所有stash记录。
- 
-你也可以使用git stash apply stash@{<number>}，去指定恢复哪一次stash。默认情况下git stash apply 使用最近一次stash进行恢复。你也可以使用git stash save “coments” 为stash添加注释。
+* 储藏(git stash)
+假设一个场景：当你在项目的dev分支上正在开发一个新功能时，突然接到boss说在holiday分支上有一个bug需要立即修复，但此时你工作在dev分支上，并且你正在开发的功能还没写完，无法使用，不想提交(commit)代码，此时你又需要切换到holiday分支上，你熟练的使用`git checkout holiday`命令切换到holiday分支，此时你会发现，你切换不过去，Git提示当前分支有未commit的内容，无法切换分支。此时就可以使用`git stash`。  
+“储藏”可以获取你工作目录的中间状态——也就是你修改过的被追踪的文件和暂存的变更——并将它保存到一个未完结变更的堆栈中，随时可以重新应用。  
 
-PS：git stash apply只是尝试应用存储的工作，stash的内容仍然在栈上，要移除它使用git stash drop, 你也可以使用git stash pop来重新应用存储，同时将其从栈中移除。移除所有stash 使用git stash clear。
+`git stash` 之后你就可以切换到其他分支去工作了，当你在其他分支的工作完成时，可以切换到之前使用`git stash`的分支，并使用`git stash apply`命令，恢复到你离开之前的样子。你也可以多次使用`git stash`，每一次stash都会存储起来。你可以使用`git stash list`命令查看所有stash记录。
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/git10.png)
+你也可以使用
+```Bash
+git stash apply stash@{<number>}
+```
+去指定恢复哪一次stash。默认情况下`git stash apply` 使用最近一次stash进行恢复。你也可以使用
+```Bash
+git stash save “coments”
+```
+为stash添加注释。
 
-强制本地代码覆盖远程Git代码
-该操作比较暴力，应谨慎使用
+
+> git stash apply只是尝试应用存储的工作，stash的内容仍然在栈上，要移除它使用git stash drop, 你也可以使用git stash pop来重新应用存储，同时将其从栈中移除。移除所有stash 使用git stash clear。
+
+* 强制本地代码覆盖远程Git代码
+
+**该操作比较暴力，应谨慎使用**
+```Bash
  git push <remote name> <local branch name>:<remote branch name> --force
-版本回退
+ ```
+* 版本回退  
+
 每一次的提交都会产生一个commit ID，只要找到你想回退的版本的commit ID，就可以查看当时的版本。你可以使用git log，查看每一次提交。
- 
+ ![image](https://github.com/johnxue2013/tools/blob/master/images/git11.png)
 图中黄色部分就是commit ID，获取commit ID后，使用
 git reset --hard <commit_id>
 进行回退，此时的回退只是本地仓库的回退，若要同时回退服务器版本使用
