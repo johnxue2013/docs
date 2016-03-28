@@ -90,7 +90,8 @@ NrRFi9wrf+M7Q== schacon@agadorlaptop.local
 ![image](https://github.com/johnxue2013/tools/blob/master/images/git6.png)
 
 当存在多个分支时Git通过保存一个名为HEAD的特别指针，来标示你当前工作在哪一个分支。  
-![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png)
+![image](https://github.com/johnxue2013/tools/blob/master/images/git7.png)  
+
 运行 `git branch` 命令，仅仅是建立了一个新的分支，但不会自动切换到这个分支中去，所以当前依然还在 master 分支里工作。
 #### 切换分支
 语法:  `git checkout <branchname>`
