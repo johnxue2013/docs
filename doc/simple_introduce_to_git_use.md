@@ -100,7 +100,8 @@ NrRFi9wrf+M7Q== schacon@agadorlaptop.local
 ```Bash
 $ git checkout testing
 ```
-这样HEAD就指向了testing分支
+这样HEAD就指向了testing分支  
+
 ![image](https://github.com/johnxue2013/tools/blob/master/images/git8.png)
  
 随着每一次的提交，HEAD也会一直向前移动。
