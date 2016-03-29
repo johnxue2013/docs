@@ -106,7 +106,8 @@ $ git checkout testing
  
 随着每一次的提交，HEAD也会一直向前移动。
 
-> 可以通过git checkout –b <branchname>新建并切换到该分支
+> 可以通过git checkout –b <branchname>新建并切换到该分支  
+
 #### 删除分支
 语法: `git branch –d <branchname>`  
 
