@@ -1,4 +1,17 @@
 # Git 使用简介
+* 前言
+* 符号约定
+* Git 基础
+* 分支概念简介
+* Git安装  
+* 
+
+
+
+
+
+
+
 工欲善其事，必先利其器。本文简要涉及Git基础、安装、配置以及日常使用过程中的常见操作，所有操作均基于Git命令行，当然也可以在流行的编辑器如Eclipse、Idea、Xcode中已图形化的方式使用Git。  
 
 ## 符号约定
@@ -160,10 +173,7 @@ remotes/origin_apps/m1
 remotes/origin_apps/m1_2.3.4
 remotes/origin_apps/master
 ```
-* git branch -d | -D <branchname> //删除branchname分支，例如
-```Bash
-git branch –d testing
-```
+
 * 拉取远程代码到本地
 语法: 
 ```Bash
