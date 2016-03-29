@@ -16,4 +16,4 @@
 [4]:https://github.com/johnxue2013/tools/blob/master/doc/markdown_template.md "markdown语法模板"
 [5]:https://github.com/johnxue2013/tools/blob/master/doc/emoji.md "emoji" "emoji"
 [6]:https://github.com/johnxue2013/tools/blob/master/doc/export_jar-file_by_idea.md "使用idea将项目导出为jar包"
-[7]:https://github.com/johnxue2013/tools/blob/master/doc/git_use.md "git使用介绍"
+[7]:https://github.com/johnxue2013/tools/blob/master/doc/simple_introduce_to_git_use.md "git使用介绍"
