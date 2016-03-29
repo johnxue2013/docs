@@ -288,7 +288,85 @@ git config credential.helper store
 设置后，只要再推送一次，以后就不需要用户名和密码了 只要运行后，下次push的时候再输入一次密码，git就会记住。
 
 > 如果你想要深入Git，请阅读Pro Git。
- 
+
+* TAG 标签  
+同大多数 VCS 一样，Git 也可以对某一时间点上的版本打上标签。在发布某个软件版本（比如 v1.0 等等）的时候，经常这么做。  
+	* 列出已有的标签
+	```Bash
+	$ git tag
+	v0.1
+	v1.3
+	```
+	> 显示的标签按字母顺序排列，所以标签的先后并不表示重要程度的轻重。 可以用特定的搜索模式列出符合条件的标签。在 Git 自身项目仓库中，有着超过 240 个标签，如果你只对 1.4.2 系列的版本感兴趣，可以运行下面的命令：
+	```Bash
+	$ git tag -l 'v1.4.2.*'
+		v1.4.2.1
+		v1.4.2.2
+		v1.4.2.3
+		v1.4.2.4
+	```
+	* 新建标签  
+使用的标签有两种类型：轻量级的（lightweight）和含附注的（annotated）。轻量级标签就像是个不会变化的分支，实际上它就是个指向特定提交对象的引用。而含附注标签，实际上是存储在仓库中的一个独立对象，它有自身的校验和信息，包含着标签的名字，电子邮件地址和日期，以及标签说明，标签本身也允许使用 GNU Privacy Guard (GPG) 来签署或验证。一般都建议使用含附注型的标签，以便保留相关信息；当然，如果只是临时性加注标签，或者不需要旁注额外信息，用轻量级标签也没问题。  
+创建一个含附注类型的标签非常简单，用 -a （译注：取 annotated 的首字母）指定标签名字即可：
+```Bash
+$ git tag -a v1.4 -m 'my version 1.4'
+$ git tag
+v0.1
+v1.3
+v1.4
+```
+> -m 选项则指定了对应的标签说明，Git 会将此说明一同保存在标签对象中。如果没有给出该选项，Git 会启动文本编辑软件供你输入标签说明。 可以使用 git show 命令查看相应标签的版本信息，并连同显示打标签时的提交对象。  
+```Bash
+$ git show v1.4
+tag v1.4
+Tagger: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Feb 9 14:45:11 2009 -0800
+
+my version 1.4
+commit 15027957951b64cf874c3557a0f3547bd83b3ff6
+Merge: 4a447f7... a6b4c97...
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Sun Feb 8 19:02:46 2009 -0800
+```
+	* 分享标签  
+	默认情况下，git push 并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。其命令格式如同推送分支，运行
+git push origin <tagname>
+即可。  
+```Bash
+$ git push origin v1.5
+Counting objects: 50, done.
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (44/44), 4.56 KiB, done.
+Total 44 (delta 18), reused 8 (delta 1)
+To git@github.com:schacon/simplegit.git
+* [new tag]         v1.5 -> v1.5
+```
+
+> 如果要一次推送所有本地新增的标签上去，可以使用 --tags 选项：
+```Bash
+$ git push origin --tags
+Counting objects: 50, done.
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (44/44), 4.56 KiB, done.
+Total 44 (delta 18), reused 8 (delta 1)
+To git@github.com:schacon/simplegit.git
+ * [new tag]         v0.1 -> v0.1
+ * [new tag]         v1.2 -> v1.2
+ * [new tag]         v1.4 -> v1.4
+ * [new tag]         v1.4-lw -> v1.4-lw
+ * [new tag]         v1.5 -> v1.5
+```
+现在，其他人克隆共享仓库或拉取数据同步后，也会看到这些标签  
+
+# 附录  
+1. git status //获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
+2. git add ... //把你修改的东西加到git中 //可以使用批量提交，如 提交src下所有未track的文件使用命令 git add src/
+3.git commit -m "这是注释" //把你的修改提交到本地
+4. git fetch origin [分支名称] //把服务器上的文件拉到本地
+5. git merge origin/[分支名称] //把你拉来的文件和你本地的分支合并，/两边没有空格， 如果有冲突解决冲突，重复步骤1,2
+6. git push -u origin [分支名称]
+
+> 如果设置了本地与远程的追踪关系，以上步骤4、5可以合并为git pull语句。 步骤6中的 -u 参数为将origin 远程仓库设置为默认推送仓库(当本地项目追踪多个远程仓库时可以通过此参数指定默认远程仓库后，可以直接执行git push
 
 以上就是全部内容，enjoy Git
 													2016-2-23 11:54:35
