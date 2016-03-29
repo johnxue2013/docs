@@ -321,7 +321,6 @@ $ git show v1.4
 tag v1.4
 Tagger: Scott Chacon <schacon@gee-mail.com>
 Date:   Mon Feb 9 14:45:11 2009 -0800
-
 my version 1.4
 commit 15027957951b64cf874c3557a0f3547bd83b3ff6
 Merge: 4a447f7... a6b4c97...
