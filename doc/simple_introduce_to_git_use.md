@@ -254,7 +254,9 @@ git stash save “coments”
 为stash添加注释。
 
 
-> git stash apply只是尝试应用存储的工作，stash的内容仍然在栈上，要移除它使用git stash drop, 你也可以使用git stash pop来重新应用存储，同时将其从栈中移除。移除所有stash 使用git stash clear。
+> git stash apply只是尝试应用存储的工作，stash的内容仍然在栈上，要移除它使用git stash drop, 你也可以使用git stash pop来重新应用存储，同时将其从栈中移除。移除所有stash 使用git stash clear。  
+
+> stash 并不是将整个项目的代码保存，而是仅仅保存距离上次commit之后又修改还未commit的文件。git stash apply时也对应的仅仅恢复stash时修改的几个文件，而不是将整个代码会退到某一次commit。
 
 * 强制本地代码覆盖远程Git代码
 
