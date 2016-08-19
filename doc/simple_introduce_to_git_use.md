@@ -380,6 +380,6 @@ To git@github.com:schacon/simplegit.git
 
 > 如果设置了本地与远程的追踪关系，以上步骤4、5可以合并为git pull语句。 步骤6中的 -u 参数为将origin 远程仓库设置为默认推送仓库(当本地项目追踪多个远程仓库时可以通过此参数指定默认远程仓库后，可以直接执行git push
 
-以上就是全部内容，enjoy Git
+以上就是全部内容,enjoy Git. 如有错误欢迎new issues
 													2016-2-23 11:54:35
 															by XH 
