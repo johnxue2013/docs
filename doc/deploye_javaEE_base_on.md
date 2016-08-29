@@ -92,7 +92,7 @@ Available Elements标签下列出可使用的文件，
 
 > 添加文件夹这一步(也就是上一步)目的是为了保证在发布的源码中包含类路径下的非java文件(如此处的`.properties`或`.xml` 文件)。如果项目是使用maven构建的，那么可以跳过此步骤。只需在pom.xml添加`<build>`节点, 如下
 
-```
+```XML
 <build>
         <resources>
             <resource>
