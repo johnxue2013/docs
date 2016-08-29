@@ -90,7 +90,7 @@ Available Elements标签下列出可使用的文件，
  ![image](https://github.com/johnxue2013/tools/blob/master/images/22.png)
 如有需要，则继续添加其他文件夹。自定义目录层次添加好后。点击+，添加文件。此项目最终目录如下图所示
 
-> 以上步骤目的是为了保证在发布的源码中包含类路径下的非java文件(如此处的.properties或.xml 文件)。如果项目是使用maven构建的，那么可以跳过此步骤。只需在pom.xml添加'<build>'节点, 如下
+> 添加文件夹这一步(也就是上一步)目的是为了保证在发布的源码中包含类路径下的非java文件(如此处的`.properties`或`.xml` 文件)。如果项目是使用maven构建的，那么可以跳过此步骤。只需在pom.xml添加`<build>`节点, 如下
 
 ```
 <build>
@@ -108,8 +108,8 @@ Available Elements标签下列出可使用的文件，
     </build>
 ```
 
->'<dirertory>'节点的值取决于项目中的具体的目录结构，此处使用idea默认的目录结构'src/main/resources'目录下存放资源配置文件，'src/main/java'下存放.java和.xml文件。这样配置后，当点击编译按钮时，idea识别此处的build节点配置的值，采用此处的配置进行编译。这样编译输出的类路径
-下就会包含非.java文件.
+>`<dirertory>`节点的值取决于项目中的具体的目录结构，此处使用idea默认的目录结构`src/main/resources`目录下存放资源配置文件，`src/main/java`下存放`.java`和`.xml`文件。这样配置后，当点击编译按钮时，idea识别此处的`build`节点配置的值，采用此处的配置进行编译。这样编译输出的类路径
+下就会包含非`.java`文件.
  
 ![image](https://github.com/johnxue2013/tools/blob/master/images/23.png)
 
@@ -145,9 +145,8 @@ Available Elements标签下列出可使用的文件，
 
 完毕
 enjoy idea!
-
->如果发现错误，欢迎及时pull requests
 2015-12-26 16:25:45
+>如果发现错误，欢迎及时pull requests
                                                                                                                    
 
 
