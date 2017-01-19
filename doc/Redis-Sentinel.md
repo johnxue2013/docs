@@ -38,6 +38,8 @@ sorted sets with range queries, bitmaps, hyperloglogs and geospatial
 indexes with radius queries. Redis has built-in replication,
 Lua scripting, LRU eviction, transactions and different levels of
 on-disk persistence, and provides high availability via Redis
-Sentinel and automatic partitioning with Redis Cluster.
+Sentinel and automatic partitioning with Redis Cluster.  
+
+:zzz: to be continued...
 
 
