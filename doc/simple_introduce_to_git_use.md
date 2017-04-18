@@ -287,7 +287,18 @@ git push origin HEAD –force
 如果想忽略某些文件或文件夹且该文件或文件夹从未被提交过，可以直接在项目根目录下在git命令行窗口中使用touch .gitignore命令新建一个文件，在该文件中添加想要忽略的文件或文件夹， 如忽略项目根目录下的.idea文件夹，则.gitignore文件的内容应该是下面这个样子。
 ```
 /.idea
+```  
+但有时候你想忽略的文件可能分布在不同的路径下如，想忽略以下文件  
 ```
+src/main/java/test.xml
+src/main/java/demo/a.xml
+src/test/java/service/config.xml
+```  
+因为将要忽略的文件都已.xml结尾，则可配置如下 
+```
+**/*.xml
+```  
+意思是忽略任意路径下的任意以.xml结尾的所有文件。
 > 有时候不小心提交了不想提交的文件，如某些配置文件。当提交之后，再在.gitignore配置忽略将不起作用，因为该文件只能用作与Untrack Files， 也就是从来没有被git记录过的文件(自添加以后，从未add以及commit过的文件)。也就是说一旦add或者commit之后，该文件或者文件夹就处于track file， 此时再修改.gitignore当然就不起作用了。此时正确的做法是使用 git rm --cached <文件名> 然后修改.gitignore配置忽略，最后 git add .gitignore 再 git commit –m "注释" 再 git push <服务器别名> <本地分支名>:<服务器分支名> 至此服务器将不包含被忽略的文件或者文件夹。
 说明: git rm --cached <文件名> 删除的是追踪状态，而不是物理文件；如果你真不想要了，你可以使用直接使用rm 命令删除该文件或文件夹
 
