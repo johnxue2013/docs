@@ -360,8 +360,8 @@ Merge: 4a447f7... a6b4c97...
 Author: Scott Chacon <schacon@gee-mail.com>
 Date:   Sun Feb 8 19:02:46 2009 -0800
 ```
-	* 分享标签  
-	默认情况下，git push 并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。其命令格式如同推送分支，运行
+* 分享标签  
+默认情况下，git push 并不会把标签传送到远端服务器上，只有通过显式命令才能分享标签到远端仓库。其命令格式如同推送分支，运行
 git push origin <tagname>
 即可。  
 ```Bash
@@ -389,6 +389,10 @@ To git@github.com:schacon/simplegit.git
  * [new tag]         v1.5 -> v1.5
 ```
 现在，其他人克隆共享仓库或拉取数据同步后，也会看到这些标签  
+* 删除标签  
+```Bash
+git push origin --delete tag <tagname>
+```
 
 # 附录  
 1. git status //获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
