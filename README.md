@@ -1,6 +1,7 @@
 ## 资料整理  
 
  > 整理平时开发过程中用到的文档或者工具以及各种资料
+* [Maven使用介绍][10]
 * [redis+sentinel 实现主从集群搭建及容灾部署][9]
 * [idea发布JavaEE项目到tomcat需要的配置][1]
 * [MarkDown语法模板][2]
@@ -16,3 +17,4 @@
 [7]:https://github.com/johnxue2013/tools/blob/master/doc/simple_introduce_to_git_use.md "git使用介绍"
 [8]:https://www.google.com "待续..."
 [9]:https://github.com/johnxue2013/docs/blob/master/doc/Redis-Sentinel.md
+[10]:https://github.com/johnxue2013/docs/blob/master/doc/how-to-use-maven.md
