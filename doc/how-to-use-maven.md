@@ -192,7 +192,7 @@ Maven依赖调解两原则:
 ![tree](https://github.com/johnxue2013/docs/blob/master/images/maven/dependency.tree.png)
 
 3. `mvn denpendency:analyze`
-![Alt text](./屏幕快照 2017-07-20 13.36.42.png)
+![analyse](https://github.com/johnxue2013/docs/blob/master/images/maven/analyse.png)
 > 结果分为两部分
 - `Used undeclared dependencies found`:
 意为项目中使用到的，但是没有显式声明的依赖。这种依赖意味着潜在的风险。**应当显式声明任何项目中直接用到的依赖**。
