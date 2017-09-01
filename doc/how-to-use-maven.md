@@ -6,7 +6,11 @@
 - 依赖管理: 通过坐标系统准确定位每一个jar包，maven会自动下载这些jar省去手工
 - 项目信息: 管理项目描述、开发者列表、版本控制系统地址、许可证、缺陷管理系统地址等  
 > Maven提供了免费的中央仓库，几乎可以找到任何流行的开源类库。      
-  
+
+## 安装配置
+参考官网安装[链接][1]  
+> 需要先配置好JDK再安装Maven
+
  maven奉行：约定优于配置( Convention over Configuration)
 主要体现在
 - 包名`groupid` + `<artifactId>`
@@ -15,10 +19,10 @@
 - 所有测试方法以test开头
 - 项目默认打包类型为jar。即`<packaging>jar</packaging>`
 
-## 安装配置
-略  
 
-## pom.xml文件
+
+## pom.xml文件  
+Maven使用pom.xml配置文件管理项目。结构如下
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -84,7 +88,15 @@
 ##`<scope>` 依赖范围  
 依赖范围使用`<scope>`元素标记 。依赖范围实际控制的是classpath。
 Maven在`编译`主代码时使用一套classpath，在编译和执行`测试`的时候使用另外一套classpath，最后实际`运行时`，Maven项目的时候又会使用另外一套classpath。
-  
+
+ 
+`<scope>`的可选值:
+1. `compile` : `编译`依赖范围，默认值。对编译、测试、运行三种classpath都有效，如spring-core
+2. `test`:  `测试`依赖范围。只对测试classpath有效，在编译主代码或者运行主代码时将无法使用此类。如junit
+3. `provided`: 已提供依赖范围。对于编译和测试classpath有效，但在运行时无效。如servlet-api，编译和测试项目的时候都需要该依赖，但在运行项目的时候，由于容器(tomcat、jetty等)已提供，就不需要Maven重复引入一遍。
+4. `runtime`:  `运行时`依赖范围。对测试和运行classpath有效，但在编译时无效。如JDBC驱动实现。
+5. `system`，系统依赖范围。与provided关系一致。但是使用此依赖必须通过<systemPath>标签显示指定依赖的文件路径。因与本机系统绑定，可能导致构建不够移植。**不推荐使用**  
+6. `import`: (Maven2.0.9以上)导入依赖范围。不会对三种classpath产生影响  
   
 ### classpath
 它描述了Java虚拟机在运行一个Class时在哪些路径中加载要运行的类以及运行的类要用到的类。  
@@ -104,17 +116,13 @@ java -cp /code/workspace;/lib/abc.jar;/lib/def.jar SomeApp
 ```
 > classpath的设定是给classload使用的  
 
-
-
- `<scope>`的可选值:
-1. `compile` : `编译`依赖范围，默认值。对编译、测试、运行三种classpath都有效，如spring-core
-2. `test`:  `测试`依赖范围。只对测试classpath有效，在编译主代码或者运行主代码时将无法使用此类。如junit
-3. `provided`: 已提供依赖范围。对于编译和测试classpath有效，但在运行时无效。如servlet-api，编译和测试项目的时候都需要该依赖，但在运行项目的时候，由于容器(tomcat、jetty等)已提供，就不需要Maven重复引入一遍。
-4. `runtime`:  `运行时`依赖范围。对测试和运行classpath有效，但在编译时无效。如JDBC驱动实现。
-5. `system`，系统依赖范围。与provided关系一致。但是使用此依赖必须通过<systemPath>标签显示指定依赖的文件路径。因与本机系统绑定，可能导致构建不够移植。**不推荐使用**  
-6. `import`: (Maven2.0.9以上)导入依赖范围。不会对三种classpath产生影响  
-
-![scope值图例](./屏幕快照 2017-07-19 19.42.11.png)
+依赖范围(scope) | 对于编译classpath有效| 对于测试classpath有效| 对于运行时classpath有效|例子
+:--------:|:---------:|:-------:|:-------:|:-------:
+compile |Y| Y|Y|spring-core
+test |--|Y|--|Junit
+provided|Y|Y|--|servlet-api
+runtime |--|Y|Y|JDBC驱动实现
+system |Y|Y|--|本地的,Maven仓库之外的类库文件
 
 ## 依赖范围与依赖传递性
 假设A依赖于，B依赖于C，则称A对于B是第一直接依赖，B对于C是第二直接依赖，A对于C是传递性依赖。
@@ -340,6 +348,8 @@ Maven的生命周期与插件互相绑定，用以完成实际构建任务。即
 ## 继承
 
 
+
+[1]:https://maven.apache.org/install.html "Maven安装步骤"
 
 
 
