@@ -129,7 +129,14 @@ system |Y|Y|--|本地的,Maven仓库之外的类库文件
 
 第一直接依赖的范围和第二直接依赖的范围决定了传递性依赖的范围。
 
-具体关系如下图所示。![Alt text](./屏幕快照 2017-07-20 09.50.22.png)
+具体关系如下。
+
+ --| compile| test| provided|runtime
+:--------:|:---------:|:-------:|:-------:|:-------:
+compile |compile| --|--|compile
+test |test|--|--|test
+provided|provided|--|provided|provided
+runtime |runtime|--|Y|runtime
 
 > 左边第一行表示第一直接依赖，最上面第一行表示第二直接依赖，交叉点表示传递性依赖范围。  
 
