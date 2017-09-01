@@ -189,7 +189,7 @@ Maven依赖调解两原则:
 
 2. `mvn dependency:tree`  
 可以查看项目的多层依赖
-![Alt text](./屏幕快照 2017-07-20 13.30.40.png)
+![tree](https://github.com/johnxue2013/docs/blob/master/images/maven/dependency.tree.png)
 
 3. `mvn denpendency:analyze`
 ![Alt text](./屏幕快照 2017-07-20 13.36.42.png)
