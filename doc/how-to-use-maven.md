@@ -184,7 +184,7 @@ Maven依赖调解两原则:
 
 1. `mvn dependency:list`
 查看项目当前已解析的依赖以及其依赖范围
-![Alt text](./屏幕快照 2017-07-20 11.42.15.png)
+![list](https://github.com/johnxue2013/docs/blob/master/images/maven/dependency.list.png)
 > 直接在pom.xml声明的依赖定义为顶层依赖，顶层依赖的依赖定义为第二层依赖，以此类推。  
 
 2. `mvn dependency:tree`  
