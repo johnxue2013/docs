@@ -85,7 +85,7 @@ Maven使用pom.xml配置文件管理项目。结构如下
 - `<exclusions>`: 用来排除传递性依赖     
 
 
-##`<scope>` 依赖范围  
+## `<scope>` 依赖范围  
 依赖范围使用`<scope>`元素标记 。依赖范围实际控制的是classpath。
 Maven在`编译`主代码时使用一套classpath，在编译和执行`测试`的时候使用另外一套classpath，最后实际`运行时`，Maven项目的时候又会使用另外一套classpath。
 
