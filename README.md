@@ -8,6 +8,7 @@
 * [emoji表情对应的编码][5]
 * [使用idea将项目导出为jar包][6]
 * [GIT使用及常用命令介绍][7]
+* [Java并发编程实践-读书笔记][11]
 
 
 [1]:https://github.com/johnxue2013/tools/blob/master/doc/deploye_javaEE_base_on.md "idea发布JavaEE项目到tomcat需要的配置"
@@ -18,3 +19,4 @@
 [8]:https://www.google.com "待续..."
 [9]:https://github.com/johnxue2013/docs/blob/master/doc/Redis-Sentinel.md
 [10]:https://github.com/johnxue2013/docs/blob/master/doc/how-to-use-maven.md
+[11]:https://github.com/johnxue2013/docs/blob/master/doc/java_concurrency_in_practice.md
