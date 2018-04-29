@@ -19,4 +19,4 @@
 [8]:https://www.google.com "待续..."
 [9]:https://github.com/johnxue2013/docs/blob/master/doc/Redis-Sentinel.md
 [10]:https://github.com/johnxue2013/docs/blob/master/doc/how-to-use-maven.md
-[11]:https://github.com/johnxue2013/docs/blob/master/doc/java_concurrency_in_practice.md
+[11]:https://github.com/johnxue2013/docs/blob/master/doc/java-concurrent-in-practise-note.md
