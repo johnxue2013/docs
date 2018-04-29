@@ -1,5 +1,5 @@
 ## 并发编程实践 笔记
-## 第一章
+## 第一部分
 ### 可见性
 `synchronized`不仅仅用于原子操作或者划定"临界区"，同步同样还有一个重要、微妙的方面：内存可见性。这样可以避免一个线程修改其他线程正在使用的对象的状态，而且希望确保当一个线程修改了对象的状态后，其他线程能够真正看到改变。也就是说为了保证跨线程写入的内存可见性，必须使用同步机制。
 
@@ -82,9 +82,13 @@ public class TaskRunnable implements Runnable {
     try {
       processTask(queue.take());
     }catch(InterruptedException e) {
-      //从中断中恢复状态
+      //因为在抛出InterruptedException，因为抛出InterruptedException异常后,中断
+      //标识位会被清楚，调用如下方法重新设置中断状态
       Thread.currentThread().interrupt();
     }
+
+    //检测中断状态
+    boolean flag = Thread.currentThread().isInterrupted();
   }
 }
 ```
@@ -393,5 +397,3 @@ public class TaskRunnable implements Runnable {
   ```java
   {@inheritDoc}
   ```
-
-## 第二章
