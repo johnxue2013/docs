@@ -46,7 +46,7 @@ Executors.newScheduledThreadPool
 
 在关闭后提交到`ExecutorService`中的任务，会被拒绝执行处理器(rejected execution handler)处理。`拒绝执行处理器`(拒绝执行处理器是ExecutorService的一种实现，ThreadPoolExecutor提供的)可能只是简单的放弃任务，也可能引起execute抛出一个未检查的`RejectedExecutionException`。所有任务完成后`ExecutorService`会转入`终止`状态。
 
-`Executor`执行的任务的生命周期:`创建`、`提交`、`开始`、`完成`。任务的状态(尚未开始，运行中，完成)觉得了get方法的行为。
+`Executor`执行的任务的生命周期:`创建`、`提交`、`开始`、`完成`。任务的状态(尚未开始，运行中，完成)决定了get方法的行为。
 
 有多种方法创建一个`Future`，因此可以将一个`Runnable`或者一个`Callable`提交给executor,然后得到一个`Future`。**也可以显式的为给你的`Runnable`或者`Callable`实例化一个FutureTask(FutureTask实现了Runnable，所以即可以提交给Executor来执行，又可以直接调用run方法运行)**
 
