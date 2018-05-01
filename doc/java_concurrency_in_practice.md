@@ -83,7 +83,7 @@ public class TaskRunnable implements Runnable {
       processTask(queue.take());
     }catch(InterruptedException e) {
       //因为在抛出InterruptedException，因为抛出InterruptedException异常后,中断
-      //标识位会被清楚，调用如下方法重新设置中断状态
+      //标识位会被清除，调用如下方法重新设置中断状态。否则下方检测中断状态的代码将识别不到该线程被中断过
       Thread.currentThread().interrupt();
     }
 
