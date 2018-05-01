@@ -273,7 +273,7 @@ public class TaskRunnable implements Runnable {
     ```
 
     ```java
-    //获取此时可用的cpu个数
+    //获取可用的cpu个数
     int count = Runtime.getRuntime().availableProcessors();
     ```
 
