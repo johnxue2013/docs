@@ -252,3 +252,114 @@ public class MyAppThread extends Thread{
 
 ### 扩展ThreadPoolExecutor
 ThreadPoolExecutor的设计是可扩展的，它提供了几个"钩子"让子类去复写--`beforeExecute`、`afterExecute`和`terminate`。这些可以用来扩展ThreadPoolExecutor行为。
+
+
+## 第三部分
+## 死锁
+### 顺序死锁
+发生原因：两个线程试图通过不同的顺序获得多个相同的锁，如果所有线程通过相同的顺序获得锁，程序就不会出现锁顺序死锁的问题。
+如:
+```java
+public class LeftRightDeadLock {
+  private final Object left = new Object();
+  private final Object right = new Object();
+
+  public void leftRight() {
+    synchronized(left) {
+      synchronized(right) {
+        doSomething();
+      }
+    }
+  }
+
+  public void rightLeft() {
+    synchronized (right) {
+      synchronized (left) {
+        doSomethingElse();
+      }
+    }
+  }
+
+}
+
+```
+
+### 动态的锁顺序死锁
+有时，并不是能一目了然的看清是否已经对锁有足够的控制，如把资金从一个账户转入另一个账户，在执行之前要获得`Account`对象的锁（为了简化操作，忽略账户余额不能为负数的情况）。
+```java
+public void transferMoney(Account fromAccount, Account toAccount, DollerAmount amount) throws InsufficientFundException {
+  synchronized (toAccount) {
+    synchronized(fromAccount) {
+      if(fromAccount.getBalance.compareTo(amount) < 0) {
+        throw new InsufficientFundException();
+      }else {
+        fromAccount.debit(amount);
+        toAccount.credit(amount);
+      }
+    }
+  }
+}
+```
+
+如果两个线程同时调用`transferMoney`，一个从X向Y转账，一个从Y想X转账，那么就会发生死锁。
+> 死锁原因：在偶发的时序中，A线程会获得X的锁，并等待Y锁，B线程会获得Y锁，并等待X锁。
+
+解决方法：查看是否有嵌套，因为参数的顺序是超出我们控制的，可以通过制定锁的顺序，并在整个应用中获得锁都必须遵循这个顺序。
+
+在指定对象顺序的时候，可以使用`System.identityHashCode(Object obj)`这样一种方式，它会返回obj的hashcode。在极少数情况下，两个对象具有相同的hashcode，此时引入"**加时赛(tie-breaking)**"锁，在获得两个Account锁之前，就要获得这个加时赛锁，这样就保证一次只有一个线程执行这个有风险的操作，从而减少死锁发生的可能性。
+>如果经常休闲hash冲突，那么这个技术可能会成为并发的瓶颈，但`System.identityHashCode(Object obj)`的hash冲突出现频率很低，所以这个技术以最小的代价，换来最大的安全性。
+
+```java
+//指定锁的顺序来避免死锁
+private static final Object tieLock = new Object();
+
+public void transferMoney(final Account fromAccount, final toAccount, final DollarAmount amount) {
+  class Helper {
+    public void transfer () throws InsufficientFundException {
+      if(fromAccount.getBalance().compareTo(amount) < 0) {
+        throw new InsufficientFundException();
+      }else {
+        fromAccount.debit(amount);
+        toAccount.credit(amount);
+      }
+    }
+  }
+
+  int fromHash = System.identityhashCode(fromAccount);
+
+  int toHash = System.identityHashCode(toAccount);
+
+  if(fromHash < toHash) {
+    synchronized(fromAccount) {
+      synchronized (toAccount) {
+        new Helper().transfer();
+      }
+    }
+  }else if(fromHash > toHash) {
+    synchronized (toAccount) {
+      synchronized(fromAccount) {
+        new Helper().transfer();
+      }
+    }
+  }else {
+    synchronized(tieLock) {
+      synchronized (fromAccount) {
+        synchronized (toAccount) {
+          new Helper.transfer();
+        }
+      }
+    }
+  }
+}
+```
+
+### 开放调用
+当调用的方法不需要持有锁时，这被称为"开放调用(open call)"
+
+### 避免和诊断死锁
+如果过必须获得多个锁，那么锁的顺序必须是你设计工作的一部分：尽量减少潜在锁之间的交互数量，遵守并文档化该锁顺序协议，这些缺一不可。
+
+- 使用显式的可超时的锁
+使用每个显式的Lock类中定时的tryLock特性，显式锁可以定时timeout时间，在规定实时间没有获得锁就返回失败。
+
+活锁(live lock)是线程中活跃度失败的另一种形式，尽管没有被阻塞，线程却仍然不能继续，因为它不断重试相同的操作，却总是失败。
