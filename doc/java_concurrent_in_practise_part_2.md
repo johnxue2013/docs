@@ -10,7 +10,7 @@ public void Executor {
 ```
 `Executor`基于生产者-消费者模式。提交任务的执行者是生产者(产生待完成的工作单元)，执行任务的线程就是消费者(消耗掉这些工作单元)。
 
-类库提供了一个灵活的线程池实现和一些有用的预设设置。可以通过`Executors`中的某个静态工厂方法来创建一个线程池：
+类库提供了一个领会的线程池实现和一些有用的预设设置。可以通过`Executors`中的某个静态工厂方法来创建一个线程池：
 
 ```java
 Executors.newFixedThreadPool
@@ -46,7 +46,7 @@ Executors.newScheduledThreadPool
 
 在关闭后提交到`ExecutorService`中的任务，会被拒绝执行处理器(rejected execution handler)处理。`拒绝执行处理器`(拒绝执行处理器是ExecutorService的一种实现，ThreadPoolExecutor提供的)可能只是简单的放弃任务，也可能引起execute抛出一个未检查的`RejectedExecutionException`。所有任务完成后`ExecutorService`会转入`终止`状态。
 
-`Executor`执行的任务的生命周期:`创建`、`提交`、`开始`、`完成`。任务的状态(尚未开始，运行中，完成)决定了get方法的行为。
+`Executor`执行的任务的生命周期:`创建`、`提交`、`开始`、`完成`。任务的状态(尚未开始，运行中，完成)觉得了get方法的行为。
 
 有多种方法创建一个`Future`，因此可以将一个`Runnable`或者一个`Callable`提交给executor,然后得到一个`Future`。**也可以显式的为给你的`Runnable`或者`Callable`实例化一个FutureTask(FutureTask实现了Runnable，所以即可以提交给Executor来执行，又可以直接调用run方法运行)**
 
@@ -299,5 +299,3 @@ public class InvokeAllThread {
 	}
 }
 ```
-
-> ExecutorService中定义了两个批量执行任务的方法，invokeAll()和invokeAny()，在批量执行或多选一的业务场景中非常方便。invokeAll()在所有任务都完成（包括成功/被中断/超时）后才会返回，invokeAny()在任意一个任务成功（或ExecutorService被中断/超时）后就会返回.AbstractExecutorService实现了这两个方法
