@@ -363,3 +363,124 @@ public void transferMoney(final Account fromAccount, final toAccount, final Doll
 使用每个显式的Lock类中定时的tryLock特性，显式锁可以定时timeout时间，在规定实时间没有获得锁就返回失败。
 
 活锁(live lock)是线程中活跃度失败的另一种形式，尽管没有被阻塞，线程却仍然不能继续，因为它不断重试相同的操作，却总是失败。
+
+## 性能和可伸缩性
+### 减少锁的竞争
+- 减少持有锁的时间
+- 减少请求锁的频率
+- 或者用协调机制取代独占锁，从而允许更强的并发性  
+
+#### 缩小锁的范围(快进快出)
+减小竞争发生的可能性的有效方式是尽可能缩短把持锁的时间。可以通过把通过与锁无关的代码溢出synchronized块来实现。
+#### 减小锁粒度
+减小持有锁的时间比例的另外一种方式是**让线程减少调用它的频率**（因此减小发生竞争的可能性），这可以通过**分拆锁**(lock split)和**分离锁**(lock striping)来实现。即采用互相独立的锁，守卫多个独立的状态变量。
+> 这些技术减少了锁发生时的粒度，潜在实现了更好的可伸缩性--但是使用更多的锁同样会增加死锁是风险
+
+```java
+//应当拆分锁的代码
+public class ServerStatus {
+  public final Set<String> users;
+  public final Set<String> queries;
+
+  ...
+
+  public synchronized void addUser(String u) {
+    users.addUser(u);
+  }
+
+  public synchronized void addQuery(String q) {
+    queries.add(q);
+  }
+
+  public synchronized void removeUser(String u) {
+    users.remove(u);
+  }
+
+  public synchronized void removeQuery(String q) {
+    queries.removeQuery(q)
+  }
+}
+```
+
+```java
+//使用分拆锁重构ServerStatus
+public class ServerStatus {
+  public final Set<String> users;
+  public final Set<String> queries;
+
+
+  public void addUser(String u) {
+    synchronized(users) {
+      users.addUser(u);
+    }
+  }
+
+  public void addQuery(String q) {
+    synchronized(queries) {
+      queries.add(q);
+    }
+  }
+
+  //使用类似技术对remove进行重构
+}
+```
+
+### 分离锁
+把一个竞争激烈的锁分拆成两个，很可能形成两个竞争激烈的锁（尽管这样可以使得两个线程并发执行，从而对伸缩性有一些小的改进）。单这仍然不能大幅的提高多个处理器在同一系统中并发性
+> 上述的ServerStatus类没有提供明显的机会进行进一步分拆
+
+**分拆锁** 有时候可以被扩展，分成可大可小的加锁的块集合，并且它们归属于相互独立的对象，这样的情况就是**分离锁**
+
+> ConcurrentHashMap是使用的分离锁
+
+分离锁的一个负面作用是：对容器加锁，进行独占访问更加困难，并且更加昂贵了。
+
+```java
+public class StripedMap {
+  //同步策略:buckets[n]由locks[n%N_LOCKS]保护
+  private static final int N_LOCKS = 16;
+  private static final Node[] buckets[];
+  private final Object[] locks;
+
+  private static class Node {};
+
+  public StripedMap(int numBuckets) {
+    buckets = new Node[numBuckets];
+    locks = new Object[N_LOCKS];
+    for(int i = 0; i < N_NOCKS; i++)
+      locks[i] = new Object();
+  }
+
+  private final int hash(Object key) {
+    return Math.abs(key.hashcode() % buckets.length);
+  }
+
+  public Object get(Object key) {
+    int hash = hash(key);
+    synchronized (locks[hash % N_LOCKS]) {
+      for(Node m = buckets[hash]; m != null; m = m.next()) {
+        if(m.key.equals(key)) {
+          return m.value;
+        }
+      }
+      return null;
+    }
+  }
+
+  /*这个方法不是原子操作，不排除当StripedMap为空时，其他线程正并发的向其加入元素；使操作原子化需要一次获得所有锁*/
+  public void clear() {
+    for(int i = 0; i < buckets.length; i++) {
+        synchronized (locks[i % N_LOCKS]) {
+          buckets[i] = null;
+        }
+    }
+  }
+}
+```
+## 测试并发程序
+并发测试基本分为两类: 安全性的和活跃度
+
+与活跃度相关的是性能测试。性能可以通过很多方式来测量，其中包括：
+- 吞吐量:在一个并发任务里，已经完成任务所占的比例。
+- 响应性:从请求到完成一些动作之间的延迟(也被称作**等待时间**)
+- 可伸缩性:增加更多的资源(通常是CPU)，就能提高(或者缓解短缺)吞吐量
