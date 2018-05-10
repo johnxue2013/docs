@@ -17,6 +17,7 @@
 
 ### 存取
 缓冲区中的put和get可以是相对的或者是绝对的。相对方案是不带有索引参数的函数。当相对函数被调用时，位置(position)在返回时前进1，如果位置前进过多，相对运算就会抛出异常。绝对存取不会影响缓冲区的位置属性，但是如果调用时提供的索引超过范围（负数或不小于上界）也会抛出异常。
+
 ### 填充
 看个例子将代表"Hello"字符串的ASCII骂载入一个名为buffer的ByteBuffer对象中
 
@@ -25,10 +26,19 @@ buffer.put((byte)'H').put((byte)'e')put((byte)'l')put((byte)'l')put((byte)'o');
 ```
 五次调用put()之后的缓冲区
 
-![image](https://github.com/johnxue2013/docs/blob/master/images/2_3.jpg)
+![五次调用put()之后的缓冲区](https://github.com/johnxue2013/docs/blob/master/images/2_3.jpg)
 
+如果想在不丢失位置的情况下进行一些更改，可以使用put的绝对方案，假设将"Hello"更改为"Mellow"，可以这样调用:
+```java
+//进行一次绝对方案put调用将0位置的字节代替为十六进制数值0x4d(当前位置不会受到绝对put影响),将0x77放入当前位置并位置属性加一
+buffer.put(0, (byte)'M').put((byte)'W');
+```
+修改后的buffer
+
+![修改后的buffer](https://github.com/johnxue2013/docs/blob/master/images/2_4.jpg)
 
 > 在java中字符以Unicode码表示,每个Unicode字符占16位。
+
 ### 翻转
 当写满了缓冲区，现在我们必须准备将其清空。把缓冲区传递给一个通道，以使内容能被全部写出。但如果通道现在在缓冲区上执行get()，那么它将从我们刚刚插入有用数据之外取出未定义的数据。如果我们将位置设置为0，通道就会从正确的位置开始获取，但是是怎样知道何时到达我们插入数据的末端的呢？这就是上界属性被引入的目的。上界属性指明了缓冲区有效内容的末端。我们需要将上界(limit)属性设置为当前位置(position)，然后将位置重置为0。可以人工用下面代码实现
 ```java
@@ -38,4 +48,14 @@ buffer.limit(position).position(0);
 ```java
 buffer.flip()
 ```
-`flip()`函数将一个能够继续添加数据元素的填充状态的缓冲区翻转成一个准备读出元素的释放状态。
+
+`flip()`函数将一个能够继续添加数据元素的填充状态的缓冲区翻转成一个准备读出元素的释放状态。在翻转之后buffer会变成如下的样子
+
+![翻转之后buffer](https://github.com/johnxue2013/docs/blob/master/images/2_5.jpg)
+
+`rewind()`函数与`flip()`函数相似，但不影响上界属性。它只是将位置(position)值设为0.
+可以使用rewind后退，重读已经被翻转的缓冲区中的数据。
+
+> 如果调用两次`flip()`函数会怎样？它实际上会大小变为0，此时get、put操作都将抛异常。
+
+### 释放
