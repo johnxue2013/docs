@@ -1,28 +1,33 @@
 # kafka
-## Catagory
-- Introduce
-    - Why we need MQ?
-    - Installation And Run
-- Core Concepts
-    - Topics and Logs
-    - producer and consumer
+## 目录
+- 简介
+    - 为什么需要使用MQ?
+    - 安装并运行
+- 核心概念
+    - Topics和Logs
+    - 生产者消费者
     - broker
-    - parition
-- Core APIS
+    - 分区(partition)
+- 核心API
     - Producer API
     - Consumer API
     - Streams API
     - Connector API
-- Design
-    - Persistence
-    - Efficiency
-    - The Producer
-    - The Consumer
-    - Replication and leader election
-    - Log Compaction
-    - kafka HA
-- OPERATIONS
-    - Basic Kafka Operations
+- 配置
+	- Broker配置
+	- Topic配置
+	- Producer配置
+	- Consumer配置
+- 设计与原理
+	- 消息(Messages)
+    - 生产者
+    - 消费者
+    - 消息传递保障
+    - 副本和leader选举
+    - 日志压缩
+    - 
+- 操作
+    - 基本操作
         - Adding and removing topics
         - Modifying topics
         - Graceful shutdown
@@ -32,41 +37,60 @@
         - Expanding your cluster
         - Decommissioning brokers
         - Increasing replication factor
-    - Important Configs
+    - 重要的配置
         - Important Client Configs
         - A Production Server Configs
 
 
-## Introduce
-Apache Kafka is a distributed streaming platform which has three capabilities:
-- Publish and subscribe to streams of records, similar to a message queue or enterprise messaging system.
-- Store streams of records in a fault-tolerant durable way.
-- Process streams of records as they occur.
+## 简介
+Kafka是一个分布式的流式平台,提供三个关键功能:
+- 发布和订阅记录流，类似于消息队列或企业消息传递系统
+- 以容错持久的方式存储记录流
+- 实时处理发生的记录流
 
-First a few concepts:
-- Kafka is run as a cluster on one or more servers that can span multiple datacenters.
-- The Kafka cluster stores streams of records in categories called topics.
-- Each record consists of a key, a value, and a timestamp.
+由LinkedIn公司开发(已捐赠Apache)，使用Scala语言编写，Kafka作为一个集群运行在一台或多台可以跨越多个数据中心的服务器上。
 
-Kafka has four core APIs:
+Kafka通常用于两大类应用:
+- 构建可在系统或应用程序之间可靠获取数据的实时流数据管道
+- 构建实时流应用程序，用于转换或响应数据流
 
-- The `Producer API` allows an application to publish a stream of records to one or more Kafka topics.
-- The `Consumer API` allows an application to subscribe to one or more topics and process the stream of records produced to them.
-- The `Streams API` allows an application to act as a stream processor, consuming an input stream from one or more topics and producing an output stream to one or more output topics, effectively transforming the input streams to output streams.
-- The `Connector API` allows building and running reusable producers or consumers that connect Kafka topics to existing applications or data systems. For example, a connector to a relational database might capture every change to a table.
+### 为什么需要使用MQ?
 
-![image](http://kafka.apache.org/11/images/kafka-apis.png)
 
-## Why we need QA?
+### 安装并运行
 
-## Installation And Run
-**Step 1: Download the code**
-**Step 2: Start the server**
-Kafka uses `ZooKeeper` so you need to first start a ZooKeeper server if you don't already have one. You can use the convenience script packaged with kafka to get a quick-and-dirty single-node ZooKeeper instance.
+环境要求
+- JDK1.7 或以上
+- OS: window or Linux
+- ZK
 
+下载后，默认配置下使用命令
 ```
-> bin/zookeeper-server-start.sh config/zookeeper.properties
+> bin/kafka-server-start.sh config/server.properties
 ```
+即可启动Kafka
+
+## 核心概念
+### Topics和Logs
+#### Topics
+Kafka集群以类别(categories)存储记录，这个类别叫做主题(topic)，发送记录时，需要制定要发送到的主题。
+一个主题可以有0个1个或者多个消费者订阅。
+
+对于每一个Topic，Kafka集群维护着一个分区(partition)的log，就像下图中的示例:  
+
+![image](http://kafka.apache.org/10/images/log_anatomy.png)  
+
+每一个partition中的记录是有序且不可变的序列，分区中的每一个记录都会被分配一个分区范围内唯一的一个ID号，叫做偏移量(offset)，
+用于唯一标识分区内每条记录。
+
+> 为什么一个Topic可以有多个分区，这样做的好处是什么?  
+- 可以处理更多的消息，不受单台服务器的限制。Topic拥有更多的分区意味着它可以不受限制的处理更多的数据
+- 分区可以作为并行处理的单元。  
+
+![image](http://kafka.apache.org/10/images/log_consumer.png)  
+
+kafka保证了在服务端消息的顺序性，但不保证消费者收到消息的顺序性。如果要顺序性的处理topic中的所有消息，那就只提供一个分区。因为Kafka保证了一个分区中的消息只会由消费者组中的唯一一个消费者处理。  
+
 
 
 # 概念
@@ -125,17 +149,6 @@ Kafka将消息分门别类，每一类的消息称之为一个主题(Topic).
 已发布的消息保存在一组服务器中，称之为Kafka集群。集群中的每一个服务器都是一个代理(Broker). 消费者可以订阅一个或多个主题（topic），并从Broker拉数据，从而消费这些已发布的消息。
 
 ## Topic和Log  
-Topic是发布消息的类别或者种子(Feed)名。对于每一个Topic，Kafka集群维护着一个分区的log，就像下图中的示例:  
-
-![image](http://kafka.apache.org/10/images/log_anatomy.png)  
-
-> 为什么一个Topic可以有多个分区，这样做的好处是什么?
-1. 可以处理更多的消息，不受单台服务器的限制。Topic拥有更多的分区意味着它可以不受限制的处理更多的数据
-2. 分区可以作为并行处理的单元。  
-
-![image](http://kafka.apache.org/10/images/log_consumer.png)  
-
-kafka保证了在服务端消息的顺序性，但不保证消费者收到消息的顺序性。如果要顺序性的处理topic中的所有消息，那就只提供一个分区。因为Kafka保证了一个分区中的消息只会由消费者组中的唯一一个消费者处理。  
 
 # Kafka的保证(Guarantees)  
 - 生产者发送到一个特定的Topic的分区上，消息将会按照它们发送的顺序依次加入，也就是说，如果一个消息M1和M2使用相同的producer发送，M1先发送，那么M1将比M2的offset低，并且优先的出现在日志中。  
