@@ -117,6 +117,9 @@ public class BufferFillDrain {
 
 ### 压缩
 有事，想从缓冲区中释放一部分区域，而不是全部，然后重新填充。此时可以使用compact()函数，这个函数比自己是使用get()和put()函数实现压缩高效的多。
+调用compact的作用是丢弃已经释放的数据，保留未被释放的数据，并使缓冲区对重新填充做好准备
+
+> 当全部元素都读取完毕时，调用compact()和clear()效果是一样的。
 
 ![压缩前](https://github.com/johnxue2013/docs/blob/master/images/2_6.jpg)
 调用compact()方法后
