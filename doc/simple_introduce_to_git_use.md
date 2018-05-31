@@ -394,6 +394,17 @@ To git@github.com:schacon/simplegit.git
 git push origin --delete tag <tagname>
 ```
 
+## 合并另一分支的部分代码
+
+```Bash
+git checkout source_branch <paths>
+```
+具体的如 假设当前在dev分支，想要合并分支dev2上的`src/test`下的文件代码,则使用
+```Bash
+git checkout dev2 src/test
+```
+
+
 # 附录  
 1. git status //获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
 2. git add ... //把你修改的东西加到git中 //可以使用批量提交，如 提交src下所有未track的文件使用命令 git add src/
