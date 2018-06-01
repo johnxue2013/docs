@@ -7,7 +7,7 @@
     - Topics和Logs
     - 生产者消费者
     - broker
-    - 分区(partition)
+    - 分区(partition)和副本(replication)
 - 核心API
     - Producer API
     - Consumer API
@@ -136,6 +136,11 @@ kafka保证了在服务端消息的顺序性，但不保证消费者收到消息
 
 Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，当`consumer group`中有新加入的`consumer`时，新加入的`consumer`将从其他`consumer`中接管一些分区，如果一个`consumer`死亡，它所消费的分区将被分配给其他`consumer`实例。
 
+### broker
+一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。
+
+### 分区(partition)和副本(replication)
+为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列。partition中的每条消息都会被分配一个有序的id（offset）。kafka只保证按一个partition中的顺序将消息发给consumer，不保证一个topic的整体（多个partition间）的顺序
 
 
 # 核心API
