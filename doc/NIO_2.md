@@ -17,7 +17,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * 从一个通道复制数据到另一个通道
+ * 从一个通道复制数据到另一个通道Â
  * @author han.xue
  * @since 2018-05-12 23:20:20
  */
@@ -78,3 +78,34 @@ public class ChannelCopy {
 > 线程的中断状态可以通过Thread.interrupted()方法清除。
 
 ### Scatter/Gather
+通道提供了一种被称为Scatter/Gather的重要功能（有时也称为矢量I/O），是指在多个缓冲区上实现一个简单的I/O操作。对于一个write操作而言，数据是从几个缓冲区按顺序抽取(称为gather)并沿着通道发送的。缓冲区本身并不需要具备这种能力（通常它们也没有此能力）。该gather过程的效果就好比全部缓冲区的内容被链接起来，并在发送数据前存放到一个大的缓冲区中。
+
+对于read操作而言，从通道读取的数据会按顺序被散布（称为scatter）到多个缓冲区，将每个缓冲区填满直至通道中的数据或者缓冲区的最大空间被消耗完。
+
+```java
+//接口定义
+public interface ScatteringByteChannel
+    extends ReadableByteChannel
+{
+
+    public long read(ByteBuffer[] dsts, int offset, int length)
+        throws IOException;
+
+    public long read(ByteBuffer[] dsts) throws IOException;
+
+}
+```
+
+```java
+
+public interface GatheringByteChannel
+    extends WritableByteChannel
+{
+
+    public long write(ByteBuffer[] srcs, int offset, int length)
+        throws IOException;
+
+    public long write(ByteBuffer[] srcs) throws IOException;
+
+}
+```
