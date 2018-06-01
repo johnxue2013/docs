@@ -110,6 +110,19 @@ Kafka集群以类别(categories)存储记录，这个类别叫做主题(topic)�
 
 kafka保证了在服务端消息的顺序性，但不保证消费者收到消息的顺序性。如果要顺序性的处理topic中的所有消息，那就只提供一个分区。因为Kafka保证了一个分区中的消息只会由消费者组中的唯一一个消费者处理。  
 
+> 每条记录由key,value,timstamp组成
+
+> 关于kafka版本号的写法如: kafka_2.12-1.0.0，其中2.12是scala的版本号，后面的1.0.0才是kafka的版本号
+
+### broker
+一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。
+
+### 分区(partition)
+为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列。partition中的每条消息都会被分配一个有序的id（offset）。kafka只保证按一个partition中的顺序将消息发给consumer，不保证一个topic的整体（多个partition间）的顺序。
+
+
+![image](https://github.com/johnxue2013/tools/blob/master/images/20140415105154875.png)
+
 ### 生产者和消费者
 生产者负责向broke发送消息到一个topic，生产者可以选择随机的发送到topic的任意分区，或者通过某些语义发送到指定的分区。
 
@@ -119,16 +132,12 @@ kafka保证了在服务端消息的顺序性，但不保证消费者收到消息
 
 如果所有的消费者实例属于不同的`consumer group`，那么消息将广播给所有的消费者.
 
-![image](http://kafka.apache.org/10/images/P0-P3.png)
+![image](http://kafka.apache.org/11/images/consumer-groups.png)
 
-# 概念
-- kafka以一个集群运行在一台或者多台服务器上
-- kafka集群以目录(categories)存储流式记录(record)，称作主题(topic)
-- 每条记录由key,value,timstamp组成
+Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，当`consumer group`中有新加入的`consumer`时，新加入的`consumer`将从其他`consumer`中接管一些分区，如果一个`consumer`死亡，它所消费的分区将被分配给其他`consumer`实例。
 
-> 关于kafka版本号的写法如: kafka_2.12-1.0.0，其中2.12是scala的版本号，后面的1.0.0才是kafka的版本号
 
-> 关于下载kafka并运行，刚开始到github下载了一个kafka，发现运行不起来，后来才发现下载的是source，也就是源码。如果要运行的话应该下载binary，也就是执行文件。源码是不能运行的
+
 # 核心API
 - `Producer API`允许应用程序发布一条记录到一个或多个主题中
 - `Consumer API`允许运行应用程序订阅一个或多个主题，并处理产生的的消息(record)
