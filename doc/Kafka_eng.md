@@ -16,10 +16,7 @@
 	- Broker配置
 	- Topic配置
 	- Producer配置
-	- Consumer配置
-    - 重要的配置
-        - Important Client Configs
-        - A Production Server Configs
+	- Consumer配置  
 - 常见操作
     - Adding and removing topics
     - Modifying topics
@@ -30,6 +27,7 @@
     - Expanding your cluster
     - Decommissioning brokers
     - Increasing replication factor
+
 ## 简介
 Kafka是一个分布式的流式平台,提供三个关键功能:
 - 发布和订阅记录流，类似于消息队列或企业消息传递系统
@@ -184,7 +182,7 @@ Producer向broker发送消息时，一旦这条消息被commit，因数replicati
 
 > 总之，Kafka默认保证`At least once`，并且允许通过设置Producer异步提交来实现`At most once`。而`Exactly once`要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。
 ## 配置
-### Broker配置
+### roker配置
 必须的配置项如下
 - `broker.id`:
  unique and permanent name of each node in the cluster.
@@ -192,6 +190,34 @@ Producer向broker发送消息时，一旦这条消息被commit，因数replicati
   The directories in which the log data is kept. If not set, the value in log.dir is used
 - `zookeeper.connect`:
   Zookeeper host string
+
+其他重要配置  
+
+参数 | 默认值 | 描述
+:--------|:---------|:-------
+broker.id |	-1　|	每一个boker都有一个唯一的id作为它们的名字。当该服务器的IP地址发生改变时，broker.id没有变化，则不会影响consumers的消息情况
+port |	9092	| broker server服务端口
+host.name |	""	| broker的主机地址，若是设置了，那么会绑定到这个地址上，若是没有，会绑定到所有的接口上，并将其中之一发送到ZK
+log.dirs	| /tmp/kafka-logs		| kafka数据的存放地址，多个地址的话用逗号分割,多个目录分布在不同磁盘上可以提高读写性能  /data/kafka-logs-1，/data/kafka-logs-2
+message.max.bytes	| 	1000012		| 表示消息体的最大大小，单位是字节
+num.network.threads		| 3		| broker处理消息的最大线程数，一般情况下数量为cpu核数
+num.io.threads		| 8		| 处理IO的线程数
+log.flush.interval.messages		| Long.MaxValue		| 在数据被写入到硬盘和消费者可用前最大累积的消息的数量
+log.flush.interval.ms	| 	Long.MaxValue		| 在数据被写入到硬盘前的最大时间
+log.flush.scheduler.interval.ms		| Long.MaxValue		| 检查数据是否要写入到硬盘的时间间隔。
+log.retention.hours		| 168 (24*7)	| 	控制一个log保留多长个小时
+log.retention.bytes		| -1		| 控制log文件最大尺寸
+log.cleaner.enable		| false		| 是否log cleaning
+log.cleanup.policy		| delete　	| 	delete还是compat.
+log.segment.bytes		| 1073741824	| 	单一的log segment文件大小
+log.roll.hours		| 168		| 开始一个新的log文件片段的最大时间
+background.threads		| 10		| 后台线程序
+num.partitions		| 1		| 默认分区数
+socket.send.buffer.bytes		| 102400		| socket SO_SNDBUFF参数
+socket.receive.buffer.bytes		| 102400	| 	socket SO_RCVBUFF参数
+zookeeper.connection.timeout.ms	| 	6000		| 指定客户端连接zookeeper的最大超时时间
+zookeeper.session.timeout.ms　　	| 	6000		| 连接zk的session超时时间
+zookeeper.sync.time.ms		| 2000		| zk follower落后于zk leader的最长时间
 
 其他默认配置和topic级别的配置详见[此处][1]
 
@@ -223,10 +249,45 @@ Producer向broker发送消息时，一旦这条消息被commit，因数replicati
 其他topic相关配置详见[此处][2]
 
 ### producer配置
-相关配置详见[此处][3]
+
+参数 | 默认值 | 描述
+:--------|:---------|:-------
+producer.type	 | sync | 指定消息发送是同步还是异步。异步asyc成批发送用kafka.producer.AyncProducer， 同步sync用kafka.producer.SyncProducer
+metadata.broker.list	 | broker list	 | 使用这个参数传入boker和分区的静态信息，如host1:port1,host2:port2, 这个可以是全部boker的一部分
+compression.codec	 | NoCompressionCodec	 | 消息压缩，默认不压缩
+compressed.topics	 | null	 | 在设置了压缩的情况下，可以指定特定的topic压缩，未指定则全部压缩
+message.send.max.retries	 | 3	 | 消息发送最大尝试次数
+retry.backoff.ms	 | 300	 | 每次尝试增加的额外的间隔时间
+topic.metadata.refresh.interval.ms	 | 600000 | 定期的获取元数据的时间。当分区丢失，leader不可用时producer也会主动获取元数据，如果为0，则每次发送完消息就获取元数据，不推荐。如果为负值，则只有在失败的情况下获取元数据。
+queue.buffering.max.ms	 | 5000	 | 在producer queue的缓存的数据最大时间，仅仅for asyc
+queue.buffering.max.message	 | 10000 | 	producer 缓存的消息的最大数量，仅仅for asyc
+queue.enqueue.timeout.ms	 | -1	 | 0当queue满时丢掉，负值是queue满时block,正值是queue满时block相应的时间，仅仅for asyc
+batch.num.messages | 	200	 | 一批消息的数量，仅仅for asyc
+request.required.acks	 | 0	 | 0表示producer无需等待leader的确认，1代表需要leader确认写入它的本地log并立即确认，-1代表所有的备份都完成后确认。 仅仅for sync
+request.timeout.ms	 | 10000	 | 确认超时时间
+
+其他相关配置详见[此处][3]
+
+### consumer配置
+参数 | 默认值 | 描述
+:--------|:---------|:-------
+groupid	 | 	groupid | 一个字符串用来指示一组consumer所在的组
+socket.timeout.ms	 | 	30000	 | 	socket超时时间
+socket.buffersize	 | 	64*1024	 | 	socket receive buffer
+fetch.message.max.bytes	 | 	1024 * 1024	 | 控制一个请求中获取的消息的字节数
+fetch.min.bytes | 1 | The minimum amount of data the server should return for a fetch request. If insufficient data is available the request will wait for that much data to accumulate before answering the request.
+auto.commit.enable	| true	| 如果true,consumer定期地往zookeeper写入每个分区的offset
+auto.commit.interval.ms		| 10000		| 往zookeeper上写offset的频率
+auto.offset.reset	| largest | 	如果ZK没有初始化的offset或者offset超出了范围时应该如何处理，smallest: 自动设置reset到最小的offset. largest : 自动设置offset到最大的offset. 其它值则向consumer抛出异常.
+consumer.timeout.ms		| -1		| 默认-1,consumer在没有新消息时无限期的block。如果设置一个正值， 一个超时异常会抛出
+rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
+
+其他相关配置详见[此处][4]
 
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
 
 [2]:http://kafka.apache.org/documentation/#topicconfigs "topic级别配置列表"
 
 [3]:http://kafka.apache.org/documentation/#producerconfigs "producer配置列表"
+
+[4]:http://kafka.apache.org/documentation/#consumerconfigs "consumer的配置列表"
