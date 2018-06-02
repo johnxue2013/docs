@@ -17,30 +17,19 @@
 	- Topic配置
 	- Producer配置
 	- Consumer配置
-- 设计与原理
-	- 消息(Messages)
-    - 生产者
-    - 消费者
-    - 消息传递保障
-    - 副本和leader选举
-    - 日志压缩
-    -
-- 操作
-    - 基本操作
-        - Adding and removing topics
-        - Modifying topics
-        - Graceful shutdown
-        - Balancing leadership
-        - Checking consumer position
-        - Mirroring data between clusters
-        - Expanding your cluster
-        - Decommissioning brokers
-        - Increasing replication factor
     - 重要的配置
         - Important Client Configs
         - A Production Server Configs
-
-
+- 常见操作
+    - Adding and removing topics
+    - Modifying topics
+    - Graceful shutdown
+    - Balancing leadership
+    - Checking consumer position
+    - Mirroring data between clusters
+    - Expanding your cluster
+    - Decommissioning brokers
+    - Increasing replication factor
 ## 简介
 Kafka是一个分布式的流式平台,提供三个关键功能:
 - 发布和订阅记录流，类似于消息队列或企业消息传递系统
@@ -65,7 +54,8 @@ Kafka通常用于两大类应用:
 
 - Stream Processing (流处理)  
 Kafka的许多用户在处理管道中处理数据，这些数据由多个阶段组成，其中原始输入数据从Kafka主题中消耗，然后聚合，丰富或以其他方式转化为新的主题，以供进一步消费或后续处理。  
-    > 除了Kafka Streams之外，替代性的开源流处理工具还包括Apache Storm和Apache Samza
+
+> 除了Kafka Streams之外，替代性的开源流处理工具还包括Apache Storm和Apache Samza
 
 - Event Sourcing  
 事件源是应用程序设计的一种风格，其中状态更改以时间排序的记录序列进行记录。 Kafka对非常大的存储日志数据的支持使得它成为以这种风格构建的应用程序的优秀后端。
@@ -129,6 +119,19 @@ Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，
 
 ![image](http://kafka.apache.org/10/images/kafka-apis.png)
 
+#### 发现消费者故障
+订阅一组topic后，当调用`poll(long timeout)`时，消费者将自动加入到组中。只要持续的调用`poll`，消费者将一直保持可用，并继续从分配的分区中接收消息。此外，消费者向服务器定时发送心跳。 如果消费者崩溃或无法在`session.timeout.ms`配置的时间内发送心跳，则消费者将被视为死亡，并且其分区将被重新分配。
+
+还有一种可能，消费可能遇到"活锁"的情况，它持续的发送心跳，但是没有处理。为了预防消费者在这种情况下一直持有分区，可以使用`max.poll.interval.ms`活跃检测机制。 在此基础上，如果你调用的poll的频率大于最大间隔，则客户端将主动地离开组，以便其他消费者接管该分区。 发生这种情况时，你会看到offset提交失败（调用`commitSync()`引发的`CommitFailedException`）。这是一种安全机制，保障只有活动成员能够提交offset。所以要留在组中，你必须持续调用`poll`。
+
+消费者提供两个配置设置来控制poll循环：
+
+`max.poll.interval.ms`：最大poll的间隔，可以为消费者提供更多的时间去处理返回的消息（调用`poll(long timeout)`返回的消息，通常返回的消息都是一批）。缺点是此值越大将会延迟组重新平衡。
+
+`max.poll.records`：此设置限制每次调用poll返回的消息数，这样可以更容易的预测每次poll间隔要处理的最大值。通过调整此值，可以减少poll间隔，减少重新平衡分组的
+
+对于消息处理时间不可预测地的情况，这些选项是不够的。 处理这种情况的推荐方法是将消息处理移到另一个线程中，让消费者继续调用`poll`。 但是必须注意确保已提交的offset不超过实际位置。另外，必须禁用自动提交，并只有在线程完成处理后才为记录手动提交偏移量（取决于你）。 还要注意，如果你的处理能力比拉取消息的慢，那创建新线程将导致你机器内存溢出，此时,你需要pause暂停分区，不会从poll接收到新消息，让线程处理完之前返回的消息。
+
 ### broker
 一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。
 
@@ -180,4 +183,50 @@ Producer向broker发送消息时，一旦这条消息被commit，因数replicati
 如果一定要做到`Exactly once`，就需要协调offset和实际操作的输出。经典的做法是引入两阶段提交。如果能让offset和操作输入存在同一个地方，会更简洁和通用。这种方式可能更好，因为许多输出系统可能不支持两阶段提交。比如，Consumer拿到数据后可能把数据放到HDFS，如果把最新的offset和数据本身一起写到HDFS，那就可以保证数据的输出和offset的更新要么都完成，要么都不完成，间接实现`Exactly once`。（目前就high level API而言，offset是存于Zookeeper中的，无法存于HDFS，而low level API的offset是由自己去维护的，可以将之存于HDFS中）
 
 > 总之，Kafka默认保证`At least once`，并且允许通过设置Producer异步提交来实现`At most once`。而`Exactly once`要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。
-## 多线程处理
+## 配置
+### Broker配置
+必须的配置项如下
+- `broker.id`:
+ unique and permanent name of each node in the cluster.
+- `log.dirs`:
+  The directories in which the log data is kept. If not set, the value in log.dir is used
+- `zookeeper.connect`:
+  Zookeeper host string
+
+其他默认配置和topic级别的配置详见[此处][1]
+
+### topic 配置
+与主题相关的配置包含broker配置的默认值，也包含每个主题的覆盖至。如果没有topic级别的配置那么将使用broker配置的默认值。覆盖默认值可以在创建topic时使用一个或者多个`--config`选项。
+
+如下语法创建一个名为**my-topic**的主题，并设置max message size和flush rate:
+```Bash
+> bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic my-topic --partitions 1
+    --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
+```
+
+覆盖默认值也可通过`alter`参数修改一个已经创建的topic
+```Bash
+> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic
+    --alter --add-config max.message.bytes=128000
+```
+
+可以通过如下命令检查某个主题覆盖了那些默认值
+```Bash
+> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic --describe
+```
+
+通过如下命令移除覆盖值
+```Bash
+> bin/kafka-configs.sh --zookeeper localhost:2181  --entity-type topics --entity-name my-topic --alter --delete-config max.message.bytes
+```
+
+其他topic相关配置详见[此处][2]
+
+### producer配置
+相关配置详见[此处][3]
+
+[1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
+
+[2]:http://kafka.apache.org/documentation/#topicconfigs "topic级别配置列表"
+
+[3]:http://kafka.apache.org/documentation/#producerconfigs "producer配置列表"
