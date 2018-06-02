@@ -8,11 +8,10 @@
     - 生产者消费者
     - broker
     - 分区(partition)和副本(replication)
-- 核心API
-    - Producer API
-    - Consumer API
-    - Streams API
-    - Connector API
+- Kafka的保证
+  - 数据可靠性保证
+  - 数据一致性保证
+  - 消息投递保证
 - 配置
 	- Broker配置
 	- Topic配置
@@ -128,57 +127,57 @@ kafka保证了在服务端消息的顺序性，但不保证消费者收到消息
 
 Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，当`consumer group`中有新加入的`consumer`时，新加入的`consumer`将从其他`consumer`中接管一些分区，如果一个`consumer`死亡，它所消费的分区将被分配给其他`consumer`实例。
 
+![image](http://kafka.apache.org/10/images/kafka-apis.png)
+
 ### broker
 一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。
 
-### 分区(partition)和副本(replication)
-为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列。每个partition可以有多个relication。partition中的每条消息都会被分配一个有序的id（offset）。kafka只保证按一个partition中的顺序将消息发给consumer，不保证一个topic的整体（多个partition间）的顺序
+### 分区(partition)和副本(replica)
+为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列。每个partition可以有多个replica。partition中的每条消息都会被分配一个有序的id（offset）。kafka只保证按一个partition中的顺序将消息发给consumer，不保证一个topic的整体（多个partition间）的顺序。
+
+partition的多个replica中一个为leader，其余为follow，Producer只与Leader交互，把数据写到leader中，follower从Leader中拉取数据进行同步
+
+> ISR(In-Sync-Replicas):是Replicas的一个子集，由leader replicas维护,包含所有不落后的replica集合, 不落后有两层含义:距离上次FetchRequest的时间不大于某一个值或落后的消息数不大于某一个值,任一超过阈值后该Follower将被踢出ISR,放入OSR(Outof-Sync-Replicas)。Leader失败后会从ISR中选取一个Follower做Leader
 
 ![image](https://github.com/johnxue2013/tools/blob/master/images/20140415105154875.png)
 
+## Kafka的保证(Guarantees)  
+### 数据可靠性保证
+当Producer向Leader发送数据时,可以通过`acks`参数设置数据可靠性的级别
 
-## 核心API
-- `Producer API`允许应用程序发布一条记录到一个或多个主题中
-- `Consumer API`允许运行应用程序订阅一个或多个主题，并处理产生的的消息(record)
-- `Streams API`充当一个流式处理器，从一个或多个topic消费输入流，再产生输出流到一个或多个topic，可以有效的转换输入流到输出流。
-    > Sterams API在Kafka中的核心：使用producer和consumer API作为输入，利用Kafka做状态存储，使用相同的组机制在stream处理器实例之间进行容错保障。
-- `Connector API`允许构建和运行可重复使用的生产者或消费者，将Kafka主题连接到现有的应用程序或数据系统。例如，连接到关系数据库的连接器可能会捕获对表的每个更改。
-    > Connect API实现一个连接器（connector），不断地从一些数据源系统拉取数据到kafka，或从kafka推送到宿系统（sink system）。
+- 0: 不论写入是否成功,server不需要给Producer发送Response,如果发生异常,server会终止连接,触发Producer更新meta数据;
+- 1: Leader写入成功后即发送Response,此种情况如果Leader fail,会丢失数据
+- -1: 或者为`all`，等待所有ISR接收到消息后再给Producer发送Response,这是最强保证
+仅设置acks=-1也不能保证数据不丢失,当Isr列表中只有Leader时,同样有可能造成数据丢失。要保证数据不丢除了设置acks=-1, 还要保证ISR的大小大于等于2,具体参数设置:
+  - `request.required.acks`:设置为-1 等待所有ISR列表中的Replica接收到消息后采算写成功;
+  - `min.insync.replicas`: 设置为大于等于2,保证ISR中至少有两个Replica
 
-![image](http://kafka.apache.org/10/images/kafka-apis.png)
+    Producer要在吞吐率和数据可靠性之间做一个权衡
 
+如果一个Topic配置了复制因子（replication factor）为N， 那么可以允许N-1服务器宕机而不丢失任何已经提交（committed）的消息。
 
+### 数据一致性保证
+一致性定义:若某条消息对Consumer可见,那么即使Leader宕机了,在新Leader上数据依然可以被读到。
 
+1. `HighWaterMark`简称HW: Partition的高水位，取一个partition对应的ISR中最小的LEO(LogEndOffset)作为HW，消费者最多只能消费到HW所在的位置，另外每个replica都有highWatermark，leader和follower各自负责更新自己的highWatermark状态，highWatermark <= leader. LogEndOffset
 
-# Kafka的保证(Guarantees)  
-- 生产者发送到一个特定的Topic的分区上，消息将会按照它们发送的顺序依次加入，也就是说，如果一个消息M1和M2使用相同的producer发送，M1先发送，那么M1将比M2的offset低，并且优先的出现在日志中。  
-- 消费者收到的消息也是此顺序。
-- 如果一个Topic配置了复制因子（replication factor）为N， 那么可以允许N-1服务器宕机而不丢失任何已经提交（committed）的消息。
+2. 对于Leader新写入的msg，Consumer不能立刻消费，Leader会等待该消息被所有ISR中的replica同步后,更新HW,此时该消息才能被Consumer消费，即Consumer最多只能消费到HW位置
 
+### 消息投递保证(message delivery guarantee)
+有如下几种可能
+- `At most once` 消息可能会丢，但绝不会重复传输
+- `At least one` 消息绝不会丢，但可能会重复传输
+- `Exactly once` 每条消息肯定会被传输一次且仅传输一次，很多时候这是用户所想要的。
 
+#### 从producer到broker(仅限于high-api)
+Producer向broker发送消息时，一旦这条消息被commit，因数replication的存在，它就不会丢。但是如果Producer发送数据给broker后，遇到网络问题而造成通信中断，那Producer就无法判断该条消息是否已经commit。所以目前默认情况下一条消息从Producer到broker是确保了`At least once`，可通过设置Producer异步发送实现`At most once`
 
+#### 从broke到consumer
+读完消息先commit消费状态(保存offset)再处理消息。这种模式下，如果Consumer在commit后还没来得及处理消息就crash了，下次重新开始工作后就无法读到刚刚已提交而未处理的消息，这就对应于`At most once`
 
+读完消息先处理再commit消费状态(保存offset)。这种模式下，如果在处理完消息之后commit之前Consumer crash了，下次重新开始工作时还会处理刚刚未commit的消息，实际上该消息已经被处理过了。这就对应于`At least once`。在很多使用场景下，消息都有一个主键，所以消息的处理往往具有幂等性，即多次处理这一条消息跟只处理一次是等效的，那就可以认为是`Exactly once`。
+
+如果一定要做到`Exactly once`，就需要协调offset和实际操作的输出。经典的做法是引入两阶段提交。如果能让offset和操作输入存在同一个地方，会更简洁和通用。这种方式可能更好，因为许多输出系统可能不支持两阶段提交。比如，Consumer拿到数据后可能把数据放到HDFS，如果把最新的offset和数据本身一起写到HDFS，那就可以保证数据的输出和offset的更新要么都完成，要么都不完成，间接实现`Exactly once`。（目前就high level API而言，offset是存于Zookeeper中的，无法存于HDFS，而low level API的offset是由自己去维护的，可以将之存于HDFS中）
+
+> 总之，Kafka默认保证`At least once`，并且允许通过设置Producer异步提交来实现`At most once`。而`Exactly once`要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。
 ## 多线程处理
-
-# Kafka Connect
-
-Kafka Connect 是一个可扩展、可靠的在Kafka和其他系统之间流传输的数据工具。它可以通过connectors（连接器）简单、快速的将大集合数据导入和导出kafka。Kafka Connect可以接收整个数据库或收集来自所有的应用程序的消息到Kafka Topic。使这些数据可用于低延迟流处理。导出可以把topic的数据发送到secondary storage（辅助存储也叫二级存储）也可以发送到查询系统或批处理系统做离线分析。Kafka Connect功能包括：
-
-- Kafka连接器通用框架：  
-Kafka Connect 规范了kafka与其他数据系统集成，简化了connector的开发、部署和管理。
-
-- 分布式和单机模式:  
-扩展到大型支持整个organization的集中管理服务，也可缩小到开发，测试和小规模生产部署。
-
-- REST 接口  
-通过REST API来提交（和管理）connector到Kafka Connect集群。
-
-- 自动的offset管理   
-从connector获取少量的信息，Kafka Connect来管理offset的提交，所以connector的开发者不需要担心这个容易出错的部分。
-
-- 分布式和默认扩展:  
-- Kafka Connect建立在现有的组管理协议上。更多的工作可以添加扩展到Kafka Connect集群。
-
-- 流/批量集成  
-利用kafka现有的能力，Kafka Connect是一个桥接流和批量数据系统的理想解决方案。
-
