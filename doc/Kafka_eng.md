@@ -137,22 +137,7 @@ Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，
 ![image](https://github.com/johnxue2013/tools/blob/master/images/20140415105154875.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 核心API
+## 核心API
 - `Producer API`允许应用程序发布一条记录到一个或多个主题中
 - `Consumer API`允许运行应用程序订阅一个或多个主题，并处理产生的的消息(record)
 - `Streams API`充当一个流式处理器，从一个或多个topic消费输入流，再产生输出流到一个或多个topic，可以有效的转换输入流到输出流。
@@ -163,21 +148,7 @@ Kafka中的分区将按照`consumer`个数划分到每个`consumer `实例中，
 ![image](http://kafka.apache.org/10/images/kafka-apis.png)
 
 
-## kafka中的术语
 
-- Topic  
-Kafka将消息分门别类，每一类的消息称之为一个主题(Topic).
-
-- Producer  
-发布消息的对象称之为主题生产者(Kafka topic producer)
-
-- Consumer  
-订阅消息并处理发布的消息的种子的对象称之为主题消费者(consumers)
-
-- Broker  
-已发布的消息保存在一组服务器中，称之为Kafka集群。集群中的每一个服务器都是一个代理(Broker). 消费者可以订阅一个或多个主题（topic），并从Broker拉数据，从而消费这些已发布的消息。
-
-## Topic和Log  
 
 # Kafka的保证(Guarantees)  
 - 生产者发送到一个特定的Topic的分区上，消息将会按照它们发送的顺序依次加入，也就是说，如果一个消息M1和M2使用相同的producer发送，M1先发送，那么M1将比M2的offset低，并且优先的出现在日志中。  
@@ -188,43 +159,7 @@ Kafka将消息分门别类，每一类的消息称之为一个主题(Topic).
 
 
 ## 多线程处理
-Kafka消费者不是线程安全的，所有的`网络I/O`都发生在进行调用的应用程序线程中。因此多线程处理时需要确保多线程访问的同步。非同步访问将抛出`ConcurrentModificationException`。
 
-此规则唯一的例外是wakeup()，它可以安全地从外部线程来中断活动操作。在这种情况下，将从操作的线程阻塞并抛出一个WakeupException。这可用于从其他线程来关闭消费者。 以下代码段显示了典型模式：
-```
-public class KafkaConsumerRunner implements Runnable {
-     private final AtomicBoolean closed = new AtomicBoolean(false);
-     private final KafkaConsumer consumer;
-
-     public void run() {
-         try {
-             consumer.subscribe(Arrays.asList("topic"));
-             while (!closed.get()) {
-                 ConsumerRecords records = consumer.poll(10000);
-                 // Handle new records
-             }
-         } catch (WakeupException e) {
-             // Ignore exception if closing
-             if (!closed.get()) throw e;
-         } finally {
-             consumer.close();
-         }
-     }
-
-     // Shutdown hook which can be called from a separate thread
-     public void shutdown() {
-         closed.set(true);
-         consumer.wakeup();
-     }
- }
-```
-
-在单独的线程中，可以通过设置关闭标志和唤醒消费者来关闭消费者。
-
-```
-closed.set(true);
-consumer.wakeup();
-```
 # Kafka Connect
 
 Kafka Connect 是一个可扩展、可靠的在Kafka和其他系统之间流传输的数据工具。它可以通过connectors（连接器）简单、快速的将大集合数据导入和导出kafka。Kafka Connect可以接收整个数据库或收集来自所有的应用程序的消息到Kafka Topic。使这些数据可用于低延迟流处理。导出可以把topic的数据发送到secondary storage（辅助存储也叫二级存储）也可以发送到查询系统或批处理系统做离线分析。Kafka Connect功能包括：
@@ -247,4 +182,3 @@ Kafka Connect 规范了kafka与其他数据系统集成，简化了connector的�
 - 流/批量集成  
 利用kafka现有的能力，Kafka Connect是一个桥接流和批量数据系统的理想解决方案。
 
-## <span id = "why-need-mq">跳转到的位置</span>
