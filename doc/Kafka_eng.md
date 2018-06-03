@@ -20,12 +20,8 @@
 - 常见操作
     - 创建和删除topic
     - 修改topic
-    - 优雅的shutdown
-    - Balancing leadership
+    - leader 平衡
     - 检查消费者位置
-    - Expanding your cluster
-    - 下线brokers
-    - 增加复制因子
 
 ## 简介
 Kafka是一个分布式的流式平台,提供三个关键功能:
@@ -318,6 +314,49 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 ```Bash
 > bin/kafka-topics.sh --zookeeper zk_host:port/chroot --delete --topic my_topic_name
 ```
+### leader 平衡
+默认情况下，无论一个broker是停止还是宕机在该broker上的分区leader都将转移到其他的副本上,也就是说当一个broker重启，它只能是其他分区的follower，将不用来处理client的读写。
+
+为了避免这种平衡，Kafka有一个preferred replicas。比如副本的列表为1,5,9，则1将更有可能成为leader，因为1在表头。
+
+可以使用如下命令是Kafka重新恢复已经恢复副本的leader地位：
+
+```Bash
+> bin/kafka-preferred-replica-election.sh --zookeeper <zk_host:port>/chroot
+```
+
+由于运行此命令是乏味的，可以配置Kafka自动执行该操作
+
+```xml
+auto.leader.rebalance.enable=true
+```
+
+### 检查消费者位置
+如检查一个名为my-group的消费者组消费主题为my-topic的情况
+```Bash
+> bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-group
+
+Note: This will only show information about consumers that use the Java consumer API (non-ZooKeeper-based consumers).
+
+TOPIC                          PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG        CONSUMER-ID                                       HOST                           CLIENT-ID
+my-topic                       0          2               4               2          consumer-1-029af89c-873c-4751-a720-cefd41a669d6   /127.0.0.1                     consumer-1
+my-topic                       1          2               3               1          consumer-1-029af89c-873c-4751-a720-cefd41a669d6   /127.0.0.1                     consumer-1
+my-topic                       2          2               3               1          consumer-2-42c1abd4-e3b2-425d-a8bb-e1ea49b29bb2   /127.0.0.1                     consumer-2
+```
+
+该命令也可运行在基于ZK的集群中:
+```Bash
+> bin/kafka-consumer-groups.sh --zookeeper localhost:2181 --describe --group my-group
+
+Note: This will only show information about consumers that use ZooKeeper (not those using the Java consumer API).
+
+TOPIC                          PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG        CONSUMER-ID
+my-topic                       0          2               4               2          my-group_consumer-1
+my-topic                       1          2               3               1          my-group_consumer-1
+my-topic                       2          2               3               1          my-group_consumer-2
+Managing Consumer Groups
+```
+其他更多操作可以参考[官网][5]
 
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
 
@@ -326,3 +365,4 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 [3]:http://kafka.apache.org/documentation/#producerconfigs "producer配置列表"
 
 [4]:http://kafka.apache.org/documentation/#consumerconfigs "consumer的配置列表"
+[5]:http://kafka.apache.org/documentation/#operations "更多操作"
