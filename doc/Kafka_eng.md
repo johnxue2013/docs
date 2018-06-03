@@ -18,15 +18,14 @@
 	- Producer配置
 	- Consumer配置  
 - 常见操作
-    - Adding and removing topics
-    - Modifying topics
-    - Graceful shutdown
+    - 创建和删除topic
+    - 修改topic
+    - 优雅的shutdown
     - Balancing leadership
-    - Checking consumer position
-    - Mirroring data between clusters
+    - 检查消费者位置
     - Expanding your cluster
-    - Decommissioning brokers
-    - Increasing replication factor
+    - 下线brokers
+    - 增加复制因子
 
 ## 简介
 Kafka是一个分布式的流式平台,提供三个关键功能:
@@ -283,6 +282,42 @@ consumer.timeout.ms		| -1		| 默认-1,consumer在没有新消息时无限期的b
 rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
 其他相关配置详见[此处][4]
+
+## 常见操作
+### 创建和删除topic
+用户可以手动创建一个topic也可以在producer发送消息到一个不存在的topic自动创建。使用如下命令可以创建一个topic
+```Bash
+> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --create --topic my_topic_name
+      --partitions 20 --replication-factor 3 --config <property key>=<property value>
+```
+复制因此表明有多少server将会复制消息，3台server将容忍2台server宕机而保证数据可访问(即N台server最多容忍N-1台server宕机)。
+
+每个分区中的记录将被存放在Kafka的log目录中，文件名由topic的名字加上一个"-"符号，再加上一个分区ID(partition ID)构成
+
+### 修改topic
+
+**增加一个topic的分区数**
+```Bash
+> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --alter --topic my_topic_name --partitions 40
+```
+> 注意：分区的个数的变化，不会影响已有数据，因此如果数据应该于改分区，则会对消费者造成影响。如数据是通过散列(键)%number_of_partitions进行分区的。Kafka不会尝试以任何方式自动重新分配数据。
+
+> Kafka暂不支持减少分区数
+
+**增加topic配置**
+```Bash
+> bin/kafka-configs.sh --zookeeper zk_host:port/chroot --entity-type topics --entity-name my_topic_name --alter --add-config <property key>=<property value>
+```
+
+**删除topic配置**
+```Bash
+> bin/kafka-configs.sh --zookeeper zk_host:port/chroot --entity-type topics --entity-name my_topic_name --alter --delete-config <property key>
+```
+
+**删除topic**
+```Bash
+> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --delete --topic my_topic_name
+```
 
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
 
