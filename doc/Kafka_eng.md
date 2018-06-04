@@ -217,14 +217,12 @@ zookeeper.sync.time.ms		| 2000		| zk follower落后于zk leader的最长时间
 
 如下语法创建一个名为**my-topic**的主题，并设置max message size和flush rate:
 ```Bash
-> bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic my-topic --partitions 1
-    --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
+> bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic my-topic --partitions 1 --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
 ```
 
 覆盖默认值也可通过`alter`参数修改一个已经创建的topic
 ```Bash
-> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic
-    --alter --add-config max.message.bytes=128000
+> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic --alter --add-config max.message.bytes=128000
 ```
 
 可以通过如下命令检查某个主题覆盖了那些默认值
