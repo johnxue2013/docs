@@ -273,7 +273,7 @@ auto.offset.reset	| largest | 	如果ZK没有初始化的offset或者offset超�
 consumer.timeout.ms		| -1		| 默认-1,consumer在没有新消息时无限期的block。如果设置一个正值， 一个超时异常会抛出
 rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
-其他相关配置详见[此处][4]
+其他相关配置详见[此处][4] 
 
 ## 常见操作
 ### 创建和删除topic
