@@ -175,7 +175,7 @@ Producer向broker发送消息时，一旦这条消息被commit，因数replicati
 
 > 总之，Kafka默认保证`At least once`，并且允许通过设置Producer异步提交来实现`At most once`。而`Exactly once`要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。
 ## 配置
-### roker配置
+### broker配置
 必须的配置项如下
 - `broker.id`:
  unique and permanent name of each node in the cluster.
