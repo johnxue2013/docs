@@ -206,8 +206,6 @@ log.segment.bytes		| 1073741824	| 	单一的log segment文件大小
 log.roll.hours		| 168		| 开始一个新的log文件片段的最大时间
 background.threads		| 10		| 后台线程数
 num.partitions		| 1		| 默认分区数
-socket.send.buffer.bytes		| 102400		| socket SO_SNDBUFF参数
-socket.receive.buffer.bytes		| 102400	| 	socket SO_RCVBUFF参数
 zookeeper.connection.timeout.ms	| 	6000		| 指定客户端连接zookeeper的最大超时时间
 zookeeper.session.timeout.ms　　	| 	6000		| 连接zk的session超时时间
 zookeeper.sync.time.ms		| 2000		| zk follower落后于zk leader的最长时间
