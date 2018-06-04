@@ -273,14 +273,13 @@ auto.offset.reset	| largest | 	如果ZK没有初始化的offset或者offset超�
 consumer.timeout.ms		| -1		| 默认-1,consumer在没有新消息时无限期的block。如果设置一个正值， 一个超时异常会抛出
 rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
-其他相关配置详见[此处][4] 
+其他相关配置详见[此处][4]
 
 ## 常见操作
 ### 创建和删除topic
 用户可以手动创建一个topic也可以在producer发送消息到一个不存在的topic自动创建。使用如下命令可以创建一个topic
 ```Bash
-> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --create --topic my_topic_name
-      --partitions 20 --replication-factor 3 --config <property key>=<property value>
+> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --create --topic my_topic_name --partitions 20 --replication-factor 3 --config <property key>=<property value>
 ```
 复制因此表明有多少server将会复制消息，3台server将容忍2台server宕机而保证数据可访问(即N台server最多容忍N-1台server宕机)。
 
