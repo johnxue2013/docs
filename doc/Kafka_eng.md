@@ -279,7 +279,7 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 ### 创建和删除topic
 用户可以手动创建一个topic也可以在producer发送消息到一个不存在的topic自动创建。使用如下命令可以创建一个topic
 ```Bash
-> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --create --topic my_topic_name --partitions 20 --replication-factor 3 --config <property key>=<property value>
+> bin/kafka-topics.sh --zookeeper <zk_host:port> --create --topic <my_topic_name> --partitions 20 --replication-factor 3 --config <property key>=<property value>
 ```
 复制因此表明有多少server将会复制消息，3台server将容忍2台server宕机而保证数据可访问(即N台server最多容忍N-1台server宕机)。
 
@@ -307,7 +307,7 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
 **删除topic**
 ```Bash
-> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --delete --topic my_topic_name
+> bin/kafka-topics.sh --zookeeper <zk_host:port> --delete --topic <my_topic_name>
 ```
 ### leader 平衡
 默认情况下，无论一个broker是停止还是宕机在该broker上的分区leader都将转移到其他的副本上,也就是说当一个broker重启，它只能是其他分区的follower，将不用来处理client的读写。
