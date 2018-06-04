@@ -204,7 +204,7 @@ log.cleaner.enable		| false		| 是否log cleaning
 log.cleanup.policy		| delete　	| 	delete还是compat.
 log.segment.bytes		| 1073741824	| 	单一的log segment文件大小
 log.roll.hours		| 168		| 开始一个新的log文件片段的最大时间
-background.threads		| 10		| 后台线程序
+background.threads		| 10		| 后台线程数
 num.partitions		| 1		| 默认分区数
 socket.send.buffer.bytes		| 102400		| socket SO_SNDBUFF参数
 socket.receive.buffer.bytes		| 102400	| 	socket SO_RCVBUFF参数
