@@ -343,6 +343,7 @@ Managing Consumer Groups
 [Kafka 1.1 Document][8]
 [apache kafka技术分享系列][9]
 [kafka 中文教程][10]
+[Exactly Once语义与事务机制原理][12]
 
 
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
@@ -360,3 +361,4 @@ Managing Consumer Groups
 [9]: https://blog.csdn.net/lizhitao/article/details/39499283 "apache kafka技术分享系列"
 [10]: http://orchome.com/kafka/index "kafka 中文教程"
 [11]: https://gitlab.com/johnxue2013/kafka-simple-demo "项目首页"
+[12]: http://www.jasongj.com/kafka/transaction/ "Exactly Once语义与事务机制原理"
