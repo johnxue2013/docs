@@ -338,12 +338,12 @@ Managing Consumer Groups
 [点击进入项目首页][11]
 
 参考资料:
-[Kafka producer demo 生产者示例][6]
-[kafka-manage github 仓库首页][7]
-[Kafka 1.1 Document][8]
-[apache kafka技术分享系列][9]
-[kafka 中文教程][10]
-[Exactly Once语义与事务机制原理][12]
+1. [Kafka producer demo 生产者示例][6]
+2. [kafka-manage github 仓库首页][7]
+3. [Kafka 1.1 Document][8]
+4. [apache kafka技术分享系列][9]
+5. [kafka 中文教程][10]
+6. [Exactly Once语义与事务机制原理][12]
 
 
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
