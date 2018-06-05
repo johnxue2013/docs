@@ -327,7 +327,7 @@ auto.leader.rebalance.enable=true
 ### 检查消费者位置
 如检查一个名为my-group的消费者组消费主题为my-topic的情况
 ```Bash
-> bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-group
+> bin/kafka-consumer-groups.sh --bootstrap-server <localhost:9092> --describe --group my-group
 
 Note: This will only show information about consumers that use the Java consumer API (non-ZooKeeper-based consumers).
 
