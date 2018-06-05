@@ -21,6 +21,7 @@
     - 修改topic
     - leader 平衡
     - 检查消费者位置
+- demo 源码下载
 
 ## 简介
 Kafka是一个分布式的流式平台,提供三个关键功能:
@@ -333,6 +334,8 @@ Managing Consumer Groups
 ```
 其他更多操作可以参考[官网][5]
 
+## demo源码下载
+[点击进入项目首页][11]
 
 参考资料:
 [Kafka producer demo 生产者示例][6]
@@ -356,3 +359,4 @@ Managing Consumer Groups
 [8]: http://kafka.apache.org/documentation/ "Kafka 1.1 Document"
 [9]: https://blog.csdn.net/lizhitao/article/details/39499283 "apache kafka技术分享系列"
 [10]: http://orchome.com/kafka/index "kafka 中文教程"
+[11]: https://gitlab.com/johnxue2013/kafka-simple-demo "项目首页"
