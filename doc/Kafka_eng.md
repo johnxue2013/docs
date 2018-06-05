@@ -11,7 +11,6 @@
 - Kafka的保证
   - 数据可靠性保证
   - 数据一致性保证
-  - 消息投递保证
 - 配置
 	- Broker配置
 	- Topic配置
@@ -157,23 +156,6 @@ partition的多个replica中一个为leader，其余为follow，Producer只与Le
 
 2. 对于Leader新写入的msg，Consumer不能立刻消费，Leader会等待该消息被所有ISR中的replica同步后,更新HW,此时该消息才能被Consumer消费，即Consumer最多只能消费到HW位置
 
-### 消息投递保证(message delivery guarantee)
-有如下几种可能
-- `At most once` 消息可能会丢，但绝不会重复传输
-- `At least one` 消息绝不会丢，但可能会重复传输
-- `Exactly once` 每条消息肯定会被传输一次且仅传输一次，很多时候这是用户所想要的。
-
-#### 从producer到broker(仅限于high-api)
-Producer向broker发送消息时，一旦这条消息被commit，因数replication的存在，它就不会丢。但是如果Producer发送数据给broker后，遇到网络问题而造成通信中断，那Producer就无法判断该条消息是否已经commit。所以目前默认情况下一条消息从Producer到broker是确保了`At least once`，可通过设置Producer异步发送实现`At most once`
-
-#### 从broke到consumer
-读完消息先commit消费状态(保存offset)再处理消息。这种模式下，如果Consumer在commit后还没来得及处理消息就crash了，下次重新开始工作后就无法读到刚刚已提交而未处理的消息，这就对应于`At most once`
-
-读完消息先处理再commit消费状态(保存offset)。这种模式下，如果在处理完消息之后commit之前Consumer crash了，下次重新开始工作时还会处理刚刚未commit的消息，实际上该消息已经被处理过了。这就对应于`At least once`。在很多使用场景下，消息都有一个主键，所以消息的处理往往具有幂等性，即多次处理这一条消息跟只处理一次是等效的，那就可以认为是`Exactly once`。
-
-如果一定要做到`Exactly once`，就需要协调offset和实际操作的输出。经典的做法是引入两阶段提交。如果能让offset和操作输入存在同一个地方，会更简洁和通用。这种方式可能更好，因为许多输出系统可能不支持两阶段提交。比如，Consumer拿到数据后可能把数据放到HDFS，如果把最新的offset和数据本身一起写到HDFS，那就可以保证数据的输出和offset的更新要么都完成，要么都不完成，间接实现`Exactly once`。（目前就high level API而言，offset是存于Zookeeper中的，无法存于HDFS，而low level API的offset是由自己去维护的，可以将之存于HDFS中）
-
-> 总之，Kafka默认保证`At least once`，并且允许通过设置Producer异步提交来实现`At most once`。而`Exactly once`要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。
 ## 配置
 ### broker配置
 必须的配置项如下
