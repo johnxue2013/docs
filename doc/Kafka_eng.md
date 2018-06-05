@@ -333,6 +333,15 @@ Managing Consumer Groups
 ```
 其他更多操作可以参考[官网][5]
 
+
+参考资料:
+[Kafka producer demo 生产者示例][6]
+[kafka-manage github 仓库首页][7]
+[Kafka 1.1 Document][8]
+[apache kafka技术分享系列][9]
+[kafka 中文教程][10]
+
+
 [1]:http://kafka.apache.org/documentation/#brokerconfigs "broker配置列表"
 
 [2]:http://kafka.apache.org/documentation/#topicconfigs "topic级别配置列表"
@@ -341,3 +350,9 @@ Managing Consumer Groups
 
 [4]:http://kafka.apache.org/documentation/#consumerconfigs "consumer的配置列表"
 [5]:http://kafka.apache.org/documentation/#operations "更多操作"
+
+[6]: http://f.dataguru.cn/thread-854002-1-1.html "Kafka producer demo 生产者示例"
+[7]: https://github.com/yahoo/kafka-manager "kafka-manage github 仓库首页"
+[8]: http://kafka.apache.org/documentation/ "Kafka 1.1 Document"
+[9]: https://blog.csdn.net/lizhitao/article/details/39499283 "apache kafka技术分享系列"
+[10]: http://orchome.com/kafka/index "kafka 中文教程"
