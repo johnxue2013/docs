@@ -200,22 +200,22 @@ zookeeper.sync.time.ms		| 2000		| zk follower落后于zk leader的最长时间
 
 如下语法创建一个名为**my-topic**的主题，并设置max message size和flush rate:
 ```Bash
-> bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic my-topic --partitions 1 --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
+> bin/kafka-topics.sh --zookeeper <localhost:2181> --create --topic <my-topic> --partitions 1 --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
 ```
 
 覆盖默认值也可通过`alter`参数修改一个已经创建的topic
 ```Bash
-> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic --alter --add-config max.message.bytes=128000
+> bin/kafka-configs.sh --zookeeper <localhost:2181> --entity-type topics --entity-name <my-topic> --alter --add-config max.message.bytes=128000
 ```
 
 可以通过如下命令检查某个主题覆盖了那些默认值
 ```Bash
-> bin/kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name my-topic --describe
+> bin/kafka-configs.sh --zookeeper <localhost:2181> --entity-type topics --entity-name <my-topic> --describe
 ```
 
 通过如下命令移除覆盖值
 ```Bash
-> bin/kafka-configs.sh --zookeeper localhost:2181  --entity-type topics --entity-name my-topic --alter --delete-config max.message.bytes
+> bin/kafka-configs.sh --zookeeper <localhost:2181>  --entity-type topics --entity-name <my-topic> --alter --delete-config max.message.bytes
 ```
 
 其他topic相关配置详见[此处][2]
@@ -270,7 +270,7 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
 **增加一个topic的分区数**
 ```Bash
-> bin/kafka-topics.sh --zookeeper zk_host:port/chroot --alter --topic my_topic_name --partitions 40
+> bin/kafka-topics.sh --zookeeper <zk_host:port> --alter --topic <my_topic_name> --partitions 40
 ```
 > 注意：分区的个数的变化，不会影响已有数据，因此如果数据应该于改分区，则会对消费者造成影响。如数据是通过散列(键)%number_of_partitions进行分区的。Kafka不会尝试以任何方式自动重新分配数据。
 
@@ -278,12 +278,12 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 
 **增加topic配置**
 ```Bash
-> bin/kafka-configs.sh --zookeeper zk_host:port/chroot --entity-type topics --entity-name my_topic_name --alter --add-config <property key>=<property value>
+> bin/kafka-configs.sh --zookeeper <zk_host:port> --entity-type topics --entity-name <my_topic_name> --alter --add-config <property key>=<property value>
 ```
 
 **删除topic配置**
 ```Bash
-> bin/kafka-configs.sh --zookeeper zk_host:port/chroot --entity-type topics --entity-name my_topic_name --alter --delete-config <property key>
+> bin/kafka-configs.sh --zookeeper <zk_host:port> --entity-type topics --entity-name <my_topic_name> --alter --delete-config <property key>
 ```
 
 **删除topic**
@@ -298,7 +298,7 @@ rebalance.retries.max	| 	4		| rebalance时的最大尝试次数
 可以使用如下命令是Kafka重新恢复已经恢复副本的leader地位：
 
 ```Bash
-> bin/kafka-preferred-replica-election.sh --zookeeper <zk_host:port>/chroot
+> bin/kafka-preferred-replica-election.sh --zookeeper <zk_host:port>
 ```
 
 由于运行此命令是乏味的，可以配置Kafka自动执行该操作
@@ -310,7 +310,7 @@ auto.leader.rebalance.enable=true
 ### 检查消费者位置
 如检查一个名为my-group的消费者组消费主题为my-topic的情况
 ```Bash
-> bin/kafka-consumer-groups.sh --bootstrap-server <localhost:9092> --describe --group my-group
+> bin/kafka-consumer-groups.sh --bootstrap-server <localhost:9092> --describe --group <my-group>
 
 Note: This will only show information about consumers that use the Java consumer API (non-ZooKeeper-based consumers).
 
@@ -322,7 +322,7 @@ my-topic                       2          2               3               1     
 
 该命令也可运行在基于ZK的集群中:
 ```Bash
-> bin/kafka-consumer-groups.sh --zookeeper localhost:2181 --describe --group my-group
+> bin/kafka-consumer-groups.sh --zookeeper <localhost:2181> --describe --group <my-group>
 
 Note: This will only show information about consumers that use ZooKeeper (not those using the Java consumer API).
 
