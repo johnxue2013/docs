@@ -121,9 +121,9 @@ public class BufferFillDrain {
 
 > 当全部元素都读取完毕时，调用compact()和clear()效果是一样的。
 
-![压缩前](https://github.com/johnxue2013/docs/blob/master/images/2_6.jpg)
+![压缩前](https://github.com/johnxue2013/docs/blob/master/images/2_6.png)
 调用compact()方法后
-![压缩前](https://github.com/johnxue2013/docs/blob/master/images/2_7.jpg)
+![压缩前](https://github.com/johnxue2013/docs/blob/master/images/2_7.png)
 
 此时数据元素2-5被复制到0-3的位置，位置4和5不受影响，再次写入时将被覆盖。最后上界limit被设置为容量大小，并做好被再次填充的准备。
 
