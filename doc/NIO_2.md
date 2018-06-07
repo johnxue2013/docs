@@ -17,7 +17,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * 从一个通道复制数据到另一个通道Â
+ * 从一个通道复制数据到另一个通道
  * @author han.xue
  * @since 2018-05-12 23:20:20
  */
