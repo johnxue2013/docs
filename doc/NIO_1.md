@@ -197,7 +197,7 @@ buffer.position(3).limit(6).mark().position(5);
 CharBuffer buffer = buffer.duplicate();
 buffer.clear();
 ```
-![复制](https://github.com/johnxue2013/docs/blob/master/images/2_12.jpg)
+![复制](https://github.com/johnxue2013/docs/blob/master/images/2_12.png)
 
 
 > 如果一个只读的缓冲区与一个可写的缓冲区共享数据，或者有包装好的备份数组，那么对这个可写的缓冲区或直接对这个数组的改变将反映在所有关联的缓冲区上，包括只读缓冲区。
