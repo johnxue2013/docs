@@ -3,7 +3,7 @@
 Channel用于在字节缓冲区和位于通道另一侧的实体（通常是一个文件或套接字）之间有效地传输数据。
 
 ### 打开通道
-I/O可以分为广义的File I/O和Stream I/O，那么响应的有两种类型的通道也就不足为怪了，它们是文件(file)通道和套接字(socket)通道。因此有FileChannel和三个Socket通道类：SocketChannel、ServerSocketChannel和DatagramChannel
+I/O可以分为广义的File I/O和Stream I/O，那么相应的有两种类型的通道也就不足为怪了，它们是文件(file)通道和套接字(socket)通道。因此有FileChannel和三个Socket通道类：SocketChannel、ServerSocketChannel和DatagramChannel
 
 SocketChannel有可以直接创建新socket通道的工厂方法。但是一个FileChannel通道只能通过在一个打开的RandomAccessFile
 、FileInputStream或FileOutputStream对象上调用getChannel()方法来获取。不可以直接创建一个FileChannel对象
