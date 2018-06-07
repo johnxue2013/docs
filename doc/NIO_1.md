@@ -181,6 +181,7 @@ public abstract class CharBuffer extends Buffer implements CharSequence,Comparab
   public abstract CharBuffer asReadOnlyBuffer();
 
   //与复制相似，但slice创建一个从原始缓冲区当前位置开始的新缓冲区，且其容量是原始缓冲区的剩余元素数量(limit-position).
+  //也就是slice()获取的是从位置position开始到limit所在位置的数据
   //这个新缓冲区与原始缓冲区共享一段数据元素子序列。分割出来的换冲过去也会继承只读和直接属性。
   public abstract CharBuffer slice();
 }
