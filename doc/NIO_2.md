@@ -58,12 +58,6 @@ public class ChannelCopy {
 			buffer.compact();
 		}
 
-
-
-		/**
-		此处while循环存在的意义就是当上面的while循环退出时，是读到了输入流的EOF，
-		但是此时缓存buffer里面可能还是有值的，所以需要再读一遍
-		*/
 		buffer.flip();
 
 		while (buffer.hasRemaining()) {
