@@ -51,6 +51,7 @@ public class ChannelCopy {
 			//prepare the buffer to be drained
 			buffer.flip();
 			//write to the channel; may block
+			//某些通道可能不会一次写入buffer中的所有数据
 			dest.write(buffer);
 
 			//if partial transfer,shift remainder down
@@ -80,6 +81,7 @@ public class ChannelCopy {
 			buffer.flip();
 			// make sure that buffer was fully drained
 			while (buffer.hasRemaining()) {
+				//某些通道可能不会一次写入buffer中的所有数据
 				dest.write(buffer);
 			}
 			//make the buffer empty,ready for filling
