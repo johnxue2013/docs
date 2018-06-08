@@ -352,6 +352,8 @@ Maven的生命周期与插件互相绑定，用以完成实际构建任务。即
 
 此pom.xml中的`<packaging>`值必须为pom，通过`modules`标签构成了Maven的多模块。
 
+> 使用此命令更新maven项目的版本号，从而省去每个字module逐个修改版本号:mvn versions:set -DnewVersion=<想设置的版本号>
+
 ## 继承    
 
 
