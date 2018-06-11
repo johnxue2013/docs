@@ -98,6 +98,13 @@ public class ChannelCopy {
 
 此外，如果一个已经被中断的线程(interrupt status被设置为中断状态)视图访问一个通道，那么这个通道将立即被关闭，同时将抛出异常
 
+```java
+public interface Channel {
+	public boolean isOpen();
+	public void close() throws IOException;
+}
+```
+
 > 线程的中断状态可以通过Thread.interrupted()方法清除。
 
 ### Scatter/Gather
@@ -132,3 +139,29 @@ public interface GatheringByteChannel
 
 }
 ```
+
+
+```java
+scatter使用方法demo
+ByteBuffer header = ByteBuffer.allocateDirect(10);
+ByteBuffer body = ByteBuffer.allocateDirect(80);
+
+ByteBuffer[] buffers = {header, body};
+
+//假定channel链接到了一个有48字节数据等待读取的socket上
+//当read方法返回时，bytesRead就被赋值48，header缓冲区将包含前10个从通道
+//连续读取的字节，而body则包含接下来的38个字节，通道会自动的将数据scatter到这两个缓冲区中。缓冲区
+//已经被填充了(尽管此例子中body缓冲区还有空间去填充更多数据),
+int bytesRead = channel.read(buffers);
+```
+
+```java
+//使用gather操作将多个缓冲区的数据组合并发送出去
+body.clear( );
+body.put("FOO".getBytes()).flip( ); // "FOO" as bytes
+header.clear( );
+header.putShort (TYPE_FILE).putLong (body.limit()).flip( );
+long bytesWritten = channel.write (buffers);
+````
+
+使用得当的话，Scatter/Gather 会是一个极其强大的工具。它允许您委托操作系统来完成辛苦 活:将读取到的数据分开存放到多个存储桶(bucket)或者将不同的数据区块合并成一个整体。这 是一个巨大的成就，因为操作系统已经被高度优化来完成此类工作了。它节省了您来回移动数据的工作，也就避免了缓冲区拷贝和减少了您需要编写、调试的代码数量。既然您基本上通过提供数据 容器引用来组合数据，那么按照不同的组合构建多个缓冲区阵列引用，各种数据区块就可以以不同 的方式来组合了.
