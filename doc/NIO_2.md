@@ -262,3 +262,5 @@ public class Marketing {
 ## 文件通道(FileChannel)
 
 ![FileChannel](https://github.com/johnxue2013/docs/blob/master/images/3_7.png)
+
+文件通道总是阻塞式的，因此不能被置于非阻塞模式。`FileChannel`对象是线程安全(thread-safe)的。多个进程可以在同一个实例上并发调用方法而 不会引起任何问题，不过并非所有的操作都是多线程的(multithreaded)。影响通道位置或者影响 文件大小的操作都是单线程的(single-threaded)。如果有一个线程已经在执行会影响通道位置或文 件大小的操作，那么其他尝试进行此类操作之一的线程必须等待。并发行为也会受到底层的操作系 统或文件系统影响。
