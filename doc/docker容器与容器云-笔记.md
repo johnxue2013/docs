@@ -2,6 +2,7 @@
 
 ![image](https://github.com/johnxue2013/tools/blob/master/images/docker-2-1.png)
 
+
 ## 第一部分
 ### 第二章
 
@@ -18,8 +19,11 @@
   docker run -it --name mytest ubuntu /bin/bash
   ```
 
-  > docker -d 参数可以让容器在后台运行，并在控制台打印出容器的ID 如：
-  ![image](https://github.com/johnxue2013/tools/blob/master/images/docker-run.png)
+  docker -d 参数可以让容器在后台运行，并在控制台打印出容器的ID 如：
+  ```Bash
+  ➜  ~ docker run -d --name my-redis redis
+  823f91c2c4d0a35d40d2e76c1e9d05eabd124f2c2e8b213836727cf63ac36d28
+  ```
 
 - `docker start/stop/restart命令`
   docker run命令可以新建一个容器(container)来运行，而对于已经存在的容器，可以通过docker start/stop/restart命令来启动、停止和重启。使用docker run命令时，Docker将自动为每个新容器分配唯一ID作为标识。docker start等命令一般利用容器ID标识确定具体容器。
