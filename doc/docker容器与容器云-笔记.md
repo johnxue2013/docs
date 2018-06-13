@@ -9,6 +9,7 @@
 ### Docker参数解读
 容器的生命周期涉及容器启动、停止等功能。
 - `docker run 命令`
+
   命令格式
   ````Bash
   docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -29,6 +30,7 @@
   docker run命令可以新建一个容器(container)来运行，而对于已经存在的容器，可以通过docker start/stop/restart命令来启动、停止和重启。使用docker run命令时，Docker将自动为每个新容器分配唯一ID作为标识。docker start等命令一般利用容器ID标识确定具体容器。
 
 - docker pull命令
+
   语法
   ```Bash
   docker pull [OPTIONS] NAME[:TAG|@DIGEST]
@@ -49,12 +51,14 @@
   ```
 
 - docker images命令
+
   docker images 列出主机上所有镜像
 
 - docker rmi和docker rm
+
   一个用于删除镜像，一个用于删除容器，可以同事删除多个镜像或者容器，也可按条件来删除
 
 - docker attach命令
+
   可以连接到正在运行的容器，观察该容器的运行情况，或与容器的主进程进行交互
 
--
