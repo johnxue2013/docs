@@ -1,0 +1,1966 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>接口文档</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style>
+	*{
+		padding: 0;
+		margin: 0 auto;
+		text-decoration: none;
+	}
+	body {
+	    text-align: center;
+	    margin: 0;
+	    padding: 0;
+	    border: 0;
+	    background: #f9f9f9 url(http://www.w3school.com.cn/ui/holder.gif) top center repeat-y;
+	}
+	div#wrapper {
+		margin: 0 auto;
+		padding: 0;
+		border: 0;
+		width: 1129px;
+		text-align: left;
+		background: transparent url(http://www.w3school.com.cn/ui/wrapper.gif) top left repeat-y;
+	}
+	div#navsecond {
+		float: left;
+		margin: 0 0 0 12px;
+		padding: 0;
+		border: 0;
+		width: 180px;
+		background: #EFEFEF;
+		position: fixed;
+		height: 100%;
+   		overflow-y: overlay;
+   		overflow:scroll;
+	}
+	div#navsecond li, div#sidebar li {
+	    list-style: none;
+	    line-height: 22px;
+	}
+	div#navsecond ul, div#navsecond li, div#sidebar ul, div#sidebar li {
+	    margin: 0;
+	    padding: 0 0 0 5px;
+	}
+	
+	.example_parameter{
+		width: 610px;
+   		height: 210px;
+   		margin: 20px;
+   		padding: 10px;
+    	border-collapse: collapse;
+    	border: 1px solid #aaa;
+	}
+	
+	div#maincontent {
+		float: left;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		width: 740px;
+		background: transparent;
+		margin-left: 195px;
+	}
+	table.dataintable {
+		margin-top: 10px;
+		border-collapse: collapse;
+		border: 1px solid #aaa;
+		width: 100%;
+	}
+	table.browsersupport {
+		margin-top: 15px;
+		border-collapse: collapse;
+		width: 70%;
+	}
+	table.dataintable {
+		margin-top: 10px;
+		border-collapse: collapse;
+		border: 1px solid #aaa;
+		width: 100%;
+	}
+	body {
+		font-family: Verdana, Arial, '宋体';
+		font-size: 12px;
+	}
+	table.browsersupport th {
+		padding: 3px;
+		vertical-align: baseline;
+		padding: 5px 15px 5px 6px;
+		background-color: #d5d5d5;
+		border: 1px solid #aaa;
+		text-align: left;
+		min-width: 70px;
+	}
+	table.browsersupport td {
+		padding: 3px;
+		height: 32px;
+		vertical-align: middle;
+		background-color: #efefef;
+		border: 1px solid #dadada;
+	}
+	div#maincontent	div {
+		width: 670px;
+		margin: 0 0 0 15px;
+		padding: 20px 0 20px 0;
+		border: 0;
+		border-top: 1px solid #aaa;
+		border-bottom: 1px solid #aaa;
+	}
+	div#maincontent	p {
+		margin-bottom: 40px;
+	}
+	div#navsecond a:link, div#navsecond a:visited {
+	    text-decoration: none;
+	    color: #000;
+	    background: transparent;
+	}
+	div#maincontent h2, div#sidebar div#ad h2, body#homefirst div#maincontent h3 {
+		font-size: 14px;
+		margin-bottom: 15px;
+	}
+	div#navsecond a:link, div#navsecond a:visited {
+	    text-decoration: none;
+	    color: #000;
+	    background: transparent;
+	}
+	#maincontent h3{
+		font-size: 12px;
+    	font-weight: 600;
+    	margin: 10px 0px 10px 20px;
+    	color: #9e9e9b;
+	}
+	#ad_head {
+	    width: 1091px;
+	    height: 80px;
+	    background-color: #efefef;
+	}
+	#index_text{
+	    background: #bebebe;
+	    height: 40px;
+	    line-height: 40px;
+	    text-align: center;
+	    color: white;
+	    font-weight: 900;
+	    font-size: 22px;
+	    margin-bottom: 10px;
+	    font-family: '微软雅黑';
+	}
+	.interface_content_style{
+    	width: 705px;
+    	border: 1px solid #bebebe;
+    	background: #f7f6f6;
+	}
+	div#maincontent h1 {
+		margin: 15px;
+		font-size: 20px;
+		font-weight: 900;
+		font-family: '微软雅黑';
+	}
+  </style>
+</head>
+<body>
+	<div id="wrapper">
+	<div id="navsecond">
+					<h2 id='index_text'>接口列表</h2><ul>
+			<li><a href="#/interactive/activity/facebattle/activeList">/interactive/activity/facebattle/activeList</a></li>
+			<li><a href="#/interactive/activity/facebattle/activeSetting">/interactive/activity/facebattle/activeSetting</a></li>
+			<li><a href="#/interactive/activity/facebattle/awardSetting">/interactive/activity/facebattle/awardSetting</a></li>
+			<li><a href="#/interactive/activity/facebattle/baseSetting">/interactive/activity/facebattle/baseSetting</a></li>
+			<li><a href="#/interactive/activity/facebattle/createPost">/interactive/activity/facebattle/createPost</a></li>
+			<li><a href="#/interactive/activity/facebattle/delActive">/interactive/activity/facebattle/delActive</a></li>
+			<li><a href="#/interactive/activity/facebattle/endActive">/interactive/activity/facebattle/endActive</a></li>
+			<li><a href="#/interactive/activity/facebattle/exchange">/interactive/activity/facebattle/exchange</a></li>
+			<li><a href="#/interactive/activity/facebattle/getBarrage">/interactive/activity/facebattle/getBarrage</a></li>
+			<li><a href="#/interactive/activity/facebattle/getJoinLog">/interactive/activity/facebattle/getJoinLog</a></li>
+			<li><a href="#/interactive/activity/facebattle/getPrizesDetail">/interactive/activity/facebattle/getPrizesDetail</a></li>
+			<li><a href="#/interactive/activity/facebattle/getQrcode">/interactive/activity/facebattle/getQrcode</a></li>
+			<li><a href="#/interactive/activity/facebattle/getRaceMes">/interactive/activity/facebattle/getRaceMes</a></li>
+			<li><a href="#/interactive/activity/facebattle/getRank">/interactive/activity/facebattle/getRank</a></li>
+			<li><a href="#/interactive/activity/facebattle/getUserManageList">/interactive/activity/facebattle/getUserManageList</a></li>
+			<li><a href="#/interactive/activity/facebattle/guestIndex">/interactive/activity/facebattle/guestIndex</a></li>
+			<li><a href="#/interactive/activity/facebattle/index">/interactive/activity/facebattle/index</a></li>
+			<li><a href="#/interactive/activity/facebattle/launchGroup">/interactive/activity/facebattle/launchGroup</a></li>
+			<li><a href="#/interactive/activity/facebattle/launchPK">/interactive/activity/facebattle/launchPK</a></li>
+			<li><a href="#/interactive/activity/facebattle/myprize">/interactive/activity/facebattle/myprize</a></li>
+			<li><a href="#/interactive/activity/facebattle/share2Friend">/interactive/activity/facebattle/share2Friend</a></li>
+			<li><a href="#/interactive/activity/facebattle/shareSetting">/interactive/activity/facebattle/shareSetting</a></li>
+			<li><a href="#/interactive/activity/facebattle/showSetting">/interactive/activity/facebattle/showSetting</a></li>
+			<ul>
+
+	</div>
+	<div id="maincontent">
+		<div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/activeList">/interactive/activity/facebattle/activeList</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;活动列表
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/activeSetting">/interactive/activity/facebattle/activeSetting</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;活动项设置
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>ActiveSettingRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+			<tr><td>limitDaily</td><td>NULL</td><td>Integer</td><td>每人每天最多参与次数，最高1000000
+</td></tr>
+			<tr><td>limitTotal</td><td>NULL</td><td>Integer</td><td>每人总参与次数，最高1000000
+</td></tr>
+			<tr><td>memberCardType</td><td>NULL</td><td>Integer</td><td>会员卡类型
+</td></tr>
+			<tr><td>points</td><td>NULL</td><td>Integer</td><td>积分兑换次数值 积分/次
+</td></tr>
+			<tr><td>pointsExchange</td><td>NULL</td><td>Integer</td><td>积分兑换开关 0-不允许，1-允许
+</td></tr>
+			<tr><td>winLimit</td><td>NULL</td><td>Integer</td><td>单个粉丝中奖次数上限(0表示不限)
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"bizId":0,
+	"bizType":0,
+	"limitDaily":0,
+	"limitTotal":0,
+	"memberCardType":0,
+	"pid":0,
+	"points":0,
+	"pointsExchange":0,
+	"source":0,
+	"wid":0,
+	"winLimit":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/awardSetting">/interactive/activity/facebattle/awardSetting</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;奖品设置
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>ShowSettingRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+			<tr><td>ad_img</td><td>NULL</td><td>String</td><td>广告图图片
+</td></tr>
+			<tr><td>ad_url_id</td><td>NULL</td><td>Long</td><td>广告图跳转链接id
+</td></tr>
+			<tr><td>is_ad</td><td>NULL</td><td>Integer</td><td>是否开启广告图0-不开启，1-开启
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"ad_img":"",
+	"ad_url_id":0,
+	"bizId":0,
+	"bizType":0,
+	"is_ad":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/baseSetting">/interactive/activity/facebattle/baseSetting</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;基本设置
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>BaseSettingRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityDesc</td><td>NULL</td><td>String</td><td>活动说明
+</td></tr>
+			<tr><td>activityMode</td><td>NULL</td><td>Integer</td><td>活动模式(1 PK  2 团战)
+</td></tr>
+			<tr><td>activityName</td><td>NULL</td><td>String</td><td>活动名称
+</td></tr>
+			<tr><td>crowdType</td><td>NULL</td><td>Integer</td><td>人群类型0不限、1粉丝、2会员
+</td></tr>
+			<tr><td>endTime</td><td>NULL</td><td>Date</td><td>结束时间
+</td></tr>
+			<tr><td>exchangeOptions</td><td>NULL</td><td>String</td><td>兑换奖品填写项(2真实姓名,3手机号,4邮箱,5微信号,6QQ号,7邮寄地址,8其他，格式如”1,2,3,6”)
+</td></tr>
+			<tr><td>exchangeOther</td><td>NULL</td><td>String</td><td>兑奖其他的名称
+</td></tr>
+			<tr><td>groupLimit</td><td>NULL</td><td>Integer</td><td>人数配置
+</td></tr>
+			<tr><td>joinOptions</td><td>NULL</td><td>String</td><td>参与活动填写项(2真实姓名,3手机号,4邮箱,5微信号,6QQ号,7邮寄地址,8其他，格式如”1,2,3,6”)
+</td></tr>
+			<tr><td>levelLabel</td><td>NULL</td><td>String</td><td>选择人群等级标签值，格式如”1,2,3”，-1代表全部等级
+</td></tr>
+			<tr><td>startTime</td><td>NULL</td><td>Date</td><td>开始时间
+</td></tr>
+			<tr><td>timeLimit</td><td>NULL</td><td>Integer</td><td>活动时间
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityDesc":"",
+	"activityMode":0,
+	"activityName":"",
+	"bizId":0,
+	"bizType":0,
+	"crowdType":0,
+	"endTime":null,
+	"exchangeOptions":"",
+	"exchangeOther":"",
+	"groupLimit":0,
+	"joinOptions":"",
+	"levelLabel":"",
+	"pid":0,
+	"source":0,
+	"startTime":null,
+	"timeLimit":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/createPost">/interactive/activity/facebattle/createPost</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取海报链接
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;han.xue @date 2018-07-19 15:52:31
+
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>CreatePostRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>joinLogId</td><td>NULL</td><td>Long</td><td>参与记录ID
+
+</td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"joinLogId":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>CreatePostResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>postUrl</td><td>String</td><td>生成的海报地址
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"postUrl":""
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/delActive">/interactive/activity/facebattle/delActive</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;删除活动
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>DelActiveRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"bizId":0,
+	"bizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/endActive">/interactive/activity/facebattle/endActive</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;结束活动
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>EndActiveRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"bizId":0,
+	"bizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/exchange">/interactive/activity/facebattle/exchange</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;兑奖
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;表单提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>ExchangeRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>exchangeCode</td><td>NULL</td><td>String</td><td>兑奖密码
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>type</td><td>NULL</td><td>Integer</td><td>奖品类型：0表示实物 1表示虚拟 3表示代金券4积分5余额6成长值7红包
+
+</td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>winnerId</td><td>NULL</td><td>Long</td><td>winner表id
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">activityId : 0
+winnerId : 0
+fbBizType : 0
+source : 0
+wid : 0
+fbBizId : 0
+pid : 0
+type : 0
+exchangeCode : 
+</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table>null
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getBarrage">/interactive/activity/facebattle/getBarrage</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取弹幕
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;表单提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>BaseMobileRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">activityId : 0
+fbBizType : 0
+source : 0
+wid : 0
+fbBizId : 0
+pid : 0
+</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table>null
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getJoinLog">/interactive/activity/facebattle/getJoinLog</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取参与记录
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>GetJoinLogRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>GetJoinLogResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>joinLogs</td><td>List&lt;<a href='#JoinLogItemVO'>JoinLogItemVO</a>&gt;</td><td></td></tr>
+</table><h3>JoinLogItemVO</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>joinTime</td><td>Date</td><td></td></tr>
+			<tr><td>score</td><td>Integer</td><td>获取的分数
+
+</td></tr>
+			<tr><td>status</td><td>String</td><td>状态(字符描述)
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"joinLogs":[]
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getPrizesDetail">/interactive/activity/facebattle/getPrizesDetail</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取奖品详情
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;han.xue @date 2018-07-19 15:52:20
+
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>GetPrizesDetailRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>GetPrizesDetailResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>prizes</td><td>List&lt;<a href='#PrizeDetailVO'>PrizeDetailVO</a>&gt;</td><td>奖品明细列表
+
+</td></tr>
+</table><h3>PrizeDetailVO</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>prizeDesc</td><td>String</td><td>奖品描述
+
+</td></tr>
+			<tr><td>prizeId</td><td>Long</td><td>奖品 id
+
+</td></tr>
+			<tr><td>prizeName</td><td>String</td><td>奖品名称
+
+</td></tr>
+			<tr><td>prizePic</td><td>String</td><td>奖品图片
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"prizes":[]
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getQrcode">/interactive/activity/facebattle/getQrcode</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;投放二维码
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>QrcodeRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"bizId":0,
+	"bizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getRaceMes">/interactive/activity/facebattle/getRaceMes</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取跑马信息
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;表单提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>BaseMobileRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">activityId : 0
+fbBizType : 0
+source : 0
+wid : 0
+fbBizId : 0
+pid : 0
+</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table>null
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getRank">/interactive/activity/facebattle/getRank</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取排行榜
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>RankRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>RankResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>rankList</td><td>List&lt;<a href='#GroupItemVO'>GroupItemVO</a>&gt;</td><td>排行榜
+
+</td></tr>
+</table><h3>GroupItemVO</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>avatarUrl</td><td>String</td><td>照片地址
+
+</td></tr>
+			<tr><td>launcher</td><td>Boolean</td><td>是否是团战发起者(true表示是，null表示否)
+
+</td></tr>
+			<tr><td>nickName</td><td>String</td><td>用户昵称
+
+</td></tr>
+			<tr><td>score</td><td>Integer</td><td>得分
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"rankList":[]
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/getUserManageList">/interactive/activity/facebattle/getUserManageList</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取用户管理列表
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;john.jiang
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>UserManageRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>@description 活动id
+@default
+@example
+
+</td></tr>
+			<tr><td>condition</td><td>NULL</td><td>Integer</td><td>查询条件 0 昵称 1 手机号
+
+</td></tr>
+			<tr><td>page</td><td>NULL</td><td>Integer</td><td>第几页
+
+</td></tr>
+			<tr><td>pageSize</td><td>NULL</td><td>Integer</td><td>每页的大小
+
+</td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td>@description 公众号id
+@default
+@example
+
+</td></tr>
+			<tr><td>value</td><td>NULL</td><td>String</td><td>查询条件的值
+
+</td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td>@description pc-商户id moblie-用户id
+@default
+@example
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"condition":0,
+	"page":0,
+	"pageSize":0,
+	"pid":0,
+	"traceId":"",
+	"value":"",
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>UserManageResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>heads</td><td>List&lt;String&gt;</td><td>列表头
+
+</td></tr>
+			<tr><td>list</td><td>List&lt;<a href='#UserSingleVo'>UserSingleVo</a>&gt;</td><td>奖品用户信息列表
+
+</td></tr>
+			<tr><td>page</td><td><a href="#Page">Page</a></td><td>分页
+
+</td></tr>
+			<tr><td>showExchangeNum</td><td>int</td><td>是否展示积分兑换次数
+
+</td></tr>
+			<tr><td>showShareNum</td><td>int</td><td>是否展示分享兑换次数
+
+</td></tr>
+			<tr><td>type</td><td>Integer</td><td>0代表非对接的项目 ，大于0为对接的项目
+
+</td></tr>
+</table><h3>UserSingleVo</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>id</td><td>Integer</td><td>用户id
+
+</td></tr>
+			<tr><td>nick</td><td>String</td><td>用户昵称
+
+</td></tr>
+			<tr><td>numUsed</td><td>Integer</td><td>已用次数
+
+</td></tr>
+			<tr><td>pointExchangeNum</td><td>String</td><td>积分兑换次数
+
+</td></tr>
+			<tr><td>prizeSources</td><td>List&lt;<a href='#PrizeSource'>PrizeSource</a>&gt;</td><td>对接的时候需要展示的信息
+
+</td></tr>
+			<tr><td>prizeStr</td><td>String</td><td>获得奖品 (对接的时候不展示)
+
+</td></tr>
+			<tr><td>values</td><td>List&lt;Object&gt;</td><td>动态信息
+
+</td></tr>
+</table><h3>PrizeSource</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>conditionDes</td><td>String</td><td>次数来源
+
+</td></tr>
+			<tr><td>prizeName</td><td>String</td><td>奖品名
+
+</td></tr>
+</table><h3>Page</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>pageSize(page_size)</td><td>int</td><td>每页显示条数
+
+</td></tr>
+			<tr><td>total(total_count)</td><td>int</td><td>总记录数
+
+</td></tr>
+			<tr><td>totalPage(total_page)</td><td>int</td><td>总页数
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"heads":[],
+		"list":[],
+		"page":null,
+		"showExchangeNum":0,
+		"showShareNum":0,
+		"type":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/guestIndex">/interactive/activity/facebattle/guestIndex</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;客态页
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>GuestIndexRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>battleId</td><td>NULL</td><td>Long</td><td>战斗id
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>shareWid</td><td>NULL</td><td>Long</td><td>分享者wid
+
+</td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"battleId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"shareWid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>GuestIndexResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityMode</td><td>Byte</td><td>活动模式(1 PK  2 团战)
+
+</td></tr>
+			<tr><td>activityName</td><td>String</td><td>活动名称
+
+</td></tr>
+			<tr><td>hasJoin</td><td>Boolean</td><td>是否参加过
+
+</td></tr>
+			<tr><td>hasJoined</td><td>Byte</td><td>是否已经参加
+
+</td></tr>
+			<tr><td>master</td><td>Byte</td><td>是否是发起者
+
+</td></tr>
+			<tr><td>self</td><td>Boolean</td><td>是否是进入自己的链接
+
+</td></tr>
+			<tr><td>timesLeft</td><td>Integer</td><td>可参与的剩余次数
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activityMode":0,
+		"activityName":"",
+		"hasJoin":null,
+		"hasJoined":0,
+		"master":0,
+		"self":null,
+		"timesLeft":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/index">/interactive/activity/facebattle/index</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;首页接口
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;han.xue @date 2018-07-18 14:42:59
+
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>IndexRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>battleId</td><td>NULL</td><td>Long</td><td>战斗ID 扫投放码进入时为null
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>IndexResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityMode</td><td>Byte</td><td>活动模式(1 PK  2 团战)
+
+</td></tr>
+			<tr><td>activityName</td><td>String</td><td>活动名称
+
+</td></tr>
+			<tr><td>hasJoined</td><td>Byte</td><td>是否已经参加
+
+</td></tr>
+			<tr><td>master</td><td>Byte</td><td>是否是发起者
+
+</td></tr>
+			<tr><td>timesLeft</td><td>Integer</td><td>可参与的剩余次数
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activityMode":0,
+		"activityName":"",
+		"hasJoined":0,
+		"master":0,
+		"timesLeft":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/launchGroup">/interactive/activity/facebattle/launchGroup</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;发起团战或者重新上传团战的照片
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>LaunchGroupRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>avatarUrl</td><td>NULL</td><td>String</td><td>照片url
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"avatarUrl":"",
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>LaunchGroupResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>beautyDescriptions</td><td>List&lt;String&gt;</td><td>颜值描述(三个标签描述)
+
+</td></tr>
+			<tr><td>beautySummary</td><td>String</td><td>颜值描述（一句话总结）
+
+</td></tr>
+			<tr><td>groupRanking</td><td>List&lt;<a href='#GroupItemVO'>GroupItemVO</a>&gt;</td><td>排行榜
+
+</td></tr>
+			<tr><td>historyScore</td><td>Integer</td><td>历史分数(第一次发起PK该字段为null)
+
+</td></tr>
+			<tr><td>joinId</td><td>Long</td><td>发起团战或者PK的参与ID
+
+</td></tr>
+			<tr><td>myRanking</td><td>Integer</td><td>我的名字
+
+</td></tr>
+			<tr><td>score</td><td>Integer</td><td>颜值得分
+
+</td></tr>
+			<tr><td>timesLeft</td><td>Integer</td><td>可参加的剩余次数
+
+</td></tr>
+</table><h3>GroupItemVO</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>avatarUrl</td><td>String</td><td>照片地址
+
+</td></tr>
+			<tr><td>launcher</td><td>Boolean</td><td>是否是团战发起者(true表示是，null表示否)
+
+</td></tr>
+			<tr><td>nickName</td><td>String</td><td>用户昵称
+
+</td></tr>
+			<tr><td>score</td><td>Integer</td><td>得分
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"beautyDescriptions":[],
+		"beautySummary":"",
+		"groupRanking":[],
+		"historyScore":0,
+		"joinId":0,
+		"myRanking":0,
+		"score":0,
+		"timesLeft":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/launchPK">/interactive/activity/facebattle/launchPK</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;发起PK或者重新上传PK中的图片
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>LaunchPKRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>avatarUrl</td><td>NULL</td><td>String</td><td>照片url
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"avatarUrl":"",
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>LaunchPKResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>beautyDescriptions</td><td>List&lt;String&gt;</td><td>颜值描述(三个标签描述)
+
+</td></tr>
+			<tr><td>beautySummary</td><td>String</td><td>颜值描述（一句话总结）
+
+</td></tr>
+			<tr><td>historyScore</td><td>Integer</td><td>历史分数(第一次发起PK该字段为null)
+
+</td></tr>
+			<tr><td>joinId</td><td>Long</td><td>发起团战或者PK的参与ID
+
+</td></tr>
+			<tr><td>score</td><td>Integer</td><td>颜值得分
+
+</td></tr>
+			<tr><td>timesLeft</td><td>Integer</td><td>可参加的剩余次数
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"beautyDescriptions":[],
+		"beautySummary":"",
+		"historyScore":0,
+		"joinId":0,
+		"score":0,
+		"timesLeft":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/myprize">/interactive/activity/facebattle/myprize</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;我的奖品页面
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;shenghuang.lin
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;表单提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>MyPrizeRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">activityId : 0
+fbBizType : 0
+source : 0
+wid : 0
+fbBizId : 0
+pid : 0
+</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>MyPrizeResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>backgroundPop</td><td>String</td><td>弹窗背景图
+
+</td></tr>
+			<tr><td>buttonColor</td><td>String</td><td>按钮颜色
+
+</td></tr>
+			<tr><td>nick</td><td>String</td><td>用户昵称
+
+</td></tr>
+			<tr><td>other</td><td>String</td><td>填写信息中的其他
+
+</td></tr>
+			<tr><td>photo</td><td>String</td><td>用户头像
+
+</td></tr>
+			<tr><td>prizes</td><td>List&lt;<a href='#MyPrize'>MyPrize</a>&gt;</td><td>我的奖品
+
+</td></tr>
+			<tr><td>shareDescription</td><td>String</td><td>分享简介
+
+</td></tr>
+			<tr><td>shareLogo</td><td>String</td><td>分享logo
+
+</td></tr>
+			<tr><td>shareTitle</td><td>String</td><td>分享标题
+
+</td></tr>
+			<tr><td>state</td><td>Integer</td><td>活动状态，1、正在进行中 2、活动结束
+
+</td></tr>
+			<tr><td>userinfo</td><td>List&lt;Integer&gt;</td><td>用户填写信息
+
+</td></tr>
+</table><h3>MyPrize</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>description</td><td>String</td><td>奖品描述
+</td></tr>
+			<tr><td>fastExchange</td><td>Integer</td><td>是否支持快速兑奖：0不支持，1支持
+
+</td></tr>
+			<tr><td>link</td><td>String</td><td>立即使用的跳转链接
+
+</td></tr>
+			<tr><td>pid</td><td>Long</td><td>公众号id
+
+</td></tr>
+			<tr><td>prizeImg</td><td>String</td><td>奖品图片
+</td></tr>
+			<tr><td>prizeName</td><td>String</td><td>奖品名
+</td></tr>
+			<tr><td>snCode</td><td>String</td><td>虚拟物品sn码
+
+</td></tr>
+			<tr><td>snId</td><td>Long</td><td>winner表id
+</td></tr>
+			<tr><td>state</td><td>Integer</td><td>奖品状态 1未兑奖 2，3以兑奖
+</td></tr>
+			<tr><td>type</td><td>Integer</td><td>奖品类型：0实物1虚拟2微信红包3旺铺优惠券4智慧餐厅优惠券5积分6余额7成长值
+
+</td></tr>
+			<tr><td>virtualName</td><td>String</td><td>虚假物品名称
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"backgroundPop":"",
+		"buttonColor":"",
+		"nick":"",
+		"other":"",
+		"photo":"",
+		"prizes":[],
+		"shareDescription":"",
+		"shareLogo":"",
+		"shareTitle":"",
+		"state":0,
+		"userinfo":[]
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/share2Friend">/interactive/activity/facebattle/share2Friend</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;获取分享给好友的标题和图片
+		</div>
+		<div>
+			<h2>作者</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;han.xue @date 2018-07-19 15:52:37
+
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>Share2FriendRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activityId</td><td>NULL</td><td>Long</td><td>活动ID
+
+</td></tr>
+			<tr><td>fbBizId</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>fbBizType</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>pid</td><td>NULL</td><td>Long</td><td></td></tr>
+			<tr><td>source</td><td>NULL</td><td>Integer</td><td></td></tr>
+			<tr><td>wid</td><td>NULL</td><td>Long</td><td></td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activityId":0,
+	"fbBizId":0,
+	"fbBizType":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>Share2FriendResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>imageUrl</td><td>String</td><td>小程序分享卡片中的缩略图地址
+
+</td></tr>
+			<tr><td>titlePrefix</td><td>String</td><td>分享标题的左半部分(也就是昵称)
+
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"imageUrl":"",
+		"titlePrefix":""
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/shareSetting">/interactive/activity/facebattle/shareSetting</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;分享设置
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>ShareSettingRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+			<tr><td>shareDesc</td><td>NULL</td><td>String</td><td>分享简介
+</td></tr>
+			<tr><td>shareLogo</td><td>NULL</td><td>String</td><td>分享图片
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"bizId":0,
+	"bizType":0,
+	"pid":0,
+	"shareDesc":"",
+	"shareLogo":"",
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p><div class='interface_content_style' style='width: 705px;border: 1px solid #bebebe;margin-top:20px;'>		<h1 id="/interactive/activity/facebattle/showSetting">/interactive/activity/facebattle/showSetting</h1>
+		<div>
+			<h2>描述</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;展示设置
+		</div>
+		<div>
+			<h2>请求方式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;get/post
+		</div>
+		<div>
+			<h2>数据格式</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;json提交
+		</div>
+		<div>
+			<h2>可选的属性</h2>
+			
+<h3>ShowSettingRequest</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>别名</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>NULL</td><td>Long</td><td>活动ID
+</td></tr>
+			<tr><td>ad_img</td><td>NULL</td><td>String</td><td>广告图图片
+</td></tr>
+			<tr><td>ad_url_id</td><td>NULL</td><td>Long</td><td>广告图跳转链接id
+</td></tr>
+			<tr><td>is_ad</td><td>NULL</td><td>Integer</td><td>是否开启广告图0-不开启，1-开启
+</td></tr>
+</table>
+		</div>
+			<div><h2>请求参数示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"activeId":0,
+	"ad_img":"",
+	"ad_url_id":0,
+	"bizId":0,
+	"bizType":0,
+	"is_ad":0,
+	"pid":0,
+	"source":0,
+	"wid":0
+}</textarea></div>
+		<div>
+			<h2>返回值</h2>
+			&nbsp;&nbsp;&nbsp;&nbsp;		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>code</td><td><a>code</a></td><td>响应码</td></tr>
+			<tr><td>data</td><td>Object</td><td>返回数据</td></tr>
+			<tr><td>exp</td><td>Map&lt;String,String&gt;</td><td>扩展信息</td></tr>
+		</table>
+<h3>code</h3>
+		<table class="dataintable browsersupport">
+			<tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>
+			<tr><td>errcode</td><td>int</td><td>响应码,当errcode=0是表示处理成功</td></tr>
+			<tr><td>errmsg</td><td>String</td><td>响应信息</td></tr>
+		</table><h3>ConfigSettingResponse</h3><table class="dataintable browsersupport"><tr><th>字段名称</th><th>字段类型</th><th>字段说明</th></tr>			<tr><td>activeId</td><td>Long</td><td>活动ID
+</td></tr>
+</table>
+		</div>
+			<div><h2>返回值示例</h2><textarea class="example_parameter"  disabled="disabled">{
+	"code":{
+		"errcode":"0",
+		"errmsg":"success"
+	},
+	"data":{
+		"activeId":0
+	},
+	"exp":null
+}</textarea></div>
+</div><p></p>
+	</div>
+	<div style="clear: both;"></div>
+	</div>
+</body>
+</html>
+
