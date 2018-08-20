@@ -32,7 +32,7 @@ func main() {
 ```
 
 每个可执行的Go程序都要符合：
-- 第一次代码中有main函数。
+- 第一是代码中有main函数。
 - 第二是程序的第一行包名为main
 
 否则将不可执行
@@ -43,4 +43,32 @@ Go语言的每个代码文件都要属于一个包，main.go也不例外。一�
 
 > 程序中每个代码文件中的`init`函数都会在main函数执行前调用。
 
-当导入的是标准库中的代码时，只需要给出要导入的包名。编译器
+当导入的是标准库中的代码时，只需要给出要导入的包名。编译器查找包的时候，总是会到GOROOT和GOPATH环境变量引用的位置去查找。
+
+> 执行命令行命令`go env`可以查看本机的go环境配置
+
+```Bash
+➜  ~ go env
+GOARCH="amd64"
+GOBIN=""
+GOEXE=""
+GOHOSTARCH="amd64"
+GOHOSTOS="darwin"
+GOOS="darwin"
+GOPATH="/Users/johnxue/Documents/code/mygo"
+GORACE=""
+GOROOT="/usr/local/go"
+GOTOOLDIR="/usr/local/go/pkg/tool/darwin_amd64"
+GCCGO="gccgo"
+CC="clang"
+GOGCCFLAGS="-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=/var/folders/mg/13rgl7zx78n4pvmryqk44zv80000gn/T/go-build281365475=/tmp/go-build -gno-record-gcc-switches -fno-common"
+CXX="clang++"
+CGO_ENABLED="1"
+PKG_CONFIG="pkg-config"
+CGO_CFLAGS="-g -O2"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-g -O2"
+CGO_FFLAGS="-g -O2"
+CGO_LDFLAGS="-g -O2"
+```
+在Go语言中，标识符要么从包里公开，要么不从包里公开。当代码导入了一个包时，程序可以直接访问这个包中任意一个公开的标识符。这些**标识符以大写字母开头。以小写字母开头的是不公开的**，不能被其他包中的代码直接访问。
