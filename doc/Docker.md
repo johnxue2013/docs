@@ -119,5 +119,150 @@ $ docker commit -m="A new custom image" --author="James Turnbull" 4aab3ce3cb76 j
 
 commit后可以使用`docker push`推送到仓库
 
+- 使用Dockerfile构建新镜像
+不推荐使用docker commit的方法构建镜像
+首先
+创建一个文件夹
+```Bash
+$ mkdir static_web
+$ cd static_web
+$ touch Dockerfile
+$ docker build -t="jameur01/static_web" .
+```
+static_web这个目录就是我们构建的环境(build environment)，Docker则称此环境为上线文(context)或者构建上下文(build context)。Docker
+会在构建镜像时将构建上下文和改上下文中的文件和目录上传到Docker守护进程。这样Docker守护进程就能直接访问你想在镜像中存储的任何代码、文件
+或者其他数据。
+
+也可以为镜像设置一个标签(如果没有指定任何标签，Docker将会自动为镜像设置一个latest标签)
+```Bash
+$ docker build -t="jamru01/static_web:v1" .
+Sending build context to Docker daemon  2.048kB
+Step 1/8 : FROM ubuntu:12.04
+ ---> 5b117edd0b76
+Step 2/8 : MAINTAINER James Turnbull "james@example.com"
+ ---> Using cache
+ ---> 8b292e7eb386
+Step 3/8 : RUN apt-get update
+ ---> Using cache
+ ---> 0f18b40d86b0
+Step 4/8 : RUN apt-get install -y nginx
+ ---> Using cache
+ ---> 6ae649594ecc
+Step 5/8 : RUN mkdir -p /usr/share/nginx/html
+ ---> Running in b5e399f5e355
+Removing intermediate container b5e399f5e355
+ ---> ffd6f5171079
+Step 6/8 : RUN touch /usr/share/nginx/html/index.html
+ ---> Running in cb428b373f68
+Removing intermediate container cb428b373f68
+ ---> 7262dc5da97b
+Step 7/8 : RUN echo 'Hi, I am in your container' > /usr/share/nginx/html/index.html
+ ---> Running in edd9ea582b2f
+Removing intermediate container edd9ea582b2f
+ ---> e2fcb13cec8f
+Step 8/8 : EXPOSE 80
+ ---> Running in 244f718cd1d3
+Removing intermediate container 244f718cd1d3
+ ---> 4f19758f46d9
+Successfully built 4f19758f46d9
+Successfully tagged johnxue2013/static_web:v1
+```
+
+上面命令中最后的.告诉Docker到本地目录中去找Dockerfile文件。也可以指定一个Git仓库的原地址来指定Dockerfile的位置
+(Git仓库根目录必须存在Dockerfile文件)
+> 如果在构建上下文的根目录存在以 .dockerignore命名的文件的话，那么该文件内容会被按行进行分割，类似.gitignore文件
+Dockerfile中的每一条指令(FROM RUN等)都应该大写
+
+- 构建不使用缓存
+正常情况下，每次build的时候会将之前构建时创建的镜像当做缓存并作为新的开始点。这样会节省大量时间。然而有时候，需要确保构建过程不会使用缓存
+。必须如果已经缓存了前面第三部即apt-get update，那么Dcoker不会再次刷新APT包的缓存。此时可以使用--no-cache标志忽略缓存功能，如
+```Bash
+docker build --no-cache -t "johnxue2013/static_web:v1" .
+```
+
+- 启动构建的容器
+```Bash
+docker run -d -p 80 --name static_web jamtur01/static_web nginx -g "daemon off;"
+```
+
+这将在Docker宿主机上随机打开一个端口，这个端口会链接到容器中的80端口上。使用`docker ps -l`，命令来看下容器的端口分配情况
+```bin/Bash
+$ static_web docker ps -l
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
+ea5797ee864b        4f19758f46d9        "nginx -g 'daemon of…"   18 hours ago        Up 18 hours         0.0.0.0:32768->80/tcp   static_web
+```
+
+上面显示宿主机的32768端口映射到了容器的80端口
+
+也可以使用docker port命令查看端口映射情况
+```bin/Bash
+$ static_web docker port ea5797ee864b
+80/tcp -> 0.0.0.0:32768
+$ static_web docker port ea5797ee864b 80
+0.0.0.0:32768
+```
+
+
+这里使用了-p标志，该标志用来控制Docker在运行时应该公开哪些网络端口给外部(宿主机)。运行一个容器可以通过两种方法在宿主机上分配端口
+
+1. Docker可以在宿主机上随机选择一个位于49153~65535的一个
+2. 可以在Docker宿主机中指定一个具体的端口号来映射到容器中的80端口上
+
+-p选项还可以灵活的指定宿主机和容器之间的端口映射关系。比如
+```bin/Bash
+$ docker run -d -p 8080:80 --name static_web jamtur01/static_web nginx -g "daemon off;"
+```
+这条命令将容器中的80端口绑定到宿主机的8080端口上
+
+Docker还提供了一个-P(大写)参数，该参数可以用来对外公开在Dockerfile中的EXPOSE指定中设置的所有端口
+```bin/Bash
+$ docker run -d -P --name static_web jamtur01/static_web nginx -g "daemon_off;"
+```
+该命令会将容器内的80端口对本地宿主机公开，并且绑定到宿主机的一个随机端口上。
+
+- Dockerfile指令
+
+### CMD
+ 用于指定一个容器启动时要运行的命令。类似于RUN，只是RUN指令是指定镜像被构建时要运行的命令，而CMD是指定容器被启动时要运行的命令。
+ 这和使用docker run命令刚启动容器时指定要运行的命令非常相似
+ 比如
+ ```bin/bash
+   $ docker run -it jamtur01/static_web /bin/true
+ ```
+ 和
+ CMD ["/bin/true"]
+ 是等价的。
+ 当然也可以为要运行的命令指定参数，如
+ ```bin/bash
+  CMD["/bin/bash", "-l"]
+ ```
+
+**docker run命令可以覆盖CMD命令**如果在Dockerfile指定了CMD命令，而同时在docker run命令中也指定了要运行的命令，命令中指定的命令会覆盖Dockfile中的CMD指令。
+
+**一个Dockerfile中只能指定一条CMD指令。**如果指定了多条CMD指令，也只有最后一条CMD指令会被使用。
+
+### ENTRYPOINT
+
+ENTRYPOINT指令与CMD类似，只是ENTRYPOINT不易被docker run覆盖。实际上，docker run命令行中指定的任何参数都会被当做参数再次传递给ENTRYPOINT指令中
+指定的命令。
+如假设Dockerfile中存在ENTRYPOINT ["/usr/sbin/nginx"]
+```bin/Bash
+docker run -it jamtur01/static_web -g "daemon off;"
+```
+上面的-g "daemon off;"会被再次当做参数传递给`/usr/sbin/nginx`命令。
+
+可以通过组合使用ENTRYPOINT和CMD指令来完成一些巧妙的工作如Dockerfile中存在如下指令
+ENTRYPOINT ["/usr/sbin/nginx"]
+CMD ["-h"]
+
+
+> 如果确实需要覆盖ENTRYPOINT指令，可以使用docker run --entrypoint标志覆盖ENTRYPOINT指令
+
+
+
+
+
+
+
 
 
