@@ -252,17 +252,78 @@ docker run -it jamtur01/static_web -g "daemon off;"
 上面的-g "daemon off;"会被再次当做参数传递给`/usr/sbin/nginx`命令。
 
 可以通过组合使用ENTRYPOINT和CMD指令来完成一些巧妙的工作如Dockerfile中存在如下指令
+```
 ENTRYPOINT ["/usr/sbin/nginx"]
 CMD ["-h"]
-
+```
+此时当我们启动一个容器时，任何命令中指定的参数都会被传递给Nginx守护进程。如果不指定任何参数，则CMD指令中的-h参数会被传递给Nginx守护进程，即
+Nginx服务器会以`/usr/sbin/nginx -h`的方式启动，该命令用来显示nginx的帮助信息
 
 > 如果确实需要覆盖ENTRYPOINT指令，可以使用docker run --entrypoint标志覆盖ENTRYPOINT指令
 
+### WORKDIR
+用来在从镜像创建一个新容器时，在容器内部设置一个工作目录，ENTRYPOINT和/或CMD指定的程序会在这个目录下执行
 
+可以使用该命令为Dockerfile中后续的一些列指令设置工作目录。也可以为最终的容器设置工作目录。如
+```Bash
+WORKDIR /opt/webapp/db
+RUN bundle install
+WORKDIR /opt/webapp
+ENTRYPOINT ["rackup"]
+```
+上述命令将工作目录切换为/opt/webapp/db后运行了bundle install命令，之后又将工作目录设置为/opt/webapp，最后设置了ENTRYPOINT指令启动rackup命令。
 
+可以通过-w 标志在运行时覆盖工作目录
+```Bash
+docker run -ti -w /var/log ubuntu pwd
+```
 
+### ENV
+用来在镜像构建过程中设置环境变量
+```Bash
+ENV RVM_PATH /home/rvm/
+```
+这个新的环境变量可以在后续的任何RUN指令中使用，这就如同在命令前面指定了环境变量前缀一样
 
+```Bash
+RUN gem install unicorn
+```
 
+也可以在其他指令中直接引用
+```Bash
+ENV TARGET_DIR /opt/app
+WORKDIR $TARGET_DIR
+```
 
+> 进入容器或可以使用env命令查看环境变量
 
+### USER
+USER指令用来指定改镜像会以什么样的用户去运行，比如
+```Bash
+USER nginx
+```
+基于该镜像启动的容器会以nginx用户的身份来运行。
 
+也可以在docker run -u标识来覆盖该指令的值
+ > 如果不通过USER指令指定用户，默认用户为root
+
+ ### VOLUME
+用来想基于镜像创建的容器添加卷。一个卷可以是存在于一个或者多个容器内特定的目录。
+```Bash
+VOLUME ["/opt/project", "/data"]
+```
+
+### ADD
+
+### COPY
+与ADD类似，但COPY值关心在构建上下文中复制本地文件，而不会做文件提取和解压的工作
+
+### ONBUILD
+为镜像添加触发器(trigger)。当一个镜像被用作其他镜像的基础镜像时，该镜像中的触发器将被执行。
+
+触发器会在构建过程中插入新指令，可以认为这些指令是紧跟在FROM之后的指令。触发器可以使任何构建指令。
+```Bash
+ONBUILD ADD . /app/src
+ONBUILD RUN cd /app/src && make
+```
+> ONBUILD指令可以在镜像上运行docker inspect命令来查看
