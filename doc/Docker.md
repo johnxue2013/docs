@@ -312,6 +312,43 @@ USER nginx
 ```Bash
 VOLUME ["/opt/project", "/data"]
 ```
+> 使用VOLUME只是在容器中设置了挂载点/opt/project,并不能指定宿主机中的挂在路径。此时Docker会自动绑定宿主机上的一个目录。通过
+docker inspect命令可以查看到
+
+> 可以通过docker run -v {本地路径}:{容器挂载点}，直接指定挂在的路径
+
+```Bash
+xqh@ubuntu:~/myimage$ docker inspect test1
+[
+{
+    "Id": "1fd6c2c4bc545163d8c5c5b02d60052ea41900a781a82c20a8f02059cb82c30c",
+.............................
+    "Mounts": [
+        {
+            "Name": "0ab0aaf0d6ef391cb68b72bd8c43216a8f8ae9205f0ae941ef16ebe32dc9fc01",
+            "Source": "/var/lib/docker/volumes/0ab0aaf0d6ef391cb68b72bd8c43216a8f8ae9205f0ae941ef16ebe32dc9fc01/_data",
+            "Destination": "/data",
+            "Driver": "local",
+            "Mode": "",
+            "RW": true
+        }
+    ],
+...........................
+
+```
+
+卷是在一个或多个容器中特殊指定的目录，卷会绕过联合文件系统，为持久化数据和共享数据提供几个有用的特性：
+* 卷可以在容器间共享和重用
+* 共享卷时不一定要运行响应的容器
+* 对卷的修改会直接在卷上反应出来
+* 更新镜像时不会包含对卷的修改
+* 卷会一直存在，知道没有容器使用它们(容器可以没在运行，但容器要存在，如果容器也不存在，卷就会被删除)
+
+> 如果删除了最后一个使用卷的容器，卷就不见了。所有删除可能有数据的卷的容器时要小心。
+上面 Mounts下的每条信息记录了容器上一个挂载点的信息，"Destination" 值是容器的挂载点，"Source"值是对应的主机目录。
+
+可以看出这种方式对应的主机目录是自动创建的，其目的不是让在主机上修改，而是让多个容器共享。
+
 
 ### ADD
 
@@ -326,4 +363,4 @@ VOLUME ["/opt/project", "/data"]
 ONBUILD ADD . /app/src
 ONBUILD RUN cd /app/src && make
 ```
-> ONBUILD指令可以在镜像上运行docker inspect命令来查看
+> ONBUILD指令可以在镜像上运行docker inspect {container ID | container name}命令来查看
