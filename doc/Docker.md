@@ -364,3 +364,13 @@ ONBUILD ADD . /app/src
 ONBUILD RUN cd /app/src && make
 ```
 > ONBUILD指令可以在镜像上运行docker inspect {container ID | container name}命令来查看
+
+### 进入容器的方法
+有多种方法，此处列出两种，使用`docker attach`和`docker exec`。
+docker attach的方式进入容器后，当多窗口同时使用该命令进入该容器时，所有窗口都会同步显示，如果有一个窗口阻塞，那么其他窗口也无法再进行操作。
+
+在Docker1.3.x版本之后，提供了exec命令用于进入容器，用法如：
+```Bash
+docker exec -it <cotainer ID> /bin/bash
+```
+
