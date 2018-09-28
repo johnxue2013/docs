@@ -605,3 +605,561 @@ exists 查询和 missing 查询被用于查找那些指定字段中有值 (exist
 这些查询经常用于某个字段有值的情况和某个字段缺值的情况。
 
 ### 组合多查询
+你可以用 bool 查询来实现你的需求。这种查询将多查询组合在一起，成为用户自己想要的布尔查询。它接收以下参数：
+
+- must
+  文档 必须 匹配这些条件才能被包含进来。
+- must_not
+  文档 必须不 匹配这些条件才能被包含进来。
+- should
+  如果满足这些语句中的任意语句，将增加 _score ，否则，无任何影响。它们主要用于修正每个文档的相关性得分。
+- filter
+  必须 匹配，但它以不评分、过滤模式来进行。这些语句对评分没有贡献，只是根据过滤标准来排除或包含文档。
+
+  由于这是我们看到的第一个包含多个查询的查询，所以有必要讨论一下相关性得分是如何组合的。每一个子查询都独自地计算文档的相关性得分。一旦他们的得分被计算出来， bool 查询就将这些得分进行合并并且返回一个代表整个布尔操作的得分。
+
+  下面的查询用于查找 title 字段匹配 how to make millions 并且不被标识为 spam 的文档。那些被标识为 starred 或在2014之后的文档，将比另外那些文档拥有更高的排名。如果 _两者_ 都满足，那么它排名将更高：
+
+  ```json
+  {
+      "bool": {
+          "must":     { "match": { "title": "how to make millions" }},
+          "must_not": { "match": { "tag":   "spam" }},
+          "should": [
+              { "match": { "tag": "starred" }},
+              { "range": { "date": { "gte": "2014-01-01" }}}
+          ]
+      }
+  }
+  ```
+  >如果没有 must 语句，那么至少需要能够匹配其中的一条 should 语句。但，如果存在至少一条 must 语句，则对 should 语句的匹配没有要求。
+
+  #### 增加带过滤器（filtering）的查询
+如果我们不想因为文档的时间而影响得分，可以用 filter 语句来重写前面的例子
+```JSON
+{
+    "bool": {
+        "must":     { "match": { "title": "how to make millions" }},
+        "must_not": { "match": { "tag":   "spam" }},
+        "should": [
+            { "match": { "tag": "starred" }}
+        ],
+        "filter": {
+          "range": { "date": { "gte": "2014-01-01" }}
+        }
+    }
+}
+/* range 查询已经从 should 语句中移到 filter 语句 */
+```
+通过将 range 查询移到 filter 语句中，我们将它转成不评分的查询，将不再影响文档的相关性排名。由于它现在是一个不评分的查询，可以使用各种对 filter 查询有效的优化手段来提升性能。
+
+所有查询都可以借鉴这种方式。将查询移到 bool 查询的 filter 语句中，这样它就自动的转成一个不评分的 filter 了。
+
+如果你需要通过多个不同的标准来过滤你的文档，bool 查询本身也可以被用做不评分的查询。简单地将它放置到 filter 语句中并在内部构建布尔逻辑：
+```JSON
+{
+    "bool": {
+        "must":     { "match": { "title": "how to make millions" }},
+        "must_not": { "match": { "tag":   "spam" }},
+        "should": [
+            { "match": { "tag": "starred" }}
+        ],
+        "filter": {
+          "bool": {
+              "must": [
+                  { "range": { "date": { "gte": "2014-01-01" }}},
+                  { "range": { "price": { "lte": 29.99 }}}
+              ],
+              "must_not": [
+                  { "term": { "category": "ebooks" }}
+              ]
+          }
+        }
+    }
+}
+```
+通过混合布尔查询，我们可以在我们的查询请求中灵活地编写 scoring 和 filtering 查询逻辑
+
+#### constant_score 查询
+尽管没有 bool 查询使用这么频繁，constant_score 查询也是你工具箱里有用的查询工具。它将一个不变的常量评分应用于所有匹配的文档。它被经常用于你只需要执行一个 filter 而没有其它查询（例如，评分查询）的情况下。
+
+可以使用它来取代只有 filter 语句的 bool 查询。在性能上是完全相同的，但对于提高查询简洁性和清晰度有很大帮助。
+```JSON
+{
+    "constant_score":   {
+        "filter": {
+            "term": { "category": "ebooks" }
+        }
+    }
+}
+/* term 查询被放置在 constant_score 中，转成不评分的 filter。这种方式可以用来取代只有 filter 语句的 bool 查询。 */
+```
+
+### 排序
+为了按照相关性来排序，需要将相关性表示为一个数值。在 Elasticsearch 中， 相关性得分 由一个浮点数进行表示，并在搜索结果中通过 _score 参数返回， 默认排序是 _score 降序。
+
+#### 按照字段的值排序
+在这个案例中，通过时间来对 tweets 进行排序是有意义的，最新的 tweets 排在最前。 我们可以使用 sort 参数进行实现
+```html
+GET /_search
+{
+    "query" : {
+        "bool" : {
+            "filter" : { "term" : { "user_id" : 1 }}
+        }
+    },
+    "sort": { "date": { "order": "desc" }}
+}
+```
+
+首先我们在每个结果中有一个新的名为 sort 的元素，它包含了我们用于排序的值。 在这个案例中，我们按照 date 进行排序，在内部被索引为 自 epoch 以来的毫秒数 。 long 类型数 1411516800000 等价于日期字符串 2014-09-24 00:00:00 UTC 。
+
+其次 _score 和 max_score 字段都是 null 。 计算 _score 的花销巨大，通常仅用于排序； 我们并不根据相关性排序，所以记录 _score 是没有意义的。如果无论如何你都要计算 _score ， 你可以将 track_scores 参数设置为 true 。
+
+#### 多级排序
+假定我们想要结合使用 date 和 _score 进行查询，并且匹配的结果首先按照日期排序，然后按照相关性排序：
+```JSON
+GET /_search
+{
+    "query" : {
+        "bool" : {
+            "must":   { "match": { "tweet": "manage text search" }},
+            "filter" : { "term" : { "user_id" : 2 }}
+        }
+    },
+    "sort": [
+        { "date":   { "order": "desc" }},
+        { "_score": { "order": "desc" }}
+    ]
+}
+```
+排序条件的顺序是很重要的。结果首先按第一个条件排序，仅当结果集的第一个 sort 值完全相同时才会按照第二个条件进行排序，以此类推。
+
+多级排序并不一定包含 _score 。你可以根据一些不同的字段进行排序， 如地理距离或是脚本计算的特定值。
+
+>Query-string 搜索 也支持自定义排序，可以在查询字符串中使用 sort 参数：GET /_search?sort=date:desc&sort=_score&q=search
+
+#### 多值字段排序
+一种情形是字段有多个值的排序， 需要记住这些值并没有固有的顺序；一个多值的字段仅仅是多个值的包装，这时应该选择哪个进行排序呢？
+
+对于数字或日期，你可以将多值字段减为单值，这可以通过使用 min 、 max 、 avg 或是 sum 排序模式 。 例如你可以按照每个 date 字段中的最早日期进行排序，通过以下方法：
+```JSON
+"sort": {
+    "dates": {
+        "order": "asc",
+        "mode":  "min"
+    }
+}
+```
+
+### 搜索选项
+
+#### preference
+偏好这个参数 preference 允许 用来控制由哪些分片或节点来处理搜索请求。 它接受像 _primary, _primary_first, _local, _only_node:xyz, _prefer_node:xyz, 和 _shards:2,3 这样的值, 这些值在 https://www.elastic.co/guide/en/elasticsearch/reference/5.6/search-request-preference.html
+详细说明
+
+但是最有用的值是某些随机字符串，它可以避免 bouncing results 问题。
+
+>Bouncing Results:想象一下有两个文档有同样值的时间戳字段，搜索结果用 timestamp 字段来排序。 由于搜索请求是在所有有效的分片副本间轮询的，那就有可能发生主分片处理请求时，这两个文档是一种顺序， 而副本分片处理请求时又是另一种顺序。这就是所谓的 bouncing results 问题: 每次用户刷新页面，搜索结果表现是不同的顺序。 让同一个用户始终使用同一个分片，这样可以避免这种问题， 可以设置 preference 参数为一个特定的任意值比如用户会话ID来解决。
+
+#### 超时问题
+通常分片处理完它所有的数据后再把结果返回给协同节点，协同节点把收到的所有结果合并为最终结果。
+
+这意味着花费的时间是最慢分片的处理时间加结果合并的时间。如果有一个节点有问题，就会导致所有的响应缓慢。
+
+参数 timeout 告诉 分片允许处理数据的最大时间。如果没有足够的时间处理所有数据，这个分片的结果可以是部分的，甚至是空数据。
+
+搜索的返回结果会用属性 timed_out 标明分片是否返回的是部分结果：
+```JSON
+...
+    "timed_out":     true,  
+...
+```
+
+### 游标查询
+
+### 索引管理
+#### 创建一个索引
+到目前为止, 我们已经通过索引一篇文档创建了一个新的索引 。这个索引采用的是默认的配置，新的字段通过动态映射的方式被添加到类型映射。现在我们需要对这个建立索引的过程做更多的控制：我们想要确保这个索引有数量适中的主分片，并且在我们索引任何数据 之前 ，分析器和映射已经被建立好。
+
+为了达到这个目的，我们需要手动创建索引，在请求体里面传入设置或类型映射，如下所示：
+```html
+PUT /my_index
+{
+    "settings": { ... any settings ... },
+    "mappings": {
+        "type_one": { ... any mappings ... },
+        "type_two": { ... any mappings ... },
+        ...
+    }
+}
+```
+
+>我们会在之后讨论你怎么用 索引模板 来预配置开启自动创建索引。这在索引日志数据的时候尤其有用：你将日志数据索引在一个以日期结尾命名的索引上，子夜时分，一个预配置的新索引将会自动进行创建。
+
+#### 删除一个索引
+用以下的请求来 删除索引:
+```html
+DELETE /my_index
+```
+你也可以这样删除多个索引：
+```html
+DELETE /index_one,index_two
+DELETE /index_*
+```
+你甚至可以这样删除 全部 索引：
+```html
+DELETE /_all
+DELETE /*
+```
+>对一些人来说，能够用单个命令来删除所有数据可能会导致可怕的后果。如果你想要避免意外的大量删除, 你可以在你的 elasticsearch.yml 做如下配置：
+action.destructive_requires_name: true
+这个设置使删除只限于特定名称指向的数据, 而不允许通过指定 _all 或通配符来删除指定索引库。
+
+#### 索引设置
+你可以通过修改配置来自定义索引行为，详细配置参照https://www.elastic.co/guide/en/elasticsearch/reference/5.6/index-modules.html
+
+>Elasticsearch 提供了优化好的默认配置。 除非你理解这些配置的作用并且知道为什么要去修改，否则不要随意修改。
+下面是两个 最重要的设置：
+
+- number_of_shards
+  每个索引的主分片数，默认值是 5 。这个配置在索引创建后不能修改。
+- number_of_replicas
+  每个主分片的副本数，默认值是 1 。对于活动的索引库，这个配置可以随时修改。
+
+例如，我们可以创建只有 一个主分片，没有副本的小索引：
+```html
+PUT /my_temp_index
+{
+    "settings": {
+        "number_of_shards" :   1,
+        "number_of_replicas" : 0
+    }
+}
+```
+然后，我们可以用 update-index-settings API 动态修改副本数：
+```html
+PUT /my_temp_index/_settings
+{
+    "number_of_replicas": 1
+}
+```
+#### 配置分析器
+第三个重要的索引设置是 analysis 部分， 用来配置已存在的分析器或针对你的索引创建新的自定义分析器。
+
+在下面的例子中，我们创建了一个新的分析器，叫做**es_std** ， 并使用预定义的 西班牙语停用词列表：
+
+```html
+PUT /spanish_docs
+{
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "es_std": {
+                    "type":      "standard",
+                    "stopwords": "_spanish_"
+                }
+            }
+        }
+    }
+}
+```
+es_std 分析器不是全局的--它仅仅存在于我们定义的 spanish_docs 索引中。 为了使用 analyze API来对它进行测试，我们必须使用特定的索引名：
+```html
+GET /spanish_docs/_analyze?analyzer=es_std
+El veloz zorro marrón
+```
+简化的结果显示西班牙语停用词 El 已被正确的移除
+```JSON
+{
+  "tokens" : [
+    { "token" :    "veloz",   "position" : 2 },
+    { "token" :    "zorro",   "position" : 3 },
+    { "token" :    "marrón",  "position" : 4 }
+  ]
+}
+```
+
+#### 自定义分析器
+虽然Elasticsearch带有一些现成的分析器，然而在分析器上Elasticsearch真正的强大之处在于，你可以通过在一个适合你的特定数据的设置之中组合字符过滤器、分词器、词汇单元过滤器来创建自定义的分析器。
+
+在 分析与分析器 我们说过，一个 分析器 就是在一个包里面组合了三种函数的一个包装器， 三种函数按照顺序被执行:
+- 字符过滤器
+  字符过滤器 用来 整理 一个尚未被分词的字符串。例如，如果我们的文本是HTML格式的，它会包含像 `<p>` 或者 `<div>` 这样的HTML标签，这些标签是我们不想索引的。我们可以使用 html清除 字符过滤器 来移除掉所有的HTML标签，并且像把 `&Aacute;` 转换为相对应的Unicode字符 Á 这样，转换HTML实体。
+
+  一个分析器可能有0个或者多个字符过滤器。
+- 分词器
+  一个分析器 必须 有一个唯一的分词器。 分词器把字符串分解成单个词条或者词汇单元。 标准 分析器里使用的 标准 分词器 把一个字符串根据单词边界分解成单个词条，并且移除掉大部分的标点符号，然而还有其他不同行为的分词器存在。
+
+  例如， 关键词 分词器 完整地输出 接收到的同样的字符串，并不做任何分词。 空格 分词器 只根据空格分割文本 。 正则 分词器 根据匹配正则表达式来分割文本 。
+
+- 词单元过滤器
+  经过分词，作为结果的 词单元流 会按照指定的顺序通过指定的词单元过滤器 。
+
+  词单元过滤器可以修改、添加或者移除词单元。我们已经提到过 lowercase 和 stop 词过滤器 ，但是在 Elasticsearch 里面还有很多可供选择的词单元过滤器。 词干过滤器 把单词 遏制 为 词干。 ascii_folding 过滤器移除变音符，把一个像 "très" 这样的词转换为 "tres" 。 ngram 和 edge_ngram 词单元过滤器 可以产生 适合用于部分匹配或者自动补全的词单元
+##### 创建一个自定义分析器
+和我们之前配置 es_std 分析器一样，我们可以在 analysis 下的相应位置设置字符过滤器、分词器和词单元过滤器:
+```html
+PUT /my_index
+{
+    "settings": {
+        "analysis": {
+            "char_filter": { ... custom character filters ... },
+            "tokenizer":   { ...    custom tokenizers     ... },
+            "filter":      { ...   custom token filters   ... },
+            "analyzer":    { ...    custom analyzers      ... }
+        }
+    }
+}
+```
+作为示范，让我们一起来创建一个自定义分析器吧，这个分析器可以做到下面的这些事:  
+
+
+1. 使用 html清除 字符过滤器移除HTML部分。
+2. 使用一个自定义的 映射 字符过滤器把 & 替换为 " and " ：
+```JSON
+"char_filter": {
+    "&_to_and": {
+        "type":       "mapping",
+        "mappings": [ "&=> and "]
+    }
+}
+```
+3. 使用 标准 分词器分词。
+4. 小写词条，使用 小写 词过滤器处理。
+5. 使用自定义 停止 词过滤器移除自定义的停止词列表中包含的词：
+```JSON
+"filter": {
+    "my_stopwords": {
+        "type":        "stop",
+        "stopwords": [ "the", "a" ]
+    }
+}
+```
+我们的分析器定义用我们之前已经设置好的自定义过滤器组合了已经定义好的分词器和过滤器：
+```JSON
+"analyzer": {
+    "my_analyzer": {
+        "type":           "custom",
+        "char_filter":  [ "html_strip", "&_to_and" ],
+        "tokenizer":      "standard",
+        "filter":       [ "lowercase", "my_stopwords" ]
+    }
+}
+```
+汇总起来，完整的 创建索引 请求 看起来应该像这样：
+```JSON
+PUT /my_index
+{
+    "settings": {
+        "analysis": {
+            "char_filter": {
+                "&_to_and": {
+                    "type":       "mapping",
+                    "mappings": [ "&=> and "]
+            }},
+            "filter": {
+                "my_stopwords": {
+                    "type":       "stop",
+                    "stopwords": [ "the", "a" ]
+            }},
+            "analyzer": {
+                "my_analyzer": {
+                    "type":         "custom",
+                    "char_filter":  [ "html_strip", "&_to_and" ],
+                    "tokenizer":    "standard",
+                    "filter":       [ "lowercase", "my_stopwords" ]
+            }}
+}}}
+```
+
+这个分析器现在是没有多大用处的，除非我们告诉 Elasticsearch在哪里用上它。我们可以像下面这样把这个分析器应用在一个 string 字段上：
+```html
+PUT /my_index/_mapping/my_type
+{
+    "properties": {
+        "title": {
+            "type":      "string",
+            "analyzer":  "my_analyzer"
+        }
+    }
+}
+```
+
+#### 动态映射
+当 Elasticsearch 遇到文档中以前 未遇到的字段，它用 dynamic mapping 来确定字段的数据类型并自动把新的字段添加到类型映射。
+
+有时这是想要的行为有时又不希望这样。通常没有人知道以后会有什么新字段加到文档，但是又希望这些字段被自动的索引。也许你只想忽略它们。如果Elasticsearch是作为重要的数据存储，可能就会期望遇到新字段就会抛出异常，这样能及时发现问题。
+
+幸运的是可以用 dynamic 配置来控制这种行为 ，可接受的选项如下：
+- true
+  动态添加新的字段--缺省
+- false
+  忽略新的字段
+- strict
+  如果遇到新字段抛出异常
+
+配置参数 dynamic 可以用在根 object 或任何 object 类型的字段上。你可以将 dynamic 的默认值设置为 strict , 而只在指定的内部对象中开启它, 例如：
+```html
+PUT /my_index
+{
+    "mappings": {
+        "my_type": {
+            "dynamic":      "strict",
+            "properties": {
+                "title":  { "type": "string"},
+                "stash":  {
+                    "type":     "object",
+                    "dynamic":  true
+                }
+            }
+        }
+    }
+}
+<!-- 如果遇到新字段，对象 my_type 就会抛出异常。而内部对象 stash 遇到新字段就会动态创建新字段。 -->
+```
+
+使用上述动态映射， 你可以给 stash 对象添加新的可检索的字段：
+```html
+PUT /my_index/my_type/1
+{
+    "title":   "This doc adds a new field",
+    "stash": { "new_field": "Success!" }
+}
+```
+
+但是对根节点对象 my_type 进行同样的操作会失败：
+```html
+PUT /my_index/my_type/1
+{
+    "title":     "This throws a StrictDynamicMappingException",
+    "new_field": "Fail!"
+}
+```
+
+>把 dynamic 设置为 false 一点儿也不会改变 _source 的字段内容。 _source 仍然包含被索引的整个JSON文档。只是新的字段不会被加到映射中也不可搜索。
+
+#### 自定义动态映射
+如果你想在运行时增加新的字段，你可能会启用动态映射。 然而，有时候，动态映射 规则 可能不太智能。幸运的是，我们可以通过设置去自定义这些规则，以便更好的适用于你的数据。
+##### 日期检测
+当 Elasticsearch 遇到一个新的字符串字段时，它会检测这个字段是否包含一个可识别的日期，比如 2014-01-01 。 如果它像日期，这个字段就会被作为 date 类型添加。否则，它会被作为 string 类型添加。
+
+有些时候这个行为可能导致一些问题。想象下，你有如下这样的一个文档：
+```JSON
+{ "note": "2014-01-01" }
+```
+假设这是第一次识别 note 字段，它会被添加为 date 字段。但是如果下一个文档像这样：
+```JSON
+{ "note": "Logged out" }
+```
+这显然不是一个日期，但为时已晚。这个字段已经是一个日期类型，这个 不合法的日期 将会造成一个异常。
+
+日期检测可以通过在根对象上设置 date_detection 为 false 来关闭：
+```html
+PUT /my_index
+{
+    "mappings": {
+        "my_type": {
+            "date_detection": false
+        }
+    }
+}
+```
+使用这个映射，字符串将始终作为 string 类型。如果你需要一个 date 字段，你必须手动添加。
+
+#### 动态模板
+
+### 分片内部原理
+#### 近实时搜索
+在 Elasticsearch 中，写入和打开一个新段的轻量的过程叫做 refresh 。 默认情况下每个分片会每秒自动刷新一次。这就是为什么我们说 Elasticsearch 是 近 实时搜索: 文档的变化并不是立即对搜索可见，但会在一秒之内变为可见。
+
+这些行为可能会对新用户造成困惑: 他们索引了一个文档然后尝试搜索它，但却没有搜到。这个问题的解决办法是用 refresh API 执行一次手动刷新:
+```html
+<!--	刷新（Refresh）所有的索引  -->
+POST /_refresh
+<!-- 	只刷新（Refresh） blogs 索引。 -->
+POST /blogs/_refresh
+```
+
+>尽管刷新是比提交轻量很多的操作，它还是会有性能开销。 当写测试的时候， 手动刷新很有用，但是不要在生产环境下每次索引一个文档都去手动刷新。 相反，你的应用需要意识到 Elasticsearch 的近实时的性质，并接受它的不足。
+
+并不是所有的情况都需要每秒刷新。可能你正在使用 Elasticsearch 索引大量的日志文件， 你可能想优化索引速度而不是近实时搜索， 可以通过设置 refresh_interval ， 降低每个索引的刷新频率：
+``html
+<!-- 	每30秒刷新 my_logs 索引 -->
+PUT /my_logs
+{
+  "settings": {
+    "refresh_interval": "30s"
+  }
+}
+```
+
+refresh_interval 可以在既存索引上进行动态更新。 在生产环境中，当你正在建立一个大的新索引时，可以先关闭自动刷新，待开始使用该索引时，再把它们调回来：
+```html
+<!-- 关闭自动刷新。 -->
+PUT /my_logs/_settings
+{ "refresh_interval": -1 }
+
+<!-- 每秒自动刷新。 -->
+PUT /my_logs/_settings
+{ "refresh_interval": "1s" }
+```
+
+**refresh_interval 需要一个 持续时间 值， 例如 1s （1 秒） 或 2m （2 分钟）。 一个绝对值 1 表示的是 1毫秒 --无疑会使你的集群陷入瘫痪。**
+
+#### 持久化变更
+如果没有用 fsync 把数据从文件系统缓存刷（flush）到硬盘，我们不能保证数据在断电甚至是程序正常退出之后依然存在。为了保证 Elasticsearch 的可靠性，需要确保数据变化被持久化到磁盘。
+
+在 动态更新索引，我们说一次完整的提交会将段刷到磁盘，并写入一个包含所有段列表的提交点。Elasticsearch 在启动或重新打开一个索引的过程中使用这个提交点来判断哪些段隶属于当前分片。
+
+即使通过每秒刷新（refresh）实现了近实时搜索，我们仍然需要经常进行完整提交来确保能从失败中恢复。但在两次提交之间发生变化的文档怎么办？我们也不希望丢失掉这些数据。
+
+Elasticsearch 增加了一个 translog ，或者叫事务日志，在每一次对 Elasticsearch 进行操作时均进行了日志记录。通过 translog
+1. 一个文档被索引之后，就会被添加到内存缓冲区，并且 追加到了 translog
+2. 刷新（refresh）分片每秒被刷新（refresh）一次：
+  - 这些在内存缓冲区的文档被写入到一个新的段中，且没有进行 fsync 操作。
+  - 这个段被打开，使其可被搜索。
+  - 内存缓冲区被清空。
+3. 这个进程继续工作，更多的文档被添加到内存缓冲区和追加到事务日志
+4. 每隔一段时间--例如 translog 变得越来越大--索引被刷新（flush）；一个新的 translog 被创建，并且一个全量提交被执行
+  - 所有在内存缓冲区的文档都被写入一个新的段。
+  - 缓冲区被清空。
+  - 一个提交点被写入硬盘。
+  - 文件系统缓存通过 fsync 被刷新（flush）。
+  - 老的 translog 被删除。
+
+在刷新（flush）之后，段被全量提交，并且事务日志被清空
+
+translog 提供所有还没有被刷到磁盘的操作的一个持久化纪录。当 Elasticsearch 启动的时候， 它会从磁盘中使用最后一个提交点去恢复已知的段，并且会重放 translog 中所有在最后一次提交后发生的变更操作。
+
+translog 也被用来提供实时 CRUD 。当你试着通过ID查询、更新、删除一个文档，它会在尝试从相应的段中检索之前， 首先检查 translog 任何最近的变更。这意味着它总是能够实时地获取到文档的最新版本。
+##### flush API
+这个执行一个提交并且截断 translog 的行为在 Elasticsearch 被称作一次 flush 。 分片每30分钟被自动刷新（flush），或者在 translog 太大的时候也会刷新。请查看 translog 文档 来设置，它可以用来 控制这些阈值：
+flush API 可以 被用来执行一个手工的刷新（flush）:
+```html
+<!--刷新（flush） blogs 索引。  -->
+POST /blogs/_flush
+<!-- 	刷新（flush）所有的索引并且并且等待所有刷新在返回前完成。 -->
+POST /_flush?wait_for_ongoing
+```
+>这就是说，在重启节点或关闭索引之前执行 flush 有益于你的索引。当 Elasticsearch 尝试恢复或重新打开一个索引， 它需要重放 translog 中所有的操作，所以如果日志越短，恢复越快。
+
+#### 段合并
+由于自动刷新流程每秒会创建一个新的段 ，这样会导致短时间内的段数量暴增。而段数目太多会带来较大的麻烦。 每一个段都会消耗文件句柄、内存和cpu运行周期。更重要的是，每个搜索请求都必须轮流检查每个段；所以段越多，搜索也就越慢。
+
+Elasticsearch通过在后台进行段合并来解决这个问题。小的段被合并到大的段，然后这些大的段再被合并到更大的段。
+
+##### optimize API
+optimize API大可看做是 强制合并 API 。它会将一个分片强制合并到 max_num_segments 参数指定大小的段数目。 这样做的意图是减少段的数量（通常减少到一个），来提升搜索性能。
+>optimize API 不应该 被用在一个动态索引————一个正在被活跃更新的索引。后台合并流程已经可以很好地完成工作。 optimizing 会阻碍这个进程。不要干扰它！
+
+在特定情况下，使用 optimize API 颇有益处。例如在日志这种用例下，每天、每周、每月的日志被存储在一个索引中。 老的索引实质上是只读的；它们也并不太可能会发生变化。
+
+在这种情况下，使用optimize优化老的索引，将每一个分片合并为一个单独的段就很有用了；这样既可以节省资源，也可以使搜索更加快速：
+```html
+<!-- 合并索引中的每个分片为一个单独的段 -->
+POST /logstash-2014-10/_optimize?max_num_segments=1
+```
+
+**
+请注意，使用 optimize API 触发段合并的操作一点也不会受到任何资源上的限制。这可能会消耗掉你节点上全部的I/O资源, 使其没有余裕来处理搜索请求，从而有可能使集群失去响应。 如果你想要对索引执行 `optimize`，你需要先使用分片分配（查看 迁移旧索引）把索引移到一个安全的节点，再执行。**
