@@ -130,7 +130,7 @@ $ touch Dockerfile
 $ docker build -t="jameur01/static_web" .
 ```
 static_web这个目录就是我们构建的环境(build environment)，Docker则称此环境为上下文(context)或者构建上下文(build context)。Docker
-会在构建镜像时将构建上下文和改上下文中的文件和目录上传到Docker守护进程。这样Docker守护进程就能直接访问你想在镜像中存储的任何代码、文件
+会在构建镜像时将构建上下文和该上下文中的文件和目录上传到Docker守护进程。这样Docker守护进程就能直接访问你想在镜像中存储的任何代码、文件
 或者其他数据。
 
 也可以为镜像设置一个标签(如果没有指定任何标签，Docker将会自动为镜像设置一个latest标签)
