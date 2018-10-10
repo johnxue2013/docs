@@ -61,7 +61,7 @@ docker run --restart=always --name daemon_dave -d ubuntu /bin/bash -c "while tru
 - 删除容器
 可以使用docker rm命令来删除他们
 
-> 可以使用 docker rm `docker ps -a -q`删除所有容器。
+> 可以使用 docker rm \`docker ps -a -q\`删除所有容器。
 
 - TAG
 为了区分同一个镜像的不同版本，docker提供了tag。如可以通过指定tag运行指定的镜像
