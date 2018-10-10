@@ -1,5 +1,5 @@
 # 第一本docker书 笔记
-- 可以使用一下命令创建长期运行的容器。
+- 可以使用以下命令创建长期运行的容器。
 ```Bash
 docker run --name daemon_dave -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
 ```
