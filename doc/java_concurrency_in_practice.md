@@ -57,7 +57,7 @@ public class ThisEscape {
 - 所有域都是final类型；并且它被正确创建(创建期间没有发生this引用的逃逸)
 
 ### 阻塞队列
-类库中包含一些`BlockingQueue`的实现，其中`LinkedBlockingQueue`和`ArrayBlockingQueue`是FIFO队列，与`LinkedList`和`ArrayList`相似,但是却拥有比同步List更好的并发性。`PrioriyBlockingQueue`是一个按优先级顺序排序的队列,当你不希望按照FIFO的顺序处理元素时，这个`PrioriyBlockingQueue`是非常有用的。正如其他排序的容易一样，`PrioriyBlockingQueue`可以比较元素本身的自然顺序（如果它们实现了`Comparable`），也可使用一个`Comparator`进行排序
+类库中包含一些`BlockingQueue`的实现，其中`LinkedBlockingQueue`和`ArrayBlockingQueue`是FIFO队列，与`LinkedList`和`ArrayList`相似,但是却拥有比同步List更好的并发性。`PrioriyBlockingQueue`是一个按优先级顺序排序的队列,当你不希望按照FIFO的顺序处理元素时，这个`PrioriyBlockingQueue`是非常有用的。正如其他排序的容器一样，`PrioriyBlockingQueue`可以比较元素本身的自然顺序（如果它们实现了`Comparable`），也可使用一个`Comparator`进行排序
 
 最后一个`BlockingQueue`的实现是`SynchronousQueue`，它根本上不是一个真正的队列，因为它不会为队列元素维护任何存储空间。不过，它维护一个排队的线程清单,这些线程等待把元素加入(enquere)队列或者移出(dequeue)队列。因为`SynchronousQueue`没有存储能力，所以除非另一个线程已经准备好参与移交工作，否则`put`和`take`会一直 阻止。`SynchronousQueue`这类队列只在消费者充足的时候比较合适，他们总能为下一个任务做好准备
 
