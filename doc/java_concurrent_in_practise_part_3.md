@@ -140,7 +140,7 @@ public ThreadPoolExecutor(int corePoolSize,
 一个稳妥的资源管理策略是使用有限队列，比如`ArrayBlockingQueue`或者有限的`LinkedBlockingQueue`以及`PriorityBlockingQueue`。有界队列有助于避免资源耗尽的情况发生，但是当队列满了之后，新的任务怎么办？有很多的**饱和策略**可以处理这个问题。对于有界队列，队列的长度必须与池的长度一起调解。一个大队列加一个小池，可以控制对内存和CPU的使用，还可减少上下文切换，但是要接收潜在的吞吐量约束的开销.
 
 ### 饱和策略
-当一个有限队列充满后，**饱和策略**开始起作用。ThreadPoolExecutor的饱和策略可通过调用`setRejectedExecutionHandler`来修改（如果任务提交到一个一进来被关闭的Executor时，也会用到饱和策略）。JDK提供了几种不同的`RejectedExecutionHandler`实现，每一个都实现了不同的饱和策略:
+当一个有限队列充满后，**饱和策略**开始起作用。ThreadPoolExecutor的饱和策略可通过调用`setRejectedExecutionHandler`来修改（如果任务提交到一个已经被关闭的Executor时，也会用到饱和策略）。JDK提供了几种不同的`RejectedExecutionHandler`实现，每一个都实现了不同的饱和策略:
 - AbortPolicy:
 默认的终止策略会引起executor抛出未检查的`RejectedExecutionException`；调用者可以捕获这个异常，然后编写能满足自己需求的处理代码
 - CallerRunsPolicy:
