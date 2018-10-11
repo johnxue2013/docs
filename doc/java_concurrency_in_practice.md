@@ -69,9 +69,9 @@ java 6新增了两个容器类型`Deque`和`BlockingDeque`，他们分别拓展�
 中断是一种**协作**机制。
 当你在代码调用了一个会抛出`InterruptedException`的方法时，你自己的方法就成为了一个阻塞的方法，要为响应中断做好准备
 
-- 传递InteruptedException
+- 传递InteruptedException  
 如果你能侥幸避开异常的话，这通常是明智的策略--只需要把`InterruptedException`传递给你的调用者。这可能包括不捕获`InteruptedException`，也可能是先捕获，然后对其中特定的活动进行简洁的清理后，再抛出。
-- 恢复中断
+- 恢复中断  
 有时候你不能抛出`InteruptedException`，比如你的代码是Runnable的一部分时。在这样的情况下，你必须捕获`InteruptedException`，并且，在当前线程中通过调用interrupt从中断中恢复，这样调用栈中更高的代码可以发现中断已经发生。如
 
 ```java
@@ -95,12 +95,11 @@ public class TaskRunnable implements Runnable {
 ### Synchronizer
 它根据本身的状态调节线程的控制流。阻塞队列可以扮演一个`Synchronizer`的角色；其他类型的`Synchronizer`包括信号量(semaphore)、关卡(barrier)以及闭锁(latch)
 
-- 闭锁(latch)
-  是一种`Synchronizer`，它可以延迟线程的进度直到线程到达终止状态。闭锁可以用来确保特定活动直到其他的活动完成后才发生。闭锁是一次性对象，一旦进入最终状态，就不能被重置了。
-  `CountDownLatch`是一个灵活的闭锁实现
+- 闭锁(latch)  
+是一种`Synchronizer`，它可以延迟线程的进度直到线程到达终止状态。闭锁可以用来确保特定活动直到其他的活动完成后才发生。闭锁是一次性对象，一旦进入最终状态，就不能被重置了。`CountDownLatch`是一个灵活的闭锁实现
 
-- 信号量
-  计数信号量(Counting Semaphore)用来控制能够同时访问某特定资源的活动的数量，或者同时执行某一给定操作的数量。计数信号量可以用来实现资源池或者给一个容器限定边界。
+- 信号量  
+计数信号量(Counting Semaphore)用来控制能够同时访问某特定资源的活动的数量，或者同时执行某一给定操作的数量。计数信号量可以用来实现资源池或者给一个容器限定边界。
 
   ```java
   import java.util.Collections;
@@ -146,8 +145,8 @@ public class TaskRunnable implements Runnable {
   	}
   }
   ```
-- 关卡（barrier）
-  关卡类似闭锁，能够则赛一组线程，直到某些事件发生。
+- 关卡（barrier）  
+关卡类似闭锁，能够阻塞一组线程，直到某些事件发生。
   ```java
   public class CyclicBarrierTest {
 
