@@ -21,7 +21,7 @@ ERROR
 FATAL
 
 - Appender
-可以理解为一个输出地，log4j支持输出到console,files, remote socket, servers,Apache Flume,JMS,remote UNIX syslog daemons和多种数据库，一个Logger可以有不止一个Appender。默认情况下子Logger会继承父Logger的Appender，也就是说子Logger会在父Logger的appender里输出，若设置`additivity=false`，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出。
+可以理解为一个输出地，log4j支持输出到console,files, remote socket, servers,Apache Flume,JMS,remote UNIX syslog daemons和多种数据库，一个Logger可以有不止一个Appender。默认情况下子Logger会继承父Logger的Appender，也就是说子Logger会在父Logger的appender里输出，若设置子类`additivity=false`，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出。
 
 
 ### Async Loggers

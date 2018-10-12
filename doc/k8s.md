@@ -11,3 +11,11 @@ Service是真实应用服务的抽象，定义了Pod的逻辑集合和访问这�
 
 * Node
 K8s属于主从分布式集群架构，K8s Node(简称为Node，早起版本叫做Minion)运行并管理容器。Node作为K8s的操作单元，用来分配给Pod(或者说容器)进行绑定，Pod最终运行在Node上，Node可以认为是Pod的宿主机。
+
+
+## Kubernetes 集群
+一个Kubernetes集群包含两中资源类型：
+- Master 协调集群
+- Nodes 工作节点，运行应用
+
+![image](https://github.com/johnxue2013/tools/blob/master/images/k8s-cluster.png)
