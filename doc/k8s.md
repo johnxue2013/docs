@@ -25,6 +25,7 @@ Pod模拟特定于应用程序的“逻辑主机”，并且可以包含相对�
 Pod是Kubernetes平台上的原子单元。 当我们在Kubernetes上创建Deployment时，该Deployment会在其中创建包含容器的Pod（而不是直接创建容器）。 每个Pod都与调度它的节点绑定，并保持在那里直到终止（根据重启策略）或删除。 如果节点发生故障，则会在群集中的其他可用节点上安排相同的Pod。
 
 > 总结： A Pod is a group of one or more application containers (such as Docker or rkt) and includes shared storage (volumes), IP address and information about how to run them.
+**Pods are running in an isolated, private network**
 
 ### Pods 概览
 
@@ -41,3 +42,69 @@ Pod使用运行在一个Node中，Node是Kubernetes中的工作机器，可以�
 
 ### Node overview
 ![image](https://github.com/johnxue2013/tools/blob/master/images/node-overview.png)
+
+### 使用kubectl进行故障排除
+常用的操作可以通过下面四个命令完成
+- kubectl get- 列出资源
+- kubectl describe- 显示一个资源的详细信息
+- kubectl logs- 打印pod中容器的日志
+- kubectl exec - 在pod中的容器上执行一个命令
+
+
+```bin/bash
+<!-- 查看正在运行的pods -->
+kubectl get pods
+```
+
+```bin/bash
+<!-- 查看pod中运行的什么容器以及该容器是有什么镜像构建的， -->
+kubectl describe pods
+
+Name:           kubernetes-bootcamp-5c69669756-rsh7v
+Namespace:      default
+Node:           minikube/172.17.0.17
+Start Time:     Fri, 12 Oct 2018 09:47:44 +0000
+Labels:         pod-template-hash=1725225312
+                run=kubernetes-bootcamp
+Annotations:    <none>
+Status:         Running
+IP:             172.18.0.2
+Controlled By:  ReplicaSet/kubernetes-bootcamp-5c69669756
+Containers:
+  kubernetes-bootcamp:
+    Container ID:   docker://d812c04ecf2ffe1747686ce0661b427e7d898811a366f672ab53759c6c445c6b
+    Image:          gcr.io/google-samples/kubernetes-bootcamp:v1
+    Image ID:       docker-pullable://gcr.io/google-samples/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 12 Oct 2018 09:47:44 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-vbf66 (ro)
+Conditions:
+  Type           Status
+  Initialized    True
+  Ready          True
+  PodScheduled   True
+Volumes:
+  default-token-vbf66:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-vbf66
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type     Reason                 Age              From               Message
+  ----     ------                 ----             ----               -------
+  Warning  FailedScheduling       2m (x4 over 3m)  default-scheduler  0/1 nodes are available: 1 node(s) were not ready.
+  Normal   Scheduled              2m               default-scheduler  Successfully assigned kubernetes-bootcamp-5c69669756-rsh7v to minikube
+  Normal   SuccessfulMountVolume  2m               kubelet, minikube  MountVolume.SetUp succeeded for volume"default-token-vbf66"
+  Normal   Pulled                 2m               kubelet, minikube  Container image "gcr.io/google-samples/kubernetes-bootcamp:v1" already present on machine
+  Normal   Created                2m               kubelet, minikube  Created container
+  Normal   Started                2m               kubelet, minikube  Started container
+```
