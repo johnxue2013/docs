@@ -1,5 +1,6 @@
-# MySql explain出的结果各项的意义
+# Mysql
 
+## 使用explain 查看执行计划
 explain显示了mysql如何使用索引来处理select语句以及连接表。可以帮助选择更好的索引和写出更优化的查询语句。
 
 ```sql
@@ -194,3 +195,31 @@ ALL 类型因为是全表扫描, 因此在相同的查询条件下, 它是速度
 在mysql中还有一种二进制日志(binlog)，其用来进行POINT-IN-TIME(PIT)的恢复及主从复制(Replication)环境的建立。
 
 表面上binlog和undo log非常相似，都是记录了对于数据库操作的日志，但本质上老看，两者不同，首先undo log是在InnoDB存储引擎产生，而二进制日志是在MySQL数据库上产生的的，并且binlog不仅仅针对于InnoDB存储引擎，MySQL数据库中的任意存储引擎对于数据库的更改都会产生binlog。其次是两种日志记录的内容不同。
+
+## 日志文件
+常见的日志文件有
+- 错误日志(error log)
+- 二进制日志 (binlog)
+- 慢查询日志(slow query log)
+- 查询日志(log)
+
+### 错误日志
+错误日志问价对MySQL的启动、运行、关闭过程进行了记录。该文件不仅纪录 了所有错误信息，也记录了一些警告或正确的信息。可通过
+```sql
+mysql> show Variables like 'log_error'\G;
+*************************** 1. row ***************************
+Variable_name: log_error
+        Value: /usr/local/mysql/data/mysqld.local.err
+1 row in set (0.03 sec)
+
+ERROR:
+No query specified
+```
+### 慢查询日志
+可以在MySQL启动时设置一个阈值，将运行时间超过该值的所有sql语句都记录到慢查询日志文件中。该阈值可以通过参数`long_query_time`来设置，默认值为10，代表10s。
+
+### 查询日志
+查询日志记录了所有对MySQL数据库请求的信息，无论这些请求是否得到了正确的执行。默认文件名为：主机名.log
+
+### 二进制日志
+二进制日志记录了对mysql数据库执行更改的所有操作，但是不包括SELECT和SHOW
