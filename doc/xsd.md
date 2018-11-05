@@ -12,3 +12,5 @@ targetNamespace="http://www.springframework.org/schema/beans">
 -->
 </xsd:schema>
 ```
+
+xsd中`schema`标签的
