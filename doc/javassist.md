@@ -252,7 +252,244 @@ Class c = cc.toClass(bean.getClass().getClassLoader());
 
 提供toClass（）是为了方便起见。如果您需要更复杂的功能，则应编写自己的类加载器。
 
-#### 3.2Java中的类加载器
+#### 3.2 Java中的类加载器
+在Java中，多个类加载器可以共存，每个类加载器都可以创建自己的名称空间。 不同的类加载器可以加载具有相同类名的不同类文件。 加载的两个类被视为不同的类。 此功能使我们能够在单个JVM上运行多个应用程序，即使这些程序包含具有相同名称的不同类。
+
+注意：JVM不允许动态重新加载类。 一旦类加载器加载了一个类，它就无法在运行时重新加载该类的修改版本。 因此，在JVM加载类之后，你无法更改类的定义。 但是，JPDA（Java平台调试器体系结构）提供了重新加载类的有限能力。 见3.6节。
+
+如果同一个类文件由两个不同的类加载器加载，则JVM会生成两个具有相同名称和定义的不同类。 这两个类被视为不同的类。 由于这两个类不相同，因此一个类的实例不能分配给另一个类的变量。 两个类之间的强制转换操作失败并抛出`ClassCastException`。
+
+例如，以下代码段会引发异常
+```Java
+MyClassLoader myLoader = new MyClassLoader();
+Class clazz = myLoader.loadClass("Box");
+Object obj = clazz.newInstance();
+Box b = (Box)obj;    // this always throws ClassCastException.
+```
+Box类由两个类加载器加载。 假设类加载器CL加载包含此代码片段的类。 由于此代码段引用了MyClassLoader，Class，Object和Box，因此CL还会加载这些类（除非它委托给另一个类加载器）。 因此，变量b的类型是CL加载的Box类。 另一方面，myLoader也加载Box类。 对象obj是myLoader加载的Box类的实例。 因此，最后一个语句总是抛出一个ClassCastException，因为obj的类是Box类的一个不同的版本，而不是用作变量b的类型。
+
+多个类加载器形成树结构。 除引bootstrap loader之外的每个类加载器都有一个父类加载器，它通常加载了该子类加载器的类。 由于可以沿着类加载器的这个层次结构委托加载类的请求，因此可以通过不请求类加载的类加载器加载类。 因此，请求加载类C的类加载器可能与实际加载类C的加载器不同。为了区分，我们将前加载器称为C的发起者，并将后者加载器称为C的真实加载器。
+
+此外，如果一个类加载器CL请求加载一个类C（C的发起者）委托给父类加载器PL，那么类加载器CL永远不会被请求加载在类C的定义中引用的任何类.CL 不是这些类的发起者。 相反，父类加载器PL成为它们的启动器，并要求加载它们。 类C的定义所引用的类由C的真实加载器加载。
+
+为了了解此行为，请考虑以下示例。
+
+```Java
+  public class Point {    // loaded by PL
+      private int x, y;
+      public int getX() { return x; }
+          :
+  }
+
+  public class Box {      // the initiator is L but the real loader is PL
+      private Point upperLeft, size;
+      public int getBaseX() { return upperLeft.x; }
+          :
+  }
+
+  public class Window {    // loaded by a class loader L
+      private Box box;
+      public int getBaseX() { return box.getBaseX(); }
+  }
+```
+假设一个类`Window`由类加载器L加载.`Window`的启动器和实际加载器都是L.由于`Window`引用了`Box`，JVM将请求L加载`Box`。 这里，假设L将此任务委托给父类加载器PL。 Box的发起者是L，但真正的加载器是PL。 在这种情况下，`Point`的发起者不是L而是PL，因为它与`Box`的真实加载器相同。 因此，L永远不会被请求加载`Point`。
+
+接下来，让我们考虑一个稍微修改过的示例。
+```Java
+public class Point {
+    private int x, y;
+    public int getX() { return x; }
+        :
+}
+
+public class Box {      // the initiator is L but the real loader is PL
+    private Point upperLeft, size;
+    public Point getSize() { return size; }
+        :
+}
+
+public class Window {    // loaded by a class loader L
+    private Box box;
+    public boolean widthIs(int w) {
+        Point p = box.getSize();
+        return w == p.getX();
+    }
+}
+```
+现在，`Window`的定义也引用`Point`。 在这种情况下，如果请求加载Point，则类加载器L也必须委托给PL。 **你必须避免让两个类加载器加倍加载同一个类**。 两个装载机中的一个必须委托给另一个。
+
+如果L在加载Point时没有委托给PL，则widthIs（）会抛出ClassCastException。 由于Box的真实加载器是PL，因此Box中引用的Point也由PL加载。 因此，getSize（）的结果值是由PL加载的Point的实例，而widthIs（）中的变量p的类型是由L加载的Point.JVM将它们视为不同的类型，因此它因类型而抛出异常不匹配。
+
+这种行为有点不方便但必要。如果声明如下：
+```Java
+Point p = box.getSize();
+```
+没有抛出异常，那么Window的程序员可以打破Point对象的封装。例如，字段x在由PL加载的Point中是私有的。但是，如果L加载以下定义的Point，则Window类可以直接访问x的值：
+```Java
+public class Point {
+    public int x, y;    // not private
+    public int getX() { return x; }
+        :
+}
+```
+有关Java中类加载器的更多详细信息，以下文章将有所帮助:
+Sheng Liang and Gilad Bracha, "Dynamic Class Loading in the Java Virtual Machine",
+ACM OOPSLA'98, pp.36-44, 1998.
+
+#### 3.3 使用javassist.Loader
+Javassist提供了一个类加载器javassist.Loader。此类加载器使用javassist.ClassPool对象来读取类文件。 例如，javassist.Loader可用于加载使用Javassist修改的特定类。
+
+```Java
+import javassist.*;
+import test.Rectangle;
+
+public class Main {
+  public static void main(String[] args) throws Throwable {
+     ClassPool pool = ClassPool.getDefault();
+     Loader cl = new Loader(pool);
+
+     CtClass ct = pool.get("test.Rectangle");
+     ct.setSuperclass(pool.get("test.Point"));
+
+     Class c = cl.loadClass("test.Rectangle");
+     Object rect = c.newInstance();
+         :
+  }
+}
+```
+该程序修改了一个类test.Rectangle。 test.Rectangle的超类设置为test.Point类。然后，该程序加载修改后的类，并创建test.Rectangle类的新实例。
+
+如果用户希望在加载时按需修改类，则用户可以向javassist.Loader添加事件侦听器。 当类加载器加载类时，会通知添加的事件侦听器。 事件监听器类必须实现以下接口：
+```Java
+public interface Translator {
+    public void start(ClassPool pool) throws NotFoundException, CannotCompileException;
+    public void onLoad(ClassPool pool, String classname) throws NotFoundException, CannotCompileException;
+}
+```
+当javassist.Loader中的addTranslator（）将此事件侦听器添加到javassist.Loader对象时，将调用方法start（）。 在javassist.Loader加载类之前调用onLoad（）方法。 onLoad（）可以修改加载类的定义。
+例如，以下事件侦听器在加载之前将所有类更改为公共类。
+```Java
+public class MyTranslator implements Translator {
+    void start(ClassPool pool)
+        throws NotFoundException, CannotCompileException {}
+    void onLoad(ClassPool pool, String classname)
+        throws NotFoundException, CannotCompileException
+    {
+        CtClass cc = pool.get(classname);
+        cc.setModifiers(Modifier.PUBLIC);
+    }
+}
+```
+请注意，onLoad（）不必调用toBytecode（）或writeFile（），因为javassist.Loader调用这些方法来获取类文件。
+
+要使用MyTranslator对象运行应用程序类MyApp，请按如下方式编写主类：
+```Java
+import javassist.*;
+
+public class Main2 {
+  public static void main(String[] args) throws Throwable {
+     Translator t = new MyTranslator();
+     ClassPool pool = ClassPool.getDefault();
+     Loader cl = new Loader();
+     cl.addTranslator(pool, t);
+     cl.run("MyApp", args);
+  }
+}
+```
+要运行此程序，请执行：
+% java Main2 arg1 arg2...
+MyApp和其他应用程序类由MyTranslator转换。
+
+请注意，像MyApp这样的应用程序类无法访问Main2，MyTranslator和ClassPool等加载器类，因为它们由不同的加载器加载。 应用程序类由javassist.Loader加载，而加载器类（如Main2）由默认的Java类加载器加载。
+
+javassist.Loader以与java.lang.ClassLoader不同的顺序搜索类。 ClassLoader首先将加载操作委托给父类加载器，然后仅在父类加载器找不到它们时才尝试加载类。 另一方面，javassist.Loader尝试在委托给父类加载器之前加载类。 它仅在以下情况下委托：
+- 在ClassPool对象上调用get（）找不到类，或者
+- 通过使用delegateLoadingOf（）来指定类由父类加载器加载。
+
+此搜索顺序允许Javassist加载修改的类。 但是，如果由于某种原因无法找到修改的类，它会委托给父类加载器。 一旦类由父类加载器加载，该类中引用的其他类也将由父类加载器加载，因此它们永远不会被修改。 回想一下，C类中引用的所有类都由C的实际加载器加载。如果您的程序无法加载修改后的类，则应确保使用该类的所有类是否已由javassist.Loader加载。
+
+#### 3.4 写一个类加载器
+使用Javassist的简单类加载器如下：
+```Java
+import javassist.*;
+
+public class SampleLoader extends ClassLoader {
+    /* Call MyApp.main().
+     */
+    public static void main(String[] args) throws Throwable {
+        SampleLoader s = new SampleLoader();
+        Class c = s.loadClass("MyApp");
+        c.getDeclaredMethod("main", new Class[] { String[].class })
+         .invoke(null, new Object[] { args });
+    }
+
+    private ClassPool pool;
+
+    public SampleLoader() throws NotFoundException {
+        pool = new ClassPool();
+        pool.insertClassPath("./class"); // MyApp.class must be there.
+    }
+
+    /* Finds a specified class.
+     * The bytecode for that class can be modified.
+     */
+    protected Class findClass(String name) throws ClassNotFoundException {
+        try {
+            CtClass cc = pool.get(name);
+            // modify the CtClass object here
+            byte[] b = cc.toBytecode();
+            return defineClass(name, b, 0, b.length);
+        } catch (NotFoundException e) {
+            throw new ClassNotFoundException();
+        } catch (IOException e) {
+            throw new ClassNotFoundException();
+        } catch (CannotCompileException e) {
+            throw new ClassNotFoundException();
+        }
+    }
+}
+```
+MyApp类是一个应用程序。 要执行此程序，首先将类文件放在./class目录下，该目录不能包含在类搜索路径中。 否则，MyApp.class将由默认的系统类加载器加载，该加载器是SampleLoader的父加载器。 目录名./class由构造函数中的insertClassPath（）指定。 如果需要，你可以选择其他名称替换./class。 然后执行以下操作：
+```Java
+% java SampleLoader
+```
+类加载器加载类MyApp（./class/MyApp.class）并使用命令行参数调用MyApp.main（）。
+
+这是使用Javassist的最简单方法。 但是，如果编写更复杂的类加载器，则可能需要详细了解Java的类加载机制。 例如，上面的程序将MyApp类放在与SampleLoader类所属的名称空间分开的名称空间中，因为这两个类由不同的类加载器加载。 因此，MyApp类无法直接访问SampleLoader类。
+
+#### 3.5 修改系统类
+系统类（如java.lang.String）不能由系统类加载器以外的类加载器加载。因此，上面显示的SampleLoader或javassist.Loader无法在加载时修改系统类。
+
+如果你的应用程序需要这样做，则必须对系统类进行静态修改。例如，以下程序向java.lang.String添加一个新字段hiddenValue：
+```Java
+ClassPool pool = ClassPool.getDefault();
+CtClass cc = pool.get("java.lang.String");
+CtField f = new CtField(CtClass.intType, "hiddenValue", cc);
+f.setModifiers(Modifier.PUBLIC);
+cc.addField(f);
+cc.writeFile(".");
+```
+This program produces a file "./java/lang/String.class".
+要使用此已修改的String类运行程序MyApp，请执行以下操作：
+
+假设MyApp的定义如下：
+```Java
+public class MyApp {
+    public static void main(String[] args) throws Exception {
+        System.out.println(String.class.getField("hiddenValue").getName());
+    }
+}
+```
+如果正确加载了修改后的String类，MyApp将打印hiddenValue。
+
+注意：不应部署使用此技术来覆盖rt.jar中的系统类的应用程序，因为这样做会违反Java 2 Runtime Environment二进制代码许可证。
+
+#### 3.6 在运行时重新加载类
+如果在启用JPDA（Java平台调试器体系结构）的情况下启动JVM，则可以动态地重新加载类。 在JVM加载类之后，可以卸载旧版本的类定义，并且可以再次重新加载新版本。 也就是说，可以在运行时动态修改该类的定义。 但是，新类定义必须与旧类定义兼容。 JVM不允许两个版本之间的架构更改。 他们有相同的方法和领域。
+Javassist提供了一个方便的类，用于在运行时重新加载类。有关更多信息，请参阅javassist.tools.HotSwapper的API文档。
+
+
+
 
 
 
