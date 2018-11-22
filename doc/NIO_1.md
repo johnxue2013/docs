@@ -19,7 +19,7 @@
 ### 存取
 缓冲区中的put和get可以是相对的或者是绝对的。相对方案是不带有索引参数的函数。当相对函数被调用时，位置(position)在返回时前进1，如果位置前进过多，相对运算就会抛出异常。绝对存取不会影响缓冲区的位置属性，但是如果调用时提供的索引超过范围（负数或不小于上界）也会抛出异常。
 ### 填充
-看个例子将代表"Hello"字符串的ASCII骂载入一个名为buffer的ByteBuffer对象中
+看个例子将代表"Hello"字符串的ASCII码载入一个名为buffer的ByteBuffer对象中
 
 ```java
 buffer.put((byte)'H').put((byte)'e')put((byte)'l')put((byte)'l')put((byte)'o');
