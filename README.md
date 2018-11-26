@@ -24,3 +24,4 @@
 [12]:https://github.com/johnxue2013/docs/blob/master/doc/kafka.md
 [13]:https://github.com/johnxue2013/docs/blob/master/doc/mysql_explain.md
 [14]: http://ifeve.com/java-memory-model-3/
+[15]: http://ifeve.com/useful-jvm-flags-part-2-flag/
