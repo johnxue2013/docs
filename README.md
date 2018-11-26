@@ -23,3 +23,4 @@
 [11]:https://github.com/johnxue2013/docs/blob/master/doc/java-concurrent-in-practise-note.md
 [12]:https://github.com/johnxue2013/docs/blob/master/doc/kafka.md
 [13]:https://github.com/johnxue2013/docs/blob/master/doc/mysql_explain.md
+[14]: http://ifeve.com/java-memory-model-3/
