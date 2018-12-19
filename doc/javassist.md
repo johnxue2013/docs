@@ -1,5 +1,5 @@
 ## Javassist
-Javassist(Java Programming Assistant) 使得操作Java字节码变得简单。它是一个用于在Java中编辑字节码的类库；它使Java程序能够在运行时定义新类，并在JVM加载时修改类文件。与其他类似的字节码编辑器不同，Javassist提供两个级别的API：源级别和字节码级别。如果用户使用源级API，他们可以编辑类文件而不需要了解Java字节码的规范。整个API仅使用Java语言的风格进行设计。您甚至可以以源文本的形式指定插入的字节码; Javassist将即时编译它。另一方面，字节码级别API允许用户像其他编辑器一样直接编辑类文件(class file)。
+Javassist(Java Programming Assistant) 使得操作Java字节码变得简单。它是一个用于在Java中编辑字节码的类库；它使Java程序能够在运行时定义新类，并在JVM加载时修改类文件。与其他类似的字节码编辑器不同，Javassist提供两个级别的API：源级别和字节码级别。如果用户使用源级别API，他们可以编辑类文件而不需要了解Java字节码的规范。整个API仅使用Java语言的风格进行设计。您甚至可以以源文本的形式指定插入的字节码; Javassist将即时编译它。另一方面，字节码级别API允许用户像其他编辑器一样直接编辑类文件(class file)。
 
 ### 1. 读写字节码
 Javassist 是一个处理Java字节码的类库。Java字节码存储在一个叫做类文件的二进制文件中。每个类文件包含一个Java类(class)或者接口(interface)。
