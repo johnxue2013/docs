@@ -198,3 +198,155 @@ else:
   #运行结果
   Are you sure you want a plain pizza?
   ```
+
+  - 字典
+  在Python中，字典是一系列键-。每个建都一个值相关联。与建相关的值可以是数字、字符串、列表乃至字典。事实上，可将任何python对象用作字段中的值。
+  ```Python
+  alien_0 = {'color': 'green', 'points': 5}
+
+  print(alien_0['color'])
+  print(alien_0['points'])
+  ```
+
+  - 添加键-值对
+  **字典是一种动态结构，可随时在其中添加键-值对。**要添加键-值对。可以依次指定字典名、用方括号括起来的建和相关的值。
+  ```Python
+  alien_0 = {'color': 'green', 'points': 5}
+
+  print(alien_0['color'])
+  print(alien_0['points'])
+
+  alien_0['x_position'] = 0
+  alien_0['y_position'] = 2
+
+  print(alien_0['x_position'])
+  print(alien_0)
+  ```
+- 删除字典的键值对
+使用del语句将字典中的键值删除
+```Python
+del alien_0['x_position']
+print(alien_0)
+```
+
+- 遍历字典中的键  
+  ```python
+  for k in alien_0.keys():
+      print(k)
+
+  for k in alien_0:
+      print(k)
+
+  # 使用set去除字段值中的重复项
+  for language in set(languages.values()):
+      print(language)
+  ```
+  遍历字典时，默认遍历所有的键，因此上述代码等价。
+- 遍历字典中的值
+```Python
+for language in languages.values():
+    print(language)
+```
+- 可以在字典中存储列表或者在列表中存储字典，或者混用  
+
+  ```Python
+  alien_0 = {'color': 'green', 'points': 5}
+  alien_1 = {'color': 'yellow', 'points': 10}
+  alien_2 = {'color': 'red', 'points': 15}
+
+  aliens = [alien_0, alien_1, alien_2]
+
+  for alien in aliens:
+      print(alien)
+  ```
+
+- 函数  
+
+```Python
+def greet_user():
+    """显示简单的问候语"""
+    print("Hello!")
+
+
+greet_user()
+```
+
+"""xxx"""是文档注释
+
+- 函数的形参可以有默认值
+```Python
+def describe_pet(pet_name, animal_type='dog'):
+    """"显示宠物的信息"""
+    print("\n I have a " + animal_type + ".")
+    print("My " + animal_type + "'s name is " + pet_name + ".")
+```
+
+**使用默认值时，在形参表中必须先列出没有默认值的形参，再列出有默认值的实参。**
+
+函数可以返回任何类型的值。包括列表和字段等复杂的数据结构。
+
+**python中也可以使用break和continue**
+
+- 禁止函数修改列表
+有时候要禁止函数修改列表。此时可以使用切片传递给函数列表的副本。这样函数内部的修改将不影响源列表  
+
+- 传递任意数量的实参
+  有时不知道函数需要接受多少个参数，此时可以在形参名字前加上*，此时不管传递了多少实参，这个形参都将它们统统收入囊中。  
+
+```Python
+def make_pizza(*toppings):
+    """打印顾客点的所有配料"""
+    print(toppings)
+
+
+make_pizza('a', 'b', 'c')
+#打印结果
+('a', 'b', 'c')
+```
+可见Python将实参封装到一个元祖中。即时实参只有一个。
+
+>如果要让函数接受不同类型的实参，必须在函数定义中将接受任意数量实参的形参放在最后。Python先匹配位置实参和关键字实参，再将余下的实参都放入最后一个形参中。
+
+- 使用任意数量的关键字参数  
+
+```Python
+def build_profile(first, last, **user_info):
+    """创建一个字典，其中包含我们知道的有关用户的一切"""
+    profile = {}
+    profile['first_name'] = first
+    profile['last_name'] = last
+
+    for key, value in user_info.items():
+        profile[key] = value
+
+    return profile
+
+
+user_profile = build_profile('albert', 'einstein', location='priceton', field='physics')
+print(user_profile)
+```
+
+- 导入模块
+import module_name
+module_name 是某个xxx.py的文件名xxx
+
+也可以导入某个模块的特定函数(可以导入任意数量的函数)
+from module_name import function_name_0[function_name_1]
+
+可以通过使用as关键字给导入的函数重命名如
+`
+from module_name import make_pizza as mp
+`
+
+也可以使用as给模块命令
+`import pizza as p`
+
+使用*可以导入模块中所有的函数
+
+>一个模块就是一个.py文件
+
+- python编码习惯
+  - 给形参指定默认值时，等号两侧不要有空格
+  `def function_name(param_0, param_1='default_value')
+  - 对于函数调用中的关键字实参，也应该遵循这种约定
+  `def function_name(param_0, param_1='default_value')
