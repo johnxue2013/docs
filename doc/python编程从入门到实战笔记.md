@@ -349,4 +349,41 @@ from module_name import make_pizza as mp
   - 给形参指定默认值时，等号两侧不要有空格
   `def function_name(param_0, param_1='default_value')
   - 对于函数调用中的关键字实参，也应该遵循这种约定
-  `def function_name(param_0, param_1='default_value')
+  `def function_name(param_0, param_1='default_value')  
+
+
+  - 类
+  新建dog.py文件，内容如下  
+
+  ```python
+  class Dog():
+      """一次模拟小狗的简单尝试"""
+
+      def __init__(self, name, age):
+          """初始化属性name和age"""
+          self.name = name
+          self.age = age
+
+      def sit(self):
+          """模拟小狗被命令时蹲下"""
+          print(self.name.title() + " is now sitting")
+
+      def roll_over(self):
+          """模拟小狗被命令时打滚"""
+          print(self.name.title() + " rolled over!")
+
+
+  my_dog = Dog('willie', 6)
+  my_dog.sit()
+  my_dog.roll_over()
+  print(my_dog.name)
+
+  your_dog = Dog('lucky', 5)
+  your_dog.sit()
+  your_dog.roll_over()
+  ```
+  类名大写。python调用__init__方法来创建Dog实例，self参数由python传入，不需要我们传递，它是指向实例本身的引用，让实例能够访问类中的属性和方法。当根据Dog类创建实例时，都只需要给后两个形参(name和age)提供值。
+  **通过self实例访问的变量称为属性**，如上述的name和age
+
+  - 类继承
+    一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为父类，而新类称为子类。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法
