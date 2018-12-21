@@ -155,7 +155,7 @@ if后面的语句称为条件语句，如果要同时判断多个条件是否都
       else:
           print(car.title())
   ```
-- 检查特定的值是否包含在列表中
+- 检查特定的值是否包含在列表或字符串中
 可以使用in 关键词，相反的可以使用not in关键词  
 
   ```Python
@@ -346,44 +346,133 @@ from module_name import make_pizza as mp
 >一个模块就是一个.py文件
 
 - python编码习惯
-  - 给形参指定默认值时，等号两侧不要有空格
-  `def function_name(param_0, param_1='default_value')
+  - 给形参指定默认值时，等号两侧不要有空格  
+
+  `def function_name(param_0, param_1='default_value')`
   - 对于函数调用中的关键字实参，也应该遵循这种约定
-  `def function_name(param_0, param_1='default_value')  
+  `def function_name(param_0, param_1='default_value') `
 
 
   - 类
   新建dog.py文件，内容如下  
 
-  ```python
-  class Dog():
-      """一次模拟小狗的简单尝试"""
+```python
+class Dog():
+    """一次模拟小狗的简单尝试"""
 
-      def __init__(self, name, age):
-          """初始化属性name和age"""
-          self.name = name
-          self.age = age
+    def __init__(self, name, age):
+        """初始化属性name和age"""
+        self.name = name
+        self.age = age
 
-      def sit(self):
-          """模拟小狗被命令时蹲下"""
-          print(self.name.title() + " is now sitting")
+    def sit(self):
+        """模拟小狗被命令时蹲下"""
+        print(self.name.title() + " is now sitting")
 
-      def roll_over(self):
-          """模拟小狗被命令时打滚"""
-          print(self.name.title() + " rolled over!")
+    def roll_over(self):
+        """模拟小狗被命令时打滚"""
+        print(self.name.title() + " rolled over!")
 
 
-  my_dog = Dog('willie', 6)
-  my_dog.sit()
-  my_dog.roll_over()
-  print(my_dog.name)
+my_dog = Dog('willie', 6)
+my_dog.sit()
+my_dog.roll_over()
+print(my_dog.name)
 
-  your_dog = Dog('lucky', 5)
-  your_dog.sit()
-  your_dog.roll_over()
-  ```
-  类名大写。python调用__init__方法来创建Dog实例，self参数由python传入，不需要我们传递，它是指向实例本身的引用，让实例能够访问类中的属性和方法。当根据Dog类创建实例时，都只需要给后两个形参(name和age)提供值。
-  **通过self实例访问的变量称为属性**，如上述的name和age
+your_dog = Dog('lucky', 5)
+your_dog.sit()
+your_dog.roll_over()
+```
+类名大写。python调用__init__方法来创建Dog实例，self参数由python传入，不需要我们传递，它是指向实例本身的引用，让实例能够访问类中的属性和方法。当根据Dog类创建实例时，都只需要给后两个形参(name和age)提供值。
+**通过self实例访问的变量称为属性**，如上述的name和age
 
-  - 类继承
-    一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为父类，而新类称为子类。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法
+- 类继承
+  一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为父类，而新类称为子类。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法  
+
+```python
+class Car():
+  def __init__(self, make, model, year):
+      """初始化描述汽车的属性"""
+      self.make = make
+      self.model = make
+      self.year = year
+      # Car类的odometer_reading将被赋值默认值0
+      self.odometer_reading = 0
+
+  def get_descriptive_name(self):
+      print(self.year)
+
+
+class ElectricCar(Car):
+  def __init__(self, make, modle, year):
+      super(ElectricCar, self).__init__(make, modle, year)
+
+      self.battery_size = 70
+
+  def get_battery_size(self):
+      self.get_descriptive_name()
+      print(self.battery_size)
+
+tesla = ElectricCar('tesla', 'model s', 2016)
+tesla.get_battery_size()
+```
+
+创建子类时，父类必须包含在当前文件中，且位于子类之前(子类与父类不一定要在同一文件中，父类可以通过在子类中通过from module_name import class_name导入)。
+
+一个模块中可以存储任意个类。在另一个模块中导入包含多个类的模块时，可以使用逗号隔开多个类如`from module_name import class_name_0,class_name_1`
+
+也可以导入整个模块，再使用句点表示法访问需要的类。
+```Python
+import car
+
+my_beetle = car.Car('volkswagen', 'beetle', 2016)
+
+my_tesla = car.ElectricCar('tesla', 'roadster', 2016)
+```
+
+**类名应该采用驼峰命名法,实例名和模块名都采用小写格式，并在单词之间加上下划线**
+
+## 文件和异常
+```python
+with open('pi_digits.txt') as file_object:
+    # 一次性读取整行
+    contents = file_object.read()
+    print(contents)
+
+with open('pi_digits.txt') as file_object:
+    # 每次读取一行
+    for line in file_object:
+        print(line)
+```
+open()函数接收一个参数：要打开文件的名称，Python在当前执行的文件所在目录中查找指定的文件的名称，open()函数返回一个表示文件的对象。Python将这个对象存储在我们后面使用的变量中。
+
+关键字`with`在不再需要访问文件后将其关闭。从而无需显示调用close()。
+
+open函数还可接收相对路径和绝对路径
+
+**使用关键字with时，open()返回的文件对象只在with代码块内可用。**如果要在代码块外访问文件内容，可在with代码块类将文件的各行存储在一个列表中。
+
+```Python
+with open('pi_digits.txt') as file_object:
+    lines = file_object.readline()
+
+for line in lines:
+    print(line)
+```
+上述代码可以看出with下声明的变来个是global范围的 ，有关python变量作用域的说明可以参考 https://www.jianshu.com/p/17a9d8584530
+
+- 写入文件
+假设当前路径存在programming.txt文件  
+
+```Python
+file_name = 'programming.txt'
+
+with open(file_name, 'w') as fw:
+    fw.write('I love programming')
+```
+open()函数的 第二个参数告诉Python要以写入的模式打开文件。可以传递参数如下:
+- 读取模式 r
+- 写入模式 w
+- 附加模式 a(内容追加，而不是在open返回前清空文件)
+- 读取和写入模式 r+
+省略参数的情况下将以只读模式打开文件
