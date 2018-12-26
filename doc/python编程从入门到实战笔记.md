@@ -345,6 +345,14 @@ from module_name import make_pizza as mp
 
 >一个模块就是一个.py文件
 
+当你导入一个模块，Python 解析器对模块位置的搜索顺序是：
+
+ - 当前目录
+ - 如果不在当前目录，Python 则搜索在 shell 变量 PYTHONPATH 下的每个目录。
+ - 如果都找不到，Python会察看默认路径。UNIX下，默认路径一般为/usr/local/lib/python/。
+模块搜索路径存储在 system 模块的 sys.path 变量中。变量里包含当前目录，PYTHONPATH和由安装过程决定的默认目录。
+
+
 - python编码习惯
   - 给形参指定默认值时，等号两侧不要有空格  
 
@@ -471,8 +479,84 @@ with open(file_name, 'w') as fw:
     fw.write('I love programming')
 ```
 open()函数的 第二个参数告诉Python要以写入的模式打开文件。可以传递参数如下:
-- 读取模式 r
-- 写入模式 w
-- 附加模式 a(内容追加，而不是在open返回前清空文件)
-- 读取和写入模式 r+
+  - 读取模式 r
+  - 写入模式 w
+  - 附加模式 a(内容追加，而不是在open返回前清空文件)
+  - 读取和写入模式 r+
 省略参数的情况下将以只读模式打开文件
+
+- 使用try-except代码块
+```python
+try:
+    print(5/0)
+except ZeroDivisionError:
+    print('You can"t divide by zero!')
+```
+
+- else代码块
+通过将代码放在try-except代码块中，可提高这个程序抵御错误的能力,下面展示else的用法。
+```Python
+try:
+    print(5/1)
+except ZeroDivisionError:
+    print('You can"t divide by zero!')
+else:
+    print('right')
+```
+当try-except中的代码正确指定未发生异常时，else中的代码将得到执行
+
+- 失败时一声不吭
+如果想在发生异常时像没发生异常一样继续运行，可以像通常那样编写try代码块，但在except代码块中明确告诉Python什么都不要做，可以使用pass语句
+```Python
+try:
+    print(5/0)
+except ZeroDivisionError:
+    pass
+```
+相比于前一个程序，这个程序唯一不同的地方是Ø处的pass语句。现在，出现 FileNotFoundError异常时，将执行except代码块中的代码，但什么都不会发生。这种错误发生时， 不会出现traceback，也没有任何输出。
+
+- 编写测试代码
+Python标准库中的模块unittest提供了代码测试工具。
+
+使用方式：先导入模块unittest以及要测试的函数，再创建一个继承unittest.TestCase的类，并编写一系列方法对函数行为的不同方面进行测试。
+```Python
+import unittest
+from name_function import get_formatted_name
+
+class NamesTestCase(unittest.TestCase):
+    """测试name_function.py"""
+
+    def test_first_last_name(self):
+        """能够正确地处理像Janis Joplint这样的姓名吗"""
+        formatted_name = get_formatted_name('Janis', 'Joplint')
+        self.assertEqual(formatted_name, 'Janis Joplint')
+
+unittest.main()
+```
+所有以test_开头的方法都将自动运行。
+
+
+创建python包的过程中，会在该文件夹下创建一个__init__.py文件,该python文件默认是空的，它的第一个作用就是package标识，如果没有该文件，该目录就不会认为是package。python中的包和模块有两种导入方式：精确导入和模糊导入：
+精确导入:
+```python
+from Root.Pack1 import Pack1Class
+import Root.Pack1.Pack1Class
+```
+
+模糊导入:
+```python
+from Root.Pack1 import *
+```
+模糊导入中的*中的模块是由__all__来定义的，__all__.py的另一个作用就是用来定义package中的__all__，用来模糊导入，如__all__ = ["Pack1Class", "Pack1Class2"]
+
+外部调用
+```Python
+from Root.Pack1 import *
+a = Package1Class.Pack_AA('Alvin')
+a.PrintName()
+```
+
+- import的搜索路径
+解释器执行时，首先搜索`build-in module`, 其次才会搜索sys.path所包含的路径,这就有可能引起同名包或模块被遮蔽的问题。
+
+>python执行一个文件时，解释器都会把文件所在的目录加入到系统查找路径(sys.path这个列表中)中且放在index为0的地方也就是首位。
