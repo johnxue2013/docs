@@ -1,9 +1,57 @@
 # Linux就该这么学
 
-## 第一章
+## 第二章
+- date命令用于显示/设置系统的时间或日期。格式为 date [选项] [+指定的格式]
+  如：
+  查看系统当前时间
+  `date '+%Y-%m-%d %H:%M:%S'`
+
+  设置系统当前时间
+  `date set -s '20150901 8:30:00'`
+
+- reboot命令用于重启系统(仅root用户可以使用)。格式为`reboot`
+
+- uname命令用于查看系统内核版本等信息.格式为`uname [-a]`
+
+- uptime 命令用于查看系统的负载情况，格式为:`uptime`
+可以使用`watch -n 1 uptime`来每一秒获得当前系统负载情况.输出内容分别为当前时间、系统已运行时间、当前在线用户以及平均值负载。而平均值负载分为最近1分钟、5分钟、15分钟的系统负载情况，负载值越低越好（小于1是正常）。
+
+- free命令用于查看系统当前内存使用情况  
+格式为：free [-m/-g]
+
+- who命令用于查看**当前**登入主机的用户情况。格式为`who [参数]`
+
+- last 查看所有系统的登入记录，格式为`last [参数]`
+
+- history 显示历史执行过的命令
+>历史命令被保存在用户家目录中的'.bash_history'文件中。history默认会保存1000条执行过的命令，若要修改可直接编辑/etc/profile文件的HISTSIZE值
+
+- pwd 显示当前的工作目录，pwd -P 显示真实路径(即非快捷链接的地址)
+
+- ls 查看目录中有哪些文件格式为 `ls [选项] [文件]`
+
+| 参数    | 作用     |
+| :------------- | :------------- |
+| -a       | 查看全部文件(包括隐藏文件) |
+| -d| 仅看目录本身|
+| -h | 易读的文件容量(如k,m,g)|
+|-l| 显示文件的详细信息|
+
+如`ls -lh`
+
+- cat 查看纯文本文件 格式为`cat [选项] [文件]`
+
+| 选项     | 作用     |
+| :------------- | :------------- |
+| -n | 显示行号       |
+| -b | 显示行号(不包括空行)|
+|-A| 显示出“不可见”的符号，如空格 tab建等|
+
 - grep命令用于对文本进行搜索  
-格式为 grep[选项] [文件]
-搜索某个关键词: grep 关键词 文本文件  
+格式为 grep [OPTION]... PATTERN [FILE]...
+Search for PATTERN in each FILE or standard input.
+PATTERN is, by default, a basic regular expression (BRE).
+Example: grep -i 'hello world' menu.h main.c
 
 |参数|作用|
 |:---------|:---------|
@@ -11,13 +59,45 @@
 |-c | 仅显示找到的次数|
 |-i | 忽略大小写|
 |-n | 显示行号|
-|-v | 方向选择--仅仅列出没有“关键词”的行|
+|-v | 反向选择--仅仅列出没有“关键词”的行|
 
-- uname 查看系统内核版本等信息
-格式为 uname -a
+- tr 命令用于转换文本文件中的字符，格式为 `tr [原始字符] [目标字符]`
+如:`cat a.txt | tr [a-z] [A-Z]`
+将a.txt中的字符变成大写
 
-- free命令用于查看系统当前内存使用情况  
-格式为：free [-m/-g]
+- wc用于统计指定文本的行数、字数、字节数，格式为"wc [参数] 文本"
+
+| 参数 | 作用    |
+| :------------- | :------------- |
+| -l       | 只显示行数       |
+|-w| 只显示单词|
+|-c| 只显示字节数|
+
+
+```shell
+[root@bogon ~]# cat a.txt
+a
+bv
+adfa
+adfa
+[root@bogon ~]# grep a a.txt
+a
+adfa
+adfa
+```
+查询a在a.txt中出现的地方
+
+- find 命令用于查找文件 格式:`find [查找路径] 寻找条件 操作`
+小技巧：对于搜索路径有几个小窍门:
+  - "~"代表用户家目录
+  - "."代表当前目录
+  - "/"代表根目录
+
+  如
+  ```shell
+  [root@bogon ~]# find . -name a.txt
+  ./a.txt
+  ```
 
 
 ## 第三章
@@ -30,9 +110,11 @@
 ```/bin/bash
 grep "/sbin/nologin" /etc/passwd | wc -l
 ```
+统计文件中单词出现次数:
+cat <file> | grep -o <word> | wc -l
 
-### 输入输出重定向
->、>>或者<、<<
+### 输入输出重定向  
+`>`、>>或者<、<<
 对于输出重定向:
 命令 > 文件 :将标准输出重定向到一个文件中(清空原有文件的数据)
 命令 >> 文件: 将标准输出重定向到一个文件中(追加到原有内容后面)
@@ -71,7 +153,7 @@ eg: alias cp="cp -i"
 unalias命令用于取消命令的别名，格式为:"unalias 别名"
 
 >系统中的类似$PATH这类的环境变量，可以通过env命令查看
-```/bin/bash
+```Shell
 ➜  ~ env
 TERM_SESSION_ID=w0t0p0:6C5DD8A5-11F2-4F04-9F89-85280CFED2CD
 SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.NO7wlV0t75/Listeners
@@ -119,6 +201,7 @@ rvm_version=1.27.0 (latest)
 _=/usr/bin/env
 ```
 如果有需求可以直接修改。
+
 假设设置一个变量"WORKDIR"，让每个用户执行"cd $WORKDIR"都登录到/home/workdir目录中，可如下设置
 ```/bin/bash
 > mkdir /home/workdir
@@ -132,8 +215,8 @@ _=/usr/bin/env
 
 > cat /etc/shells查看系统中所有可用的Shell解释器  
 
-```bin/bash
-➜  Downloads cat /etc/shells
+```shell
+➜  cat /etc/shells
 # List of acceptable shells for chpass(1).
 # Ftpd will not allow users to connect who are not using
 # one of these shells.
@@ -145,6 +228,10 @@ _=/usr/bin/env
 /bin/tcsh
 /bin/zsh
 ```
+查看正在使用的shell
+```shell
+echo $SHELL
+```
 
 一个Shell脚本应该包括:"脚本声明"、"注释信息"、"可执行语句"
 - 脚本声明  
@@ -155,7 +242,7 @@ _=/usr/bin/env
   执行的具体命令
 
 如：
-```bin/bash
+```shell
 vim Example.sh
   #!bin/bash
   #for example by han.xue
@@ -167,7 +254,13 @@ vim Example.sh
 2. sh 脚本文件路径: sh Example.sh
 3. source脚本文件路径: source Example.sh
 
-接收用户参数  
+只要脚本路径没有写错，sh或source命令都可以直接执行该脚本，但直接访问脚本(./XXX.sh的方式)的方式有点特殊。使用直接访问脚本的方式提示权限不足，此时需要为脚本设置可执行权限后才能顺利运行
+```shell
+chmod u+x xxx.sh
+./xxx.sh
+```
+
+### 接收用户参数  
 
 
 |$0|当前执行Shell脚本的程序名|
@@ -187,3 +280,33 @@ echo "第1个参数为$1，第5个为$5"
 ```bin/bash
 sh Example.sh one two three four five six
 ```
+
+### 用户身份与文件权限
+Linux系统中**一些都是文件**，文件和目录的**所属**与**权限**---**来分别规定所有者、所有组、其余的人读、写、执行权限。**
+
+读(read)，写(write),执行e(xecute)简写为(r,w,x),亦可用数字(4,2,1)表示
+
+| 权限项|读|写|执行|读|写|执行|读|写|执行
+| :---- | :----- |
+| 字符表示 |r|w|x|r|w|x|r|w|x
+|数字表示|4|2|1|4|2|1|4|2|1
+|权限分配|文件所有者|文件所属组|其他用户|
+
+```shell
+[root@bogon ~]# ls -lh a.txt
+-rw-r--r--. 1 root root 15 Jan 31 22:30 a.txt
+```
+权限位的第一个减号-代表的是文件类型
+- - 表示普通文件
+- d 表示目录文件
+- l 表示链接文件
+- b 表示块设备文件
+- c 表示字符设备文件
+- 管道文件
+
+文件的权限为rw-r--r--也就是分别表示所有者(属主)有读写权限，所有组（属组）有读权限，其余人也仅有读权限。
+
+第一个root表示属主
+第二个root表示属组
+
+对于目录文件x(可执行)表示用户可以进入到该目录中
