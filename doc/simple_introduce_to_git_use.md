@@ -274,11 +274,11 @@ git reset --hard <commit_id>
 ```
 进行回退，此时的回退只是本地仓库的回退，若要同时回退服务器版本使用
 ```Bash
-git push <remote name> HEAD –force
+git push <remote name> HEAD --force
 ```
 如 
 ```Bash
-git push origin HEAD –force
+git push origin HEAD --force
 ```
 
 * 忽略文件  
