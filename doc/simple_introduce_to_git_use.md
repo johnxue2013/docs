@@ -404,6 +404,12 @@ git checkout source_branch <paths>
 git checkout dev2 src/test
 ```
 
+## 修改最近的commit的message
+
+```Bash
+git commit --amend
+```
+
 
 # 附录  
 1. git status //获取你当前所在的分支上未track的文件，为track的文件需要使用git add [文件名]进行track
