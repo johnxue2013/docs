@@ -3,16 +3,60 @@
 ## bean初始化的一个大体流程
 首先入口肯定是在org.springframework.context.support.AbstractApplicationContext#refresh() -> finishBeanFactoryInitialization() -> beanFactory.preInstantiateSingletons() -> getBean() -> doGetBean() -> createBean() -> doCreateBean() ->populateBean()完成bean的初始化
 
-## BeanDefinition和BeanFactoryPostProcessor
-BeanDefinition是Spring对bean的一个抽象，比如bean的作用域，bean的注入模型，bean是否懒加载等等信息，这些信息是Class对象无法抽象出来的，因此Spring没有使用Class而是使用了BeanDefinition
+## `BeanDefinition`和`BeanFactoryPostProcessor`、`BeanPostProcessor`
+### BeanDefinition
+`BeanDefinition`是Spring对bean的一个抽象，比如bean的作用域，bean的注入模型，bean是否懒加载等等信息，这些信息是`Class`对象无法抽象出来的，因此Spring没有使用Class而是使用了`BeanDefinition`
 
-BeanFactoryPostProcessor： Modify the application context's internal bean factory after its standard
-initialization. All bean definitions will have been loaded, but no beans
-will have been instantiated yet. This allows for overriding or adding
-properties even to eager-initializing beans. Spring会先执行Spring内部提供的实现，然后执行开发者的实现类（如果提供了的话），在该实现中，开发者可以修改bean的一些属性。
+### `BeanFactoryPostProcessor`
+接口的定义如下:
+```java
+package org.springframework.beans.factory.config;
+
+import org.springframework.beans.BeansException;
+
+/**
+ * Allows for custom modification of an application context's bean definitions,
+ * adapting the bean property values of the context's underlying bean factory.
+ *
+ * <p>Application contexts can auto-detect BeanFactoryPostProcessor beans in
+ * their bean definitions and apply them before any other beans get created.
+ *
+ * <p>Useful for custom config files targeted at system administrators that
+ * override bean properties configured in the application context.
+ *
+ * <p>See PropertyResourceConfigurer and its concrete implementations
+ * for out-of-the-box solutions that address such configuration needs.
+ *
+ * <p>A BeanFactoryPostProcessor may interact with and modify bean
+ * definitions, but never bean instances. Doing so may cause premature bean
+ * instantiation, violating the container and causing unintended side-effects.
+ * If bean instance interaction is required, consider implementing
+ * {@link BeanPostProcessor} instead.
+ *
+ * @author Juergen Hoeller
+ * @since 06.07.2003
+ * @see BeanPostProcessor
+ * @see PropertyResourceConfigurer
+ */
+@FunctionalInterface
+public interface BeanFactoryPostProcessor {
+
+	/**
+	 * Modify the application context's internal bean factory after its standard
+	 * initialization. All bean definitions will have been loaded, but no beans
+	 * will have been instantiated yet. This allows for overriding or adding
+	 * properties even to eager-initializing beans.
+	 * @param beanFactory the bean factory used by the application context
+	 * @throws org.springframework.beans.BeansException in case of errors
+	 */
+	void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
+
+}
+```
+Spring会先执行Spring内部提供的实现，然后执行开发者的实现类（如果提供了的话），在该实现中，开发者可以修改bean的一些属性。
 
 
-## BeanPostProcessor
+### `BeanPostProcessor`
 spring提供的bean的后置处理器，允许开发者修改spring bean工厂创建出来的bean的信息(如属性等)。接口定义如下:
 ```java
 public interface BeanPostProcessor {
@@ -30,7 +74,7 @@ public interface BeanPostProcessor {
 ```  
 spring自身的很多功能也是通过这个接口实现的。如XXXAware接口的处理逻辑`ApplicationContextAwareProcessor`就是通过实现`BeanPostProcessor`接口实现的
 
-## FactoryBean  
+## `FactoryBean`
 
 ```java
 public interface FactoryBean<T> {
@@ -56,7 +100,7 @@ Interface to be implemented by objects used within a {@link BeanFactory} which a
 `SqlSessionFactoryBean`这个类其实就实现了`org.springframework.beans.factory.FactoryBean`.这就向容器中注册了一个SqlSessionFactoryBean。从类名我们就能知道这是一个FactoryBean。当我们单独使用Mybatis时，需要创建一个SqlSessionFactory，然而当MyBatis和Spring整合时，却需要一个SqlSessionFactoryBean，所以我们可以猜测，是不是SqlSessionFactoryBean通过FactoryBean的特殊性，向Spring容器中注册了一个SqlSessionFactory。查看SqlSessionFactoryBean的源代码发现，它果然实现了FactoryBean接口，并且重写了getObejct方法，通过getObject()方法向容器中注册了一个SqlSessionFactory。
 
 ## Spring的Environment
-`Environment`是spring提供的一个接口,提供了对一些环境配置变量提供了统一的访问方式。类的集成图如下所示
+`Environment`是spring提供的一个接口,提供了对一些环境配置变量提供了统一的访问方式。类的继承关系如下所示
 ![](https://data-repository-01.oss-cn-shanghai.aliyuncs.com/img/StandardEnvironment.png)
 
 其中比较重要的是`AbstractEnvironment`类,该类提供了resolvePlaceholders方法，可以解析配置中的占位符${}并提供了默认值的功能,如${name:zhangsan},如果启动或者配置文件中没有提供name变量的值，那么此方法会将zhangsan赋值给name。
