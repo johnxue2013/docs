@@ -55,6 +55,10 @@ public interface BeanFactoryPostProcessor {
 ```
 Spring会先执行Spring内部提供的实现，然后执行开发者的实现类（如果提供了的话），在该实现中，开发者可以修改bean的一些属性。
 
+实例化(instance)：是对象创建的过程。比如使用构造方法new对象，为对象在内存中分配空间。
+
+初始化(initialization)：是为对象中的属性赋值的过程。
+
 
 ### `BeanPostProcessor`
 spring提供的bean的后置处理器，允许开发者修改spring bean工厂创建出来的bean的信息(如属性等)。接口定义如下:
